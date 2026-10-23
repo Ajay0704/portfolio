@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The State of SaaS Pricing 2026 — Ajay Karthick</title>
+  <meta name="description" content="I collected pricing data from 198 SaaS companies’ live pricing pages to test what the industry only claims. Just 34% charge extra for AI, well below the 68% vendors self-report, and 69% gate SSO to the top tier. Shipped as a live Tableau dashboard and an open dataset." />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="The State of SaaS Pricing 2026 — Ajay Karthick" />
+  <meta property="og:description" content="I collected pricing data from 198 SaaS companies’ live pricing pages to test what the industry only claims. Just 34% charge extra for AI, well below the 68% vendors self-report, and 69% gate SSO to the top tier. Shipped as a live Tableau dashboard and an open dataset." />
+  <meta property="og:image" content="https://ajay0704.github.io/portfolio/img/og-card.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230c0d0f'/%3E%3Ctext x='16' y='21' font-family='Arial' font-weight='700' font-size='13' fill='white' text-anchor='middle'%3EAK%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" /></noscript>
+  <link rel="stylesheet" href="../assets/site.css" />
+  <style>
+    .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;
+      background:var(--hairline);border:1px solid var(--hairline);margin-top:48px}
+    .kpi-cell{background:#fff;padding:30px 26px}
+    .kpi-cell .v{font-family:var(--serif);font-weight:900;font-size:2.9rem;line-height:1}
+    .kpi-cell .v.red{color:var(--accent)}
+    .kpi-cell .k{margin-top:10px;font-weight:600;font-size:.92rem}
+    .kpi-cell .d{margin-top:4px;color:var(--muted);font-size:.84rem;line-height:1.5}
+    .viz-frame{border:1px solid var(--hairline);background:var(--bg-paper);margin-top:40px}
+    .viz-frame iframe{display:block;width:100%;height:880px;border:0}
+    .viz-cap{padding:14px 20px;border-top:1px solid var(--hairline);font-size:.84rem;color:var(--muted)}
+    .btn-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+    .claimbox{border-left:4px solid var(--accent);background:var(--bg-paper);padding:26px 30px;margin-top:36px}
+    .claimbox .n{font-family:var(--serif);font-weight:900;font-size:2.6rem;color:var(--accent);line-height:1}
+    .cmp{width:100%;border-collapse:collapse;margin-top:28px;font-size:.94rem}
+    .cmp th,.cmp td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--hairline)}
+    .cmp th{background:var(--bg-paper);font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+    .cmp td.num{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+    .cmp tr.mine{background:#fdf3f1}
+    .cmp tr.mine td{font-weight:700}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <nav class="nav" aria-label="Primary" data-theme="dark">
+    <div class="wrap nav-inner">
+      <a class="logo" href="../index.html"><span class="logo-mark" aria-hidden="true">AK</span>Ajay Karthick</a>
+      <div class="nav-links" id="navLinks">
+        <a href="../index.html#experience">Experience</a>
+        <a href="../work.html" aria-current="page">Work</a>
+        <a href="../index.html#how">How I work</a>
+        <a href="../index.html#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="nav-right">
+        <a class="btn btn-ink btn-sm" href="../Ajay_Karthick_Resume.pdf">Résumé</a>
+        <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <div class="wrap">
+      <p class="crumbs"><a href="../work.html">Work</a> &nbsp;/&nbsp; The State of SaaS Pricing 2026</p>
+      <header class="cs-head">
+        <div>
+          <p class="card-kind"><span>Self-built</span><span>2026</span></p>
+          <h1>The State of SaaS Pricing 2026</h1>
+          <p class="cs-answer">I collected pricing data from 198 SaaS companies’ live pricing pages to test what the industry only claims. Just 34% charge extra for AI, well below the 68% vendors self-report, and 69% gate SSO to the top tier. Shipped as a live Tableau dashboard and an open dataset.</p>
+          <p style="margin-top:20px"><span class="verified">3 independent recounts agree</span></p>
+          <div class="cs-links"><a class="btn btn-ink" href="https://public.tableau.com/views/TheStateofSaasPricing2026/Dashboard1" target="_blank" rel="noopener">View live dashboard &#8599;</a><a class="btn btn-line" href="https://ajay0704.github.io/saas-pricing-report.html" target="_blank" rel="noopener">Read the full report &#8599;</a></div>
+        </div>
+        <dl class="cs-meta"><div><dt>Type</dt><dd>Self-Built Project</dd></div><div><dt>My role</dt><dd>Solo: data collection, analysis and dashboard</dd></div><div><dt>When</dt><dd>2026</dd></div><div><dt>Where</dt><dd>Boston, MA</dd></div><div><dt>Tools</dt><dd>Tableau, Python, Pandas, Web Scraping, LLM Structured Extraction, Headless Browser</dd></div></dl>
+      </header>
+      <div class="glance reveal" style="--n:3"><div><b>34%</b><span>charge extra for AI on the pricing page</span></div><div><b>69%</b><span>gate SSO to the top tier</span></div><div><b>191 / 198</b><span>companies with usable pricing data</span></div></div>
+      
+      <div class="cs-layout">
+        <nav class="toc" aria-label="On this page"><p class="eyebrow">On this page</p><a href="#the-challenge">The Challenge</a><a href="#what-i-did">What I Did</a><a href="#key-findings">Key Findings</a><a href="#the-interactive-dashboard">The Interactive Dashboard</a><a href="#where-the-published-numbers-break-down">Where the Published Numbers Break Down</a><a href="#key-outcomes">Key Outcomes</a><a href="#tools-and-skills">Tools &amp; skills</a></nav>
+        <div class="cs-body">
+          <section id="the-challenge" aria-labelledby="the-challenge-h"><h2 id="the-challenge-h">The Challenge</h2><div class="case-body">
+        <p>Every SaaS company in 2026 is asking the same two questions: is per-seat pricing dying, and how should we charge for AI? The industry answers with confident statistics &mdash; for example, an ICONIQ Capital survey published by BCG found <strong>68% of vendors charge separately for AI or restrict it to premium tiers.</strong></p>
+        <p>The trouble is the credible estimates measure different things and don&rsquo;t agree &mdash; a named 230-company survey by Kyle Poyar puts it near 29%, while the ICONIQ/BCG figure is 68% &mdash; and the highest numbers come from aggregator pages with no stated method. There was no open dataset to settle it.</p>
+        <p>So I built one: I collected pricing data from 198 leading SaaS companies directly from their live pricing pages, and used it to answer the questions with evidence instead of citation.</p>
+      </div>
+    </section><section id="what-i-did" aria-labelledby="what-i-did-h"><h2 id="what-i-did-h">What I Did</h2><div class="case-body">
+        <p><strong>Sampling.</strong> 198 recognisable B2B SaaS companies, 18 in each of 11 categories &mdash; dev tools, data &amp; analytics, CRM, martech, collaboration, design, security, HR, fintech-ops, support and AI-native &mdash; balanced so no segment skews the result.</p>
+        <p><strong>Collection.</strong> Each live pricing page was read and converted into 23 structured fields: pricing model, tier names, entry price, how AI is charged, where SSO sits. Prices normalised to USD per month. No third-party datasets, no synthetic data.</p>
+        <p><strong>Recovery.</strong> The most valuable pages fight back &mdash; Salesforce, OpenAI, Adobe and Canva block scrapers or render prices in JavaScript. Those were recovered with a headless browser and manual verification, lifting coverage from 80% to 96%.</p>
+        <p><strong>Validation.</strong> Every headline number was recomputed through three independent paths &mdash; a direct recount from the raw files, the analysis pipeline, and the exported dashboard dataset &mdash; and all three agree exactly. Field-level extraction accuracy is roughly 90%, and every row carries its source URL and a quoted snippet so any value can be audited.</p>
+      </div>
+    </section><section id="key-findings" aria-labelledby="key-findings-h"><h2 id="key-findings-h">Key Findings</h2><div class="case-body"><p>From 191 companies with usable pricing data (96% of the sample), across 11 categories.</p></div>
+      <div class="kpi-grid">
+        <div class="kpi-cell"><div class="v">42%</div><div class="k">charge per seat</div><div class="d">Still the largest model &mdash; but now a minority. Hybrid is second at 23%.</div></div>
+        <div class="kpi-cell"><div class="v red">34%</div><div class="k">charge extra for AI</div><div class="d">Well below the self-reported 68%. Most bundle AI into the existing plan.</div></div>
+        <div class="kpi-cell"><div class="v red">69%</div><div class="k">gate SSO to the top tier</div><div class="d">The &ldquo;SSO tax&rdquo; &mdash; and this figure is a conservative floor.</div></div>
+        <div class="kpi-cell"><div class="v">82%</div><div class="k">show a public price</div><div class="d">Yet 85% still keep a &ldquo;contact sales&rdquo; tier above it.</div></div>
+        <div class="kpi-cell"><div class="v">57%</div><div class="k">offer a free tier</div><div class="d">Concentrated in dev tools, collaboration and AI-native products.</div></div>
+      </div>
+    </section><section id="the-interactive-dashboard" aria-labelledby="the-interactive-dashboard-h"><h2 id="the-interactive-dashboard-h">The Interactive Dashboard</h2><div class="case-body">
+        <p>I built the analysis into a Tableau dashboard, published live on Tableau Public. It is fully interactive &mdash; filter the whole dataset by category and explore every finding below.</p>
+      </div>
+      <div class="viz-frame">
+        <iframe title="The State of SaaS Pricing 2026"
+          src="https://public.tableau.com/views/TheStateofSaasPricing2026/Dashboard1?:embed=y&amp;:showVizHome=no&amp;:toolbar=bottom"
+          loading="lazy"></iframe>
+        <div class="viz-cap">Live Tableau Public dashboard &mdash; 191 companies, 11 categories. <a href="https://public.tableau.com/views/TheStateofSaasPricing2026/Dashboard1" target="_blank" rel="noopener">Open full screen &rarr;</a></div>
+      </div>
+    </section><section id="where-the-published-numbers-break-down" aria-labelledby="where-the-published-numbers-break-down-h"><h2 id="where-the-published-numbers-break-down-h">Where the Published Numbers Break Down</h2><div class="case-body">
+        <p>The headline finding is that the most-cited statistic in SaaS pricing overstates what a customer actually pays. I am not claiming the reports are dishonest &mdash; I am claiming three specific things: credible sources disagree (a 230-company survey says ~29%, ICONIQ/BCG says 68%), the higher figures are not reproducible from public pricing pages, and the gap is largely definitional. Self-reported &ldquo;we monetise AI&rdquo; is a much easier bar than &ldquo;the pricing page actually charges you more.&rdquo;</p>
+      </div>
+      <table class="cmp">
+        <tr><th>Source</th><th>What it measures</th><th class="num">Figure</th></tr>
+        <tr><td>Kyle Poyar, Growth Unhinged <span style="color:var(--muted)">(survey, n=230)</span></td><td>Companies that actually meter AI via credits</td><td class="num">~29%</td></tr>
+        <tr class="mine"><td>This study <span style="color:var(--muted)">(n=191)</span></td><td>Pricing page actually charges the customer extra for AI</td><td class="num">34%</td></tr>
+        <tr><td>ICONIQ Capital <span style="color:var(--muted)">(via BCG, 2025)</span></td><td>Charge separately for AI, or restrict it to premium tiers</td><td class="num">68%</td></tr>
+      </table>
+      <div class="claimbox">
+        <div class="n">34%</div>
+        <p style="margin-top:10px"><strong>My observed 34% lands right next to the one rigorous independent survey &mdash; Kyle Poyar&rsquo;s 230-company survey finds ~29% actually meter AI &mdash; and at roughly half the self-reported 68%.</strong> The number you can check tracks the independent survey; the higher figure relies on self-report and a looser definition.</p>
+      </div>
+    </section><section id="key-outcomes" aria-labelledby="key-outcomes-h"><h2 id="key-outcomes-h">Key Outcomes</h2><ul class="case-outcomes">
+        <li>Self-collected a dataset of 191 SaaS companies &times; 23 fields, every value traced to a live pricing page &mdash; 96% coverage of the sampling frame.</li>
+        <li>Produced a contrarian, defensible headline: only 34% of companies charge extra for AI, well below self-reported industry figures near 68%.</li>
+        <li>Quantified the &ldquo;SSO tax&rdquo; at 69% and built benchmarks that did not previously exist publicly (4 tiers, 20% annual discount, $10 median entry price).</li>
+        <li>Published an interactive Tableau dashboard so anyone can filter the data and check the findings themselves.</li>
+        <li>Documented limitations openly, including sample bias and small category sample sizes.</li>
+        <li>Published the full dataset for anyone to check: <a href="../saas-pricing-dataset.csv" download>download the 191-company CSV &darr;</a></li>
+      </ul>
+    </section><section id="tools-and-skills" aria-labelledby="tools-and-skills-h"><h2 id="tools-and-skills-h">Tools &amp; skills</h2><h3>Tools</h3><div class="case-tools"><span class="tag">Tableau</span><span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">Web Scraping</span><span class="tag">LLM Structured Extraction</span><span class="tag">Headless Browser</span><span class="tag">HTML / CSS</span></div><h3>Skills</h3><div class="case-tools"><span class="tag">Data Collection</span><span class="tag">Data Cleaning</span><span class="tag">Data Validation</span><span class="tag">Dashboard Design</span><span class="tag">Pricing &amp; Monetization Analysis</span><span class="tag">Methodology Design</span><span class="tag">Data Storytelling</span></div></section>
+        </div>
+      </div>
+      <nav class="cs-next" aria-label="More work">
+        <a href="ai-model-market.html"><span>&larr; Previous</span><b>AI Model Market: Who’s Winning?</b></a>
+        <a href="brewery-revenue-forecast.html"><span>Next &rarr;</span><b>Forecasting Brewery Revenue with Weather</b></a>
+      </nav>
+    </div>
+  </main>
+  <footer class="contact-wrap" id="contact">
+    <div class="contact">
+      <p class="eyebrow">Hiring a data or BI analyst?</p>
+      <h2>Let&rsquo;s talk.</h2>
+      <div class="contact-actions">
+        <a class="btn btn-white" href="mailto:tajay0704@gmail.com">tajay0704@gmail.com</a>
+        <button class="btn copy" type="button" data-copy="tajay0704@gmail.com">Copy email</button>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/ajay-karthick-thirumurthi-62224b216/" target="_blank" rel="noopener">LinkedIn &#8599;</a>
+        <a class="btn btn-ghost" href="https://github.com/Ajay0704" target="_blank" rel="noopener">GitHub &#8599;</a>
+        <a class="btn btn-ghost" href="../Ajay_Karthick_Resume.pdf">Résumé (PDF)</a>
+      </div>
+      <div class="foot">
+        <span>&copy; 2026 Ajay Karthick &middot; Seattle, WA</span>
+        <span><a href="../work.html">All work</a> &nbsp;&middot;&nbsp; <a href="#main">Back to top &uarr;</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>

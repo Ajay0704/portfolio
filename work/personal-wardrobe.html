@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Personal Wardrobe — Ajay Karthick</title>
+  <meta name="description" content="An iPhone and web app that turns one photo of your clothes into a tagged digital closet and weather-aware outfits. Every change was measured with evaluation harnesses: clashing outfits fell from up to 30% to 0%, with 100% category accuracy on a 157-item test closet." />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Your Personal Wardrobe — Ajay Karthick" />
+  <meta property="og:description" content="An iPhone and web app that turns one photo of your clothes into a tagged digital closet and weather-aware outfits. Every change was measured with evaluation harnesses: clashing outfits fell from up to 30% to 0%, with 100% category accuracy on a 157-item test closet." />
+  <meta property="og:image" content="https://ajay0704.github.io/portfolio/img/wardrobe/outfit_recs_best.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230c0d0f'/%3E%3Ctext x='16' y='21' font-family='Arial' font-weight='700' font-size='13' fill='white' text-anchor='middle'%3EAK%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" /></noscript>
+  <link rel="stylesheet" href="../assets/site.css" />
+  <style>
+    .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+      background:var(--hairline);border:1px solid var(--hairline);margin-top:48px}
+    .kpi-cell{background:#fff;padding:30px 26px}
+    .kpi-cell .v{font-family:var(--serif);font-weight:900;font-size:2.9rem;line-height:1}
+    .kpi-cell .v.red{color:var(--accent)}
+    .kpi-cell .k{margin-top:10px;font-weight:600;font-size:.92rem}
+    .kpi-cell .d{margin-top:4px;color:var(--muted);font-size:.84rem;line-height:1.5}
+    .btn-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+    .flow{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:40px;align-items:end}
+    .flow figure,.screens figure{margin:0}
+    .flow img,.screens img{display:block;width:100%;height:auto}
+    .screens img{max-width:230px;margin:0 auto}
+    .screens figcaption{text-align:center}
+    .flow figure:nth-child(2) img{max-width:230px;margin:0 auto}
+    .flow figure:nth-child(2) figcaption{text-align:center}
+    .flow .photo{border:1px solid var(--hairline);border-radius:6px;box-shadow:0 12px 32px rgba(26,26,26,0.08)}
+    .screens{display:grid;grid-template-columns:repeat(3,1fr);gap:36px 28px;margin-top:40px}
+    .cap{font-family:var(--sans);font-size:.9rem;color:var(--ink-soft);margin-top:12px;line-height:1.5}
+    .cap strong{display:block;color:var(--ink);font-size:.95rem}
+    .cmp{width:100%;border-collapse:collapse;margin-top:28px;font-size:.94rem}
+    .cmp th,.cmp td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--hairline)}
+    .cmp th{background:var(--bg-paper);font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+    .cmp th.num{text-align:right}
+    .cmp td.num{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+    .cmp td.good{color:var(--accent)}
+    .steps{counter-reset:s;margin-top:8px}
+    .steps p{position:relative;padding-left:44px}
+    .steps p::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:2px;width:28px;height:28px;
+      border-radius:50%;background:var(--ink);color:#fff;font-family:var(--sans);font-weight:700;font-size:.85rem;
+      display:flex;align-items:center;justify-content:center}
+    .claimbox{border-left:4px solid var(--accent);background:var(--bg-paper);padding:26px 30px;margin-top:36px}
+    @media (max-width:760px){.kpi-grid{grid-template-columns:1fr 1fr}.flow,.screens{grid-template-columns:1fr 1fr}.flow figure:first-child{grid-column:1/-1}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <nav class="nav" aria-label="Primary" data-theme="dark">
+    <div class="wrap nav-inner">
+      <a class="logo" href="../index.html"><span class="logo-mark" aria-hidden="true">AK</span>Ajay Karthick</a>
+      <div class="nav-links" id="navLinks">
+        <a href="../index.html#experience">Experience</a>
+        <a href="../work.html" aria-current="page">Work</a>
+        <a href="../index.html#how">How I work</a>
+        <a href="../index.html#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="nav-right">
+        <a class="btn btn-ink btn-sm" href="../Ajay_Karthick_Resume.pdf">Résumé</a>
+        <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <div class="wrap">
+      <p class="crumbs"><a href="../work.html">Work</a> &nbsp;/&nbsp; Your Personal Wardrobe</p>
+      <header class="cs-head">
+        <div>
+          <p class="card-kind"><span>Self-built product</span><span>Jul–Aug 2026</span></p>
+          <h1>Your Personal Wardrobe</h1>
+          <p class="cs-answer">An iPhone and web app that turns one photo of your clothes into a tagged digital closet and weather-aware outfits. Every change was measured with evaluation harnesses: clashing outfits fell from up to 30% to 0%, with 100% category accuracy on a 157-item test closet.</p>
+          
+          <div class="cs-links"><a class="btn btn-ink" href="https://testflight.apple.com/join/Q64wTpC8" target="_blank" rel="noopener">Try it on TestFlight &#8599;</a><a class="btn btn-line" href="https://github.com/Ajay0704/wardrobe-app" target="_blank" rel="noopener">GitHub &#8599;</a></div>
+        </div>
+        <dl class="cs-meta"><div><dt>Type</dt><dd>Self-Built Product</dd></div><div><dt>My role</dt><dd>Solo: product, AI pipeline and evaluation</dd></div><div><dt>When</dt><dd>Jul–Aug 2026</dd></div><div><dt>Where</dt><dd>iPhone &amp; Web</dd></div><div><dt>Tools</dt><dd>TypeScript, Next.js, React, Supabase / Postgres, pgvector, SQL</dd></div></dl>
+      </header>
+      <div class="glance reveal" style="--n:3"><div><b>30% → 0%</b><span>clashing outfits, 120 runs per screen</span></div><div><b>100%</b><span>category accuracy, 157-item test closet</span></div><div><b>218 ms</b><span>median time to tag a garment</span></div></div>
+      <div class="cs-hero-media reveal"><div style="width:100%;max-width:300px"><div class="shot" style="--ar:0.5024"><img src="../img/wardrobe/outfit_recs_best.jpg" width="520" height="1035" alt="Screenshot from Your Personal Wardrobe." loading="lazy" decoding="async" /></div></div></div>
+      <div class="cs-layout">
+        <nav class="toc" aria-label="On this page"><p class="eyebrow">On this page</p><a href="#the-challenge">The Challenge</a><a href="#what-i-built">What I Built</a><a href="#key-numbers">Key Numbers</a><a href="#inside-the-app">Inside the App</a><a href="#measuring-the-outfit-engine">Measuring the Outfit Engine</a><a href="#key-outcomes">Key Outcomes</a><a href="#tools-and-skills">Tools &amp; skills</a></nav>
+        <div class="cs-body">
+          <section id="the-challenge" aria-labelledby="the-challenge-h"><h2 id="the-challenge-h">The Challenge</h2><div class="case-body">
+        <p>Most of us own far more clothing than we wear. A WRAP study of nearly 8,000 UK adults found that <strong>about 30% of clothing in UK wardrobes had not been worn for a year.</strong> We forget what we own, we buy near-duplicates, and every purchase is made without checking it against the closet.</p>
+        <p>Closet apps have tried to fix this, but setup is the wall: photographing and labelling every piece by hand takes hours, and most people quit before they see any value. I wanted to know whether modern AI could make that setup take one photo, and whether the result could be good enough to trust every morning.</p>
+      </div>
+    </section><section id="what-i-built" aria-labelledby="what-i-built-h"><h2 id="what-i-built-h">What I Built</h2><div class="case-body steps">
+        <p><strong>Capture.</strong> Any photo works, even a messy mirror selfie. A vision model finds every garment in the picture, so one photo can become several closet items.</p>
+        <p><strong>Cut out and tag.</strong> The background is removed (on the phone by default, with a segmentation model or Apple Vision as alternatives), then an LLM tags 14 attributes as strict JSON: category, type, colour, season, fit, material, pattern, formality and more.</p>
+        <p><strong>Product shot.</strong> Clothing is redrawn as a clean ghost-mannequin or flat-lay image and normalised onto one standard canvas, so the closet looks like a shop, not a camera roll.</p>
+        <p><strong>Style.</strong> An outfit engine builds three looks from the closet for the live weather forecast, each with a plain-language reason. An AI stylist chat can only choose from those real candidates, so it never invents a garment.</p>
+        <p><strong>Decide and share.</strong> Every wishlist item gets a buy, wait or skip verdict against what you own, with cost per wear. Friends can co-own a shared closet and style each other live, and AI try-on shows any look on you.</p>
+      </div>
+      <div class="flow">
+        <figure><img class="photo" src="../img/wardrobe/before-photo.jpg" alt="A worn photo of a white shirt" loading="lazy" /><figcaption class="cap"><strong>1. A worn photo</strong>A stock photo as the raw input; no studio needed.</figcaption></figure>
+        <figure><img src="../img/wardrobe/add_garment_after.jpg" alt="The shirt cut out, redrawn and tagged in the app" loading="lazy" /><figcaption class="cap"><strong>2. Cut out and tagged</strong>Shirt, white, relaxed fit, casual.</figcaption></figure>
+        <figure><img class="photo" src="../img/wardrobe/tryon-render.jpg" alt="AI try-on render of a full outfit" loading="lazy" /><figcaption class="cap"><strong>3. Seen on you</strong>AI try-on in about 22 seconds.</figcaption></figure>
+      </div>
+    </section><section id="key-numbers" aria-labelledby="key-numbers-h"><h2 id="key-numbers-h">Key Numbers</h2><div class="case-body"><p>Every change was measured before it was claimed, using evaluation harnesses I built alongside the product.</p></div>
+      <div class="kpi-grid">
+        <div class="kpi-cell"><div class="v red">0%</div><div class="k">clashing outfits</div><div class="d">Down from up to 30% on every screen, 120 runs each.</div></div>
+        <div class="kpi-cell"><div class="v">100%</div><div class="k">category accuracy</div><div class="d">On a 157-item test closet. Pattern 99%, formality 98%.</div></div>
+        <div class="kpi-cell"><div class="v red">0</div><div class="k">dropped AI answers</div><div class="d">Down from 12.7%, after a tolerant JSON parser. Four full runs.</div></div>
+        <div class="kpi-cell"><div class="v">218 ms</div><div class="k">to tag a garment</div><div class="d">Median in the harness; 95th percentile 740 ms.</div></div>
+      </div>
+    </section><section id="inside-the-app" aria-labelledby="inside-the-app-h"><h2 id="inside-the-app-h">Inside the App</h2><div class="case-body"><p>Real screens from the iOS app, running on the iPhone simulator with a demo closet.</p></div>
+      <div class="screens">
+        <figure><img src="../img/wardrobe/closet_grid.jpg" alt="Closet grid" loading="lazy" /><figcaption class="cap"><strong>The closet</strong>Every piece on one standard canvas.</figcaption></figure>
+        <figure><img src="../img/wardrobe/weather_today.jpg" alt="Today's weather-aware look" loading="lazy" /><figcaption class="cap"><strong>Today's look</strong>Picked from the closet for a 14&deg;C day.</figcaption></figure>
+        <figure><img src="../img/wardrobe/outfit_recs_best.jpg" alt="Outfit builder with three suggested looks" loading="lazy" /><figcaption class="cap"><strong>Surprise me</strong>Three looks, from safe to bold.</figcaption></figure>
+        <figure><img src="../img/wardrobe/wishlist_verdicts.jpg" alt="Wishlist with buy or skip verdicts" loading="lazy" /><figcaption class="cap"><strong>Should I buy it?</strong>&ldquo;You already own 2 like this.&rdquo;</figcaption></figure>
+        <figure><img src="../img/wardrobe/shared_closet.jpg" alt="A co-owned shared closet" loading="lazy" /><figcaption class="cap"><strong>Shared closet</strong>Friends co-own and edit it live.</figcaption></figure>
+        <figure><img src="../img/wardrobe/garment_tags.jpg" alt="Item detail with AI-filled attributes" loading="lazy" /><figcaption class="cap"><strong>AI tags</strong>Fit, formality, material, all editable.</figcaption></figure>
+      </div>
+    </section><section id="measuring-the-outfit-engine" aria-labelledby="measuring-the-outfit-engine-h"><h2 id="measuring-the-outfit-engine-h">Measuring the Outfit Engine</h2><div class="case-body">
+        <p>The first outfit engine looked fine in demos but, measured properly, it mixed gym clothes with smart pieces far too often. I rebuilt it as a three-stage pipeline: hard rules reject combinations that never work, seven weighted signals (colour harmony in CIELAB space, formality, context, wear history and more) score what is left, and maximal marginal relevance picks three looks that are good and different from each other.</p>
+      </div>
+      <table class="cmp">
+        <tr><th>Screen (120 runs each)</th><th class="num">Old engine</th><th class="num">New engine</th></tr>
+        <tr><td>Today</td><td class="num">9.4%</td><td class="num good">0%</td></tr>
+        <tr><td>Stylist</td><td class="num">11.8%</td><td class="num good">0%</td></tr>
+        <tr><td>Explore</td><td class="num">20.0%</td><td class="num good">0%</td></tr>
+        <tr><td>Rediscover</td><td class="num">25.3%</td><td class="num good">0%</td></tr>
+        <tr><td>Calendar</td><td class="num">26.7%</td><td class="num good">0%</td></tr>
+        <tr><td>Travel</td><td class="num">29.6%</td><td class="num good">0%</td></tr>
+        <tr><td>Recreate</td><td class="num">30.0%</td><td class="num good">0%</td></tr>
+      </table>
+      <div class="claimbox">
+        <p style="margin:0"><strong>The lesson I keep:</strong> a feature that &ldquo;works&rdquo; is a hypothesis until it is measured. The same harness also caught a silent regression that had dropped accessories from 80% of looks to 5% while every test stayed green.</p>
+      </div>
+    </section><section id="key-outcomes" aria-labelledby="key-outcomes-h"><h2 id="key-outcomes-h">Key Outcomes</h2><ul class="case-outcomes">
+        <li>Designed and shipped a full product solo in five weeks (392 commits, about 52,000 lines of TypeScript): iPhone app on TestFlight and web app from one codebase, 35 API routes, 24 database migrations.</li>
+        <li>Built an AI pipeline that turns a single photo into structured closet data, with 100% category accuracy and 0 dropped model answers on a 157-item evaluation set.</li>
+        <li>Rebuilt the recommendation engine and proved the gain with a repeatable harness: clashing outfits from up to 30% to 0% on all seven screens.</li>
+        <li>Designed closet-aware shop ranking with team-draft interleaving for A/B testing, and a colour-aware fix that cut wrong-colour results for one query from 82% to 0%.</li>
+        <li>Modelled the data in Postgres with row-level security on every table, pgvector for similarity search, and an event log for behavioural analytics.</li>
+        <li>Running a private beta with 24 testers and 291 catalogued garments; reported the early numbers as they are, and documented open gaps rather than hiding them.</li>
+      </ul>
+    </section><section id="tools-and-skills" aria-labelledby="tools-and-skills-h"><h2 id="tools-and-skills-h">Tools &amp; skills</h2><h3>Tools</h3><div class="case-tools"><span class="tag">TypeScript</span><span class="tag">Next.js</span><span class="tag">React</span><span class="tag">Supabase / Postgres</span><span class="tag">pgvector</span><span class="tag">SQL</span><span class="tag">Google Gemini</span><span class="tag">LLM Structured Output</span><span class="tag">Computer Vision</span><span class="tag">Capacitor (iOS)</span><span class="tag">Python</span><span class="tag">Vercel</span><span class="tag">GitHub Actions</span><span class="tag">Claude Code</span></div><h3>Skills</h3><div class="case-tools"><span class="tag">Product Analytics</span><span class="tag">Model Evaluation</span><span class="tag">A/B Testing Design</span><span class="tag">Recommendation Systems</span><span class="tag">Data Modelling</span><span class="tag">AI Product Development</span><span class="tag">Experiment Measurement</span><span class="tag">Data Storytelling</span></div></section>
+        </div>
+      </div>
+      <nav class="cs-next" aria-label="More work">
+        <a href="golden-eyes-garments.html"><span>&larr; Previous</span><b>Data Analyst, Golden Eyes Garments</b></a>
+        <a href="ai-carbon-roi.html"><span>Next &rarr;</span><b>AI Carbon &amp; Human ROI Dashboard</b></a>
+      </nav>
+    </div>
+  </main>
+  <footer class="contact-wrap" id="contact">
+    <div class="contact">
+      <p class="eyebrow">Hiring a data or BI analyst?</p>
+      <h2>Let&rsquo;s talk.</h2>
+      <div class="contact-actions">
+        <a class="btn btn-white" href="mailto:tajay0704@gmail.com">tajay0704@gmail.com</a>
+        <button class="btn copy" type="button" data-copy="tajay0704@gmail.com">Copy email</button>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/ajay-karthick-thirumurthi-62224b216/" target="_blank" rel="noopener">LinkedIn &#8599;</a>
+        <a class="btn btn-ghost" href="https://github.com/Ajay0704" target="_blank" rel="noopener">GitHub &#8599;</a>
+        <a class="btn btn-ghost" href="../Ajay_Karthick_Resume.pdf">Résumé (PDF)</a>
+      </div>
+      <div class="foot">
+        <span>&copy; 2026 Ajay Karthick &middot; Seattle, WA</span>
+        <span><a href="../work.html">All work</a> &nbsp;&middot;&nbsp; <a href="#main">Back to top &uarr;</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>

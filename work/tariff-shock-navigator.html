@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tariff Shock Navigator — Ajay Karthick</title>
+  <meta name="description" content="A reproducible pipeline over three US government APIs that quantifies tariff exposure on US imports from China, Vietnam, India and Mexico: $186.6 billion a year on $1,098.1 billion of 2023 imports, rising to $233.2 billion under a 25% escalation." />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Tariff Shock Navigator — Ajay Karthick" />
+  <meta property="og:description" content="A reproducible pipeline over three US government APIs that quantifies tariff exposure on US imports from China, Vietnam, India and Mexico: $186.6 billion a year on $1,098.1 billion of 2023 imports, rising to $233.2 billion under a 25% escalation." />
+  <meta property="og:image" content="https://ajay0704.github.io/portfolio/img/og-card.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230c0d0f'/%3E%3Ctext x='16' y='21' font-family='Arial' font-weight='700' font-size='13' fill='white' text-anchor='middle'%3EAK%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" /></noscript>
+  <link rel="stylesheet" href="../assets/site.css" />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <nav class="nav" aria-label="Primary" data-theme="dark">
+    <div class="wrap nav-inner">
+      <a class="logo" href="../index.html"><span class="logo-mark" aria-hidden="true">AK</span>Ajay Karthick</a>
+      <div class="nav-links" id="navLinks">
+        <a href="../index.html#experience">Experience</a>
+        <a href="../work.html" aria-current="page">Work</a>
+        <a href="../index.html#how">How I work</a>
+        <a href="../index.html#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="nav-right">
+        <a class="btn btn-ink btn-sm" href="../Ajay_Karthick_Resume.pdf">Résumé</a>
+        <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <div class="wrap">
+      <p class="crumbs"><a href="../work.html">Work</a> &nbsp;/&nbsp; Tariff Shock Navigator</p>
+      <header class="cs-head">
+        <div>
+          <p class="card-kind"><span>Self-built</span><span>2025–2026</span></p>
+          <h1>Tariff Shock Navigator</h1>
+          <p class="cs-answer">A reproducible pipeline over three US government APIs that quantifies tariff exposure on US imports from China, Vietnam, India and Mexico: $186.6 billion a year on $1,098.1 billion of 2023 imports, rising to $233.2 billion under a 25% escalation.</p>
+          
+          <div class="cs-links"><a class="btn btn-ink" href="https://github.com/Ajay0704/tariff-shock-navigator" target="_blank" rel="noopener">View on GitHub &#8599;</a></div>
+        </div>
+        <dl class="cs-meta"><div><dt>Type</dt><dd>Self-Built Project</dd></div><div><dt>My role</dt><dd>Solo</dd></div><div><dt>When</dt><dd>2025–2026</dd></div><div><dt>Where</dt><dd>Boston, MA</dd></div><div><dt>Tools</dt><dd>Python, Pandas, NumPy, Matplotlib, SQL, US Census API</dd></div></dl>
+      </header>
+      <div class="glance reveal" style="--n:3"><div><b>$186.6B</b><span>annual tariff exposure at current rates</span></div><div><b>+$46.6B</b><span>under a 25% escalation across all lines</span></div><div><b>42,327</b><span>product lines risk-scored 0–10</span></div></div>
+      
+      <div class="cs-layout">
+        <nav class="toc" aria-label="On this page"><p class="eyebrow">On this page</p><a href="#the-challenge">The Challenge</a><a href="#what-i-did">What I Did</a><a href="#what-it-produces">What It Produces</a><a href="#key-outcomes">Key Outcomes</a><a href="#tools-and-skills">Tools &amp; skills</a></nav>
+        <div class="cs-body">
+          <section id="the-challenge" aria-labelledby="the-challenge-h"><h2 id="the-challenge-h">The Challenge</h2><div class="case-body"> <p> US companies importing goods from China, Vietnam, India, and Mexico are sitting on $186.6 billion in annual tariff exposure at current rates, on $1,098.1 billion of 2023 imports. A 25% escalation across all product lines would add another $46.6 billion to that bill. The information needed to manage that risk is technically public, scattered across the Census Bureau, the Bureau of Labor Statistics, and the Federal Register. But almost no one in the operations or trade analyst seat actually pulls it that way. Most companies are still managing exposure through manual spreadsheets, gut feel, and reactive moves after tariff changes hit the news. I built this tool because that gap kept showing up in news cycles, client conversations, and case studies, and I wanted to see if a single analyst with the right pipeline could close it. </p> </div> </section><section id="what-i-did" aria-labelledby="what-i-did-h"><h2 id="what-i-did-h">What I Did</h2><div class="case-body"> <p> I built Tariff Shock Navigator as an end-to-end, reproducible Python pipeline that ingests live US government data and turns it into executive-ready risk intelligence. The system is open source and lives on GitHub. </p> <p> The first piece was data engineering. I built scripts that pull live data from three free government APIs: the US Census Bureau International Trade API for 2023 US imports at HS10 product level by country (42,327 product lines), the BLS Import Price Program for monthly price indices from 2020 to 2025, and the Federal Register API for tariff policy documents since January 2024. Every number in the pipeline is traceable back to a real API response. No Kaggle datasets, no synthetic data. </p> <p> The second piece was the risk scoring engine. I built a composite tariff risk score that blends country-level policy risk (60%) with each product&rsquo;s tariff rate (40%). The output is a 0&ndash;10 risk rating for every one of the 42,327 product lines, rolled up into country risk tiers from Critical (China) to Low (Mexico). </p> <p> The third piece was scenario simulation. The tool models three scenarios (current tariffs, a 25% escalation across all lines, and a 10% relief), projecting the exposure each scenario would create across countries and product categories. That output gives operations and trade analysts a way to quantify exposure in advance instead of reacting after a policy change. </p> <p> The fourth piece was trend analysis. I built a BLS price trend module with automated spike detection across four BLS import price series from 2020 to 2025, flagging 125 month-over-month spikes. </p> <p> The fifth piece was the executive layer. Rather than leaving the analysis as a CSV, I wrote a script that auto-generates a full executive briefing in Markdown directly from the processed data, along with six matplotlib visualizations covering country-level risk, HS chapter exposure, scenario impact, BLS price trends, import share, and a country × product exposure heatmap. The brief and the charts regenerate every time the underlying data is refreshed. </p> <p> The whole pipeline is documented through a business requirements document, an as-is/to-be process analysis, and a KPI dictionary with formulas, thresholds, and owners. </p> </div> </section><section id="what-it-produces" aria-labelledby="what-it-produces-h"><h2 id="what-it-produces-h">What It Produces</h2><div class="case-body"> <p> The pipeline auto-generates six visualizations directly from the live API data. Every chart regenerates on each data refresh, so the views stay current as tariff rates, imports, and price indices shift. </p> </div> <div class="" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 56px 32px; margin-top: 56px;">  <figure style="margin: 0;"> <img class="case-figure-img" style="aspect-ratio: 4 / 3; object-fit: contain; background: #faf9f6; width: 100%;" src="https://raw.githubusercontent.com/Ajay0704/tariff-shock-navigator/main/charts/chart_01_tariff_exposure_heatmap.png" alt="Country × Product Heatmap chart" loading="lazy" /> <figcaption class="case-figure-caption" style="text-align: left; margin-top: 14px;"> <strong style="font-style: normal;  font-weight: 700; color: var(--ink); letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.78rem; display: block; margin-bottom: 6px;">Country × Product Heatmap</strong> Tariff exposure for the top 20 HS chapters in each country. Electrical machinery (HS 85) from China carries the most at $31.0B, then machinery (HS 84) from China at $20.8B and HS 85 from Vietnam at $18.9B. </figcaption> </figure>  <figure style="margin: 0;"> <img class="case-figure-img" style="aspect-ratio: 4 / 3; object-fit: contain; background: #faf9f6; width: 100%;" src="https://raw.githubusercontent.com/Ajay0704/tariff-shock-navigator/main/charts/chart_02_country_exposure_bar.png" alt="Exposure by Country chart" loading="lazy" /> <figcaption class="case-figure-caption" style="text-align: left; margin-top: 14px;"> <strong style="font-style: normal;  font-weight: 700; color: var(--ink); letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.78rem; display: block; margin-bottom: 6px;">Exposure by Country</strong> 2023 tariff exposure: China $109.2B, Vietnam $52.6B, India $21.7B and Mexico $3.0B, for $186.6B in total. </figcaption> </figure>  <figure style="margin: 0;"> <img class="case-figure-img" style="aspect-ratio: 4 / 3; object-fit: contain; background: #faf9f6; width: 100%;" src="https://raw.githubusercontent.com/Ajay0704/tariff-shock-navigator/main/charts/chart_03_scenario_comparison.png" alt="Scenario Impact chart" loading="lazy" /> <figcaption class="case-figure-caption" style="text-align: left; margin-top: 14px;"> <strong style="font-style: normal;  font-weight: 700; color: var(--ink); letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.78rem; display: block; margin-bottom: 6px;">Scenario Impact</strong> Current tariffs, a 25% escalation and a 10% relief, by country. Escalation lifts total exposure from $186.6B to $233.2B (+$46.6B); relief lowers it to $167.9B. </figcaption> </figure>  <figure style="margin: 0;"> <img class="case-figure-img" style="aspect-ratio: 4 / 3; object-fit: contain; background: #faf9f6; width: 100%;" src="https://raw.githubusercontent.com/Ajay0704/tariff-shock-navigator/main/charts/chart_04_monthly_trends.png" alt="Monthly Imports by Country chart" loading="lazy" /> <figcaption class="case-figure-caption" style="text-align: left; margin-top: 14px;"> <strong style="font-style: normal;  font-weight: 700; color: var(--ink); letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.78rem; display: block; margin-bottom: 6px;">Monthly Imports by Country</strong> US imports from each country by month in 2023. Mexico ($472.9B for the year) and China ($427.2B) trade the lead, far above Vietnam and India. </figcaption> </figure>  <figure style="margin: 0;"> <img class="case-figure-img" style="aspect-ratio: 4 / 3; object-fit: contain; background: #faf9f6; width: 100%;" src="https://raw.githubusercontent.com/Ajay0704/tariff-shock-navigator/main/charts/chart_05_bls_price_index.png" alt="BLS Price Trend chart" loading="lazy" /> <figcaption class="case-figure-caption" style="text-align: left; margin-top: 14px;"> <strong style="font-style: normal;  font-weight: 700; color: var(--ink); letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.78rem; display: block; margin-bottom: 6px;">BLS Price Trend</strong> BLS import price indexes for all imports and three categories, 2020–2025, with month-over-month moves above 0.5% flagged automatically. </figcaption> </figure>  <figure style="margin: 0;"> <img class="case-figure-img" style="aspect-ratio: 4 / 3; object-fit: contain; background: #faf9f6; width: 100%;" src="https://raw.githubusercontent.com/Ajay0704/tariff-shock-navigator/main/charts/chart_06_risk_quadrant.png" alt="Country Risk Bubble chart" loading="lazy" /> <figcaption class="case-figure-caption" style="text-align: left; margin-top: 14px;"> <strong style="font-style: normal;  font-weight: 700; color: var(--ink); letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.78rem; display: block; margin-bottom: 6px;">Country Risk Bubble</strong> Import value against tariff exposure, with bubble size set by composite risk score. China (9.2) and Vietnam (6.8) are the highest-risk sources; Mexico imports the most but carries the least exposure (2.8). </figcaption> </figure>  </div> </section><section id="key-outcomes" aria-labelledby="key-outcomes-h"><h2 id="key-outcomes-h">Key Outcomes</h2><ul class="case-outcomes"> <li>End-to-end reproducible pipeline ingesting live data from three US government APIs.</li> <li>$1,098.1 billion in 2023 US imports analyzed across 4 countries, 98 HS chapters and 42,327 product lines.</li> <li>$186.6 billion in annual tariff exposure quantified at current rates, with a 25% escalation (+$46.6 billion) and a 10% relief (&minus;$18.7 billion) modeled.</li> <li>Composite risk scoring engine rating all 42,327 product lines on a 0&ndash;10 scale.</li> <li>Auto-generated executive briefing and six visualizations regenerated on every data refresh.</li> <li>Full business analysis documentation including BRD, as-is/to-be process analysis, and a KPI dictionary.</li> </ul> </section><section id="tools-and-skills" aria-labelledby="tools-and-skills-h"><h2 id="tools-and-skills-h">Tools &amp; skills</h2><h3>Tools</h3><div class="case-tools"><span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">NumPy</span><span class="tag">Matplotlib</span><span class="tag">SQL</span><span class="tag">US Census API</span><span class="tag">BLS API</span><span class="tag">Federal Register API</span></div><h3>Skills</h3><div class="case-tools"><span class="tag">Data Engineering</span><span class="tag">API Integration</span><span class="tag">Risk Modeling</span><span class="tag">Scenario Simulation</span><span class="tag">Trend Analysis</span><span class="tag">Executive Reporting</span><span class="tag">Business Requirements Documentation</span><span class="tag">KPI Design</span></div></section>
+        </div>
+      </div>
+      <nav class="cs-next" aria-label="More work">
+        <a href="ai-carbon-roi.html"><span>&larr; Previous</span><b>AI Carbon &amp; Human ROI Dashboard</b></a>
+        <a href="wage-prediction.html"><span>Next &rarr;</span><b>Wage Prediction Across the US</b></a>
+      </nav>
+    </div>
+  </main>
+  <footer class="contact-wrap" id="contact">
+    <div class="contact">
+      <p class="eyebrow">Hiring a data or BI analyst?</p>
+      <h2>Let&rsquo;s talk.</h2>
+      <div class="contact-actions">
+        <a class="btn btn-white" href="mailto:tajay0704@gmail.com">tajay0704@gmail.com</a>
+        <button class="btn copy" type="button" data-copy="tajay0704@gmail.com">Copy email</button>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/ajay-karthick-thirumurthi-62224b216/" target="_blank" rel="noopener">LinkedIn &#8599;</a>
+        <a class="btn btn-ghost" href="https://github.com/Ajay0704" target="_blank" rel="noopener">GitHub &#8599;</a>
+        <a class="btn btn-ghost" href="../Ajay_Karthick_Resume.pdf">Résumé (PDF)</a>
+      </div>
+      <div class="foot">
+        <span>&copy; 2026 Ajay Karthick &middot; Seattle, WA</span>
+        <span><a href="../work.html">All work</a> &nbsp;&middot;&nbsp; <a href="#main">Back to top &uarr;</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>

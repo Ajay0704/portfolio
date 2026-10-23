@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wage Prediction Across the US — Ajay Karthick</title>
+  <meta name="description" content="An XGBoost model predicting security-guard wages across 600+ US locations for Contextual.io, giving the team a defensible baseline to price contract bids, with SHAP maps for non-technical stakeholders." />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Wage Prediction Across the US — Ajay Karthick" />
+  <meta property="og:description" content="An XGBoost model predicting security-guard wages across 600+ US locations for Contextual.io, giving the team a defensible baseline to price contract bids, with SHAP maps for non-technical stakeholders." />
+  <meta property="og:image" content="https://ajay0704.github.io/portfolio/img/og-card.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230c0d0f'/%3E%3Ctext x='16' y='21' font-family='Arial' font-weight='700' font-size='13' fill='white' text-anchor='middle'%3EAK%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" /></noscript>
+  <link rel="stylesheet" href="../assets/site.css" />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <nav class="nav" aria-label="Primary" data-theme="dark">
+    <div class="wrap nav-inner">
+      <a class="logo" href="../index.html"><span class="logo-mark" aria-hidden="true">AK</span>Ajay Karthick</a>
+      <div class="nav-links" id="navLinks">
+        <a href="../index.html#experience">Experience</a>
+        <a href="../work.html" aria-current="page">Work</a>
+        <a href="../index.html#how">How I work</a>
+        <a href="../index.html#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="nav-right">
+        <a class="btn btn-ink btn-sm" href="../Ajay_Karthick_Resume.pdf">Résumé</a>
+        <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <div class="wrap">
+      <p class="crumbs"><a href="../work.html">Work</a> &nbsp;/&nbsp; Wage Prediction Across the US</p>
+      <header class="cs-head">
+        <div>
+          <p class="card-kind"><span>Client project</span><span>Aug–Dec 2025</span></p>
+          <h1>Wage Prediction Across the US</h1>
+          <p class="cs-answer">An XGBoost model predicting security-guard wages across 600+ US locations for Contextual.io, giving the team a defensible baseline to price contract bids, with SHAP maps for non-technical stakeholders.</p>
+          
+          
+        </div>
+        <dl class="cs-meta"><div><dt>Type</dt><dd>Northeastern Capstone</dd></div><div><dt>My role</dt><dd>Team member, Northeastern capstone</dd></div><div><dt>When</dt><dd>Aug–Dec 2025</dd></div><div><dt>Where</dt><dd>Boston, MA</dd></div><div><dt>Tools</dt><dd>Python, XGBoost, SHAP, Pandas, REST APIs, Jupyter</dd></div></dl>
+      </header>
+      <div class="glance reveal" style="--n:2"><div><b>R² 0.85</b><span>MAE 0.90</span></div><div><b>600+</b><span>US locations covered</span></div></div>
+      
+      <div class="cs-layout">
+        <nav class="toc" aria-label="On this page"><p class="eyebrow">On this page</p><a href="#the-challenge">The Challenge</a><a href="#what-i-did">What I Did</a><a href="#key-outcomes">Key Outcomes</a><a href="#tools-and-skills">Tools &amp; skills</a></nav>
+        <div class="cs-body">
+          <section id="the-challenge" aria-labelledby="the-challenge-h"><h2 id="the-challenge-h">The Challenge</h2><div class="case-body">
+        <p>
+          Contextual.io is an AI solutions company that builds analytics tools for its clients. One of
+          those clients is an established player in the US security services industry, and they came
+          to Contextual.io with a hard pricing problem. Setting competitive wages for security guards
+          across 600+ US locations depends on a moving stack of factors: state minimum wage, local cost
+          of living, crime rates, market competition, and contract type. Pricing too low loses margin.
+          Pricing too high loses bids. The client needed a defensible, data-driven way to predict
+          competitive wages for any location, fast, with feature importance maps a non-technical
+          stakeholder could actually read. Our team worked with Contextual.io to build that solution
+          for their client.
+        </p>
+      </div>
+    </section><section id="what-i-did" aria-labelledby="what-i-did-h"><h2 id="what-i-did-h">What I Did</h2><div class="case-body">
+        <p>
+          The work moved through three phases.
+        </p>
+        <p>
+          The first was data engineering. The model needed inputs that were both reliable and current,
+          which meant building a real-time pipeline that ingested state minimum wage data and crime
+          indices via public APIs alongside the company's internal records. That foundation kept the
+          model from going stale.
+        </p>
+        <p>
+          The second was modeling. I built an XGBoost regression model on the assembled dataset, with
+          heavy attention to feature engineering, since the geographic and economic variables interact
+          in ways that a naive model misses. The final model reached an R² of 0.85 and MAE of 0.90
+          across 600+ US locations, which gave the team a defensible baseline they could trust.
+        </p>
+        <p>
+          The third was interpretation. Predictions are only useful if the people setting contract
+          pricing understand why the model is saying what it is saying. I used SHAP analysis to produce
+          feature importance maps that explained, for any specific location, which factors were pulling
+          the predicted wage up or down. Those visualizations are what made the model usable as a
+          pricing tool rather than a black box.
+        </p>
+      </div>
+    </section><section id="key-outcomes" aria-labelledby="key-outcomes-h"><h2 id="key-outcomes-h">Key Outcomes</h2><ul class="case-outcomes">
+        <li>XGBoost wage prediction model delivering R² of 0.85 and MAE of 0.90 across 600+ US locations.</li>
+        <li>Real-time data pipeline ingesting state minimum wages and crime indices via APIs.</li>
+        <li>SHAP-based feature importance maps making the model readable to non-technical stakeholders.</li>
+        <li>Defensible pricing baseline the team could use to evaluate contract bids consistently.</li>
+      </ul>
+    </section><section id="tools-and-skills" aria-labelledby="tools-and-skills-h"><h2 id="tools-and-skills-h">Tools &amp; skills</h2><h3>Tools</h3><div class="case-tools"><span class="tag">Python</span><span class="tag">XGBoost</span><span class="tag">SHAP</span><span class="tag">Pandas</span><span class="tag">REST APIs</span><span class="tag">Jupyter</span></div><h3>Skills</h3><div class="case-tools"><span class="tag">Machine Learning</span><span class="tag">Feature Engineering</span><span class="tag">Model Interpretation</span><span class="tag">Data Pipeline Design</span><span class="tag">Stakeholder Communication</span></div></section>
+        </div>
+      </div>
+      <nav class="cs-next" aria-label="More work">
+        <a href="tariff-shock-navigator.html"><span>&larr; Previous</span><b>Tariff Shock Navigator</b></a>
+        <a href="life-science-cares.html"><span>Next &rarr;</span><b>Data Analyst Intern, Life Science Cares</b></a>
+      </nav>
+    </div>
+  </main>
+  <footer class="contact-wrap" id="contact">
+    <div class="contact">
+      <p class="eyebrow">Hiring a data or BI analyst?</p>
+      <h2>Let&rsquo;s talk.</h2>
+      <div class="contact-actions">
+        <a class="btn btn-white" href="mailto:tajay0704@gmail.com">tajay0704@gmail.com</a>
+        <button class="btn copy" type="button" data-copy="tajay0704@gmail.com">Copy email</button>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/ajay-karthick-thirumurthi-62224b216/" target="_blank" rel="noopener">LinkedIn &#8599;</a>
+        <a class="btn btn-ghost" href="https://github.com/Ajay0704" target="_blank" rel="noopener">GitHub &#8599;</a>
+        <a class="btn btn-ghost" href="../Ajay_Karthick_Resume.pdf">Résumé (PDF)</a>
+      </div>
+      <div class="foot">
+        <span>&copy; 2026 Ajay Karthick &middot; Seattle, WA</span>
+        <span><a href="../work.html">All work</a> &nbsp;&middot;&nbsp; <a href="#main">Back to top &uarr;</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>

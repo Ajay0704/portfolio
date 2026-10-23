@@ -1,0 +1,5 @@
+# Private working notes and build tools stay local
+PLAN.md
+LINKEDIN_ALIGNMENT.md
+tools/
+.DS_Store

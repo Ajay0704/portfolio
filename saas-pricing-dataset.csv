@@ -1,0 +1,192 @@
+Company,Category,Company Stage,Pricing Model,Usage-flavored,Number of Tiers,Has Free Tier,Has Free Trial,Entry Price (USD/mo),Entry Price Basis,Top Visible Price (USD/mo),Has Contact-Sales Tier,Annual Discount (%),Price Transparent,Mentions AI,AI Monetization,Charges Extra for AI,AI Add-on Price (USD/mo),Mentions SSO,SSO Location,SSO Tax,Confidence,Source Method
+Anthropic,AI-native,Late-stage Private,Hybrid,TRUE,5,TRUE,FALSE,17.0,Flat,100.0,TRUE,15.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Mid tier,FALSE,high,webfetch
+Copy.ai,AI-native,Growth,Hybrid,TRUE,5,FALSE,FALSE,29.0,Per seat,3000.0,TRUE,20.0,TRUE,TRUE,Usage credits,TRUE,,FALSE,Not mentioned,FALSE,high,webfetch
+Cursor,AI-native,Growth,Per-seat,FALSE,7,TRUE,FALSE,20.0,Per seat,40.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,TRUE,Mid tier,FALSE,high,webfetch
+DeepL,AI-native,Late-stage Private,Per-seat,FALSE,5,TRUE,TRUE,8.74,Per seat,57.49,TRUE,16.0,TRUE,TRUE,Paid add-on,TRUE,7.49,TRUE,Mid tier,FALSE,high,manual
+ElevenLabs,AI-native,Growth,Hybrid,TRUE,7,TRUE,FALSE,6.0,Flat,990.0,TRUE,16.67,TRUE,TRUE,Usage credits,TRUE,,TRUE,Top paid tier,TRUE,high,webfetch
+Fireflies.ai,AI-native,Growth,Per-seat,FALSE,4,TRUE,FALSE,10.0,Per seat,39.0,TRUE,44.0,TRUE,TRUE,Usage credits,TRUE,,TRUE,Enterprise only,TRUE,high,webfetch
+Gamma,AI-native,Growth,Hybrid,TRUE,7,TRUE,FALSE,10.0,Per seat,100.0,TRUE,20.0,TRUE,TRUE,Usage credits,TRUE,,TRUE,Enterprise only,TRUE,medium,manual
+GitHub Copilot,AI-native,Public,Hybrid,TRUE,4,TRUE,FALSE,10.0,Per seat,100.0,TRUE,,TRUE,TRUE,Usage credits,TRUE,,TRUE,Enterprise only,TRUE,high,webfetch
+Glean,AI-native,Late-stage Private,Contact-only,FALSE,,FALSE,FALSE,,,,TRUE,,FALSE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Grammarly,AI-native,Late-stage Private,Flat-rate,FALSE,3,TRUE,TRUE,12.0,Flat,12.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+Jasper,AI-native,Growth,Per-seat,FALSE,2,FALSE,TRUE,59.0,Per seat,69.0,TRUE,20.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+Lovable,AI-native,Growth,Usage-based,TRUE,3,TRUE,FALSE,,Usage,,TRUE,,FALSE,TRUE,Usage credits,TRUE,,FALSE,Not mentioned,FALSE,medium,webfetch
+OpenAI,AI-native,Late-stage Private,Per-seat,FALSE,6,TRUE,FALSE,8.0,Per seat,200.0,TRUE,20.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Top paid tier,TRUE,high,manual
+Otter.ai,AI-native,Growth,Per-seat,FALSE,4,TRUE,FALSE,8.33,Per seat,19.99,TRUE,51.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+Perplexity,AI-native,Growth,Per-seat,FALSE,5,TRUE,FALSE,20.0,Per seat,200.0,TRUE,16.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Top paid tier,TRUE,medium,manual
+Runway,AI-native,Growth,Usage-based,TRUE,5,TRUE,FALSE,12.0,Usage,76.0,TRUE,20.0,TRUE,TRUE,Usage credits,TRUE,,TRUE,Enterprise only,TRUE,high,webfetch
+Synthesia,AI-native,Late-stage Private,Hybrid,TRUE,4,TRUE,FALSE,18.0,Flat,64.0,TRUE,38.0,TRUE,TRUE,Usage credits,TRUE,,TRUE,Enterprise only,TRUE,high,webfetch
+Writer,AI-native,Late-stage Private,Per-seat,FALSE,2,FALSE,TRUE,,Per seat,,TRUE,,FALSE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,medium,apify
+Airtable,Collaboration & Productivity,Late-stage Private,Per-seat,FALSE,4,TRUE,FALSE,20.0,Per seat,45.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Asana,Collaboration & Productivity,Public,Per-seat,FALSE,4,TRUE,FALSE,10.99,Per seat,24.99,TRUE,18.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+Basecamp,Collaboration & Productivity,Bootstrapped,Hybrid,TRUE,3,TRUE,TRUE,15.0,Per seat,299.0,FALSE,,TRUE,FALSE,None,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Box,Collaboration & Productivity,Public,Per-seat,FALSE,8,TRUE,TRUE,15.0,Per seat,,TRUE,,TRUE,TRUE,Bundled,FALSE,,TRUE,Mid tier,FALSE,high,webfetch
+Calendly,Collaboration & Productivity,Late-stage Private,Per-seat,FALSE,4,TRUE,TRUE,10.0,Per seat,16.0,TRUE,16.0,TRUE,FALSE,None,FALSE,,TRUE,Top paid tier,TRUE,high,webfetch
+ClickUp,Collaboration & Productivity,Late-stage Private,Per-seat,FALSE,4,TRUE,FALSE,7.0,Per seat,19.0,TRUE,30.0,TRUE,TRUE,Paid add-on,TRUE,9.0,TRUE,Mid tier,FALSE,high,webfetch
+Confluence,Collaboration & Productivity,Public,Per-seat,FALSE,4,TRUE,TRUE,5.5,Per seat,13.5,TRUE,,TRUE,FALSE,None,FALSE,,TRUE,Top paid tier,TRUE,medium,webfetch
+Dropbox,Collaboration & Productivity,Public,Per-seat,FALSE,5,TRUE,TRUE,9.99,Flat,24.0,TRUE,,TRUE,TRUE,Higher tier,TRUE,,TRUE,Top paid tier,TRUE,high,webfetch
+Evernote,Collaboration & Productivity,Private,Contact-only,FALSE,4,TRUE,TRUE,,,,TRUE,,FALSE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,medium,webfetch
+Loom,Collaboration & Productivity,Public,Per-seat,FALSE,4,TRUE,TRUE,18.0,Per seat,24.0,TRUE,17.0,TRUE,TRUE,Higher tier,TRUE,6.0,TRUE,Enterprise only,TRUE,high,webfetch
+Miro,Collaboration & Productivity,Late-stage Private,Per-seat,FALSE,4,TRUE,TRUE,8.0,Per seat,20.0,TRUE,20.0,TRUE,TRUE,Usage credits,TRUE,,TRUE,Mid tier,FALSE,high,webfetch
+monday.com,Collaboration & Productivity,Public,Hybrid,TRUE,5,TRUE,TRUE,9.0,Per seat,19.0,TRUE,18.0,TRUE,TRUE,Usage credits,TRUE,,FALSE,Not mentioned,FALSE,high,webfetch
+Notion,Collaboration & Productivity,Late-stage Private,Per-seat,FALSE,4,TRUE,FALSE,10.0,Per seat,20.0,TRUE,20.0,TRUE,TRUE,Bundled,FALSE,10.0,TRUE,Mid tier,FALSE,high,webfetch
+Slack,Collaboration & Productivity,Public,Per-seat,FALSE,4,TRUE,FALSE,4.38,Per seat,9.0,TRUE,17.0,TRUE,TRUE,Higher tier,TRUE,,TRUE,Mid tier,FALSE,high,webfetch
+Todoist,Collaboration & Productivity,Bootstrapped,Per-seat,FALSE,3,TRUE,FALSE,4.0,Per seat,,FALSE,,TRUE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,medium,webfetch
+Trello,Collaboration & Productivity,Public,Per-seat,FALSE,4,TRUE,TRUE,5.0,Per seat,17.5,TRUE,16.67,TRUE,TRUE,Higher tier,TRUE,,TRUE,Enterprise only,TRUE,high,webfetch
+Zoom,Collaboration & Productivity,Public,Contact-only,FALSE,4,TRUE,FALSE,,,,TRUE,,FALSE,TRUE,Higher tier,TRUE,,TRUE,Top paid tier,TRUE,high,webfetch
+Apollo,CRM & Sales,Growth,Hybrid,TRUE,3,TRUE,TRUE,,Per seat,,TRUE,,TRUE,TRUE,Unknown,FALSE,,FALSE,Not mentioned,FALSE,low,apify
+Attio,CRM & Sales,Growth,Hybrid,TRUE,4,TRUE,FALSE,44.0,Per seat,99.0,TRUE,20.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+Clay,CRM & Sales,Growth,Hybrid,TRUE,4,TRUE,TRUE,167.0,Usage,446.0,TRUE,10.0,TRUE,TRUE,Usage credits,TRUE,,TRUE,Enterprise only,TRUE,high,webfetch
+Close,CRM & Sales,Growth,Per-seat,FALSE,4,FALSE,TRUE,9.0,Per seat,139.0,TRUE,50.0,TRUE,TRUE,Usage credits,TRUE,,TRUE,All tiers,FALSE,high,webfetch
+Copper,CRM & Sales,Growth,Per-seat,FALSE,3,FALSE,TRUE,29.0,Per seat,134.0,FALSE,19.0,TRUE,TRUE,Higher tier,TRUE,,TRUE,Top paid tier,TRUE,high,webfetch
+Freshsales,CRM & Sales,Public,Per-seat,FALSE,3,FALSE,TRUE,9.0,Per seat,59.0,FALSE,20.0,TRUE,TRUE,Paid add-on,TRUE,4.08,FALSE,Not mentioned,FALSE,high,webfetch
+Gong,CRM & Sales,Late-stage Private,Contact-only,FALSE,,FALSE,FALSE,,,,TRUE,,FALSE,TRUE,Unknown,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+HubSpot,CRM & Sales,Public,Per-seat,FALSE,2,TRUE,FALSE,7.0,Per seat,7.0,FALSE,,TRUE,TRUE,Usage credits,TRUE,,FALSE,Not mentioned,FALSE,high,webfetch
+Insightly,CRM & Sales,Growth,Per-seat,FALSE,3,FALSE,TRUE,29.0,Per seat,99.0,TRUE,,TRUE,TRUE,Higher tier,TRUE,,TRUE,Enterprise only,TRUE,high,webfetch
+Keap,CRM & Sales,Growth,Hybrid,TRUE,1,FALSE,TRUE,249.0,Usage,249.0,FALSE,,TRUE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Nimble,CRM & Sales,Bootstrapped,Per-seat,FALSE,1,FALSE,TRUE,24.9,Per seat,29.9,FALSE,17.0,TRUE,TRUE,Bundled,FALSE,15.0,FALSE,Not mentioned,FALSE,high,webfetch
+Nutshell,CRM & Sales,Bootstrapped,Per-seat,FALSE,5,FALSE,TRUE,13.0,Per seat,79.0,FALSE,15.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+Outreach,CRM & Sales,Late-stage Private,Hybrid,TRUE,4,FALSE,FALSE,,,,TRUE,,FALSE,TRUE,Usage credits,TRUE,,FALSE,Not mentioned,FALSE,high,webfetch
+Pipedrive,CRM & Sales,Late-stage Private,Per-seat,FALSE,5,FALSE,TRUE,14.0,Per seat,99.0,FALSE,40.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,manual
+Salesflare,CRM & Sales,Bootstrapped,Per-seat,FALSE,3,FALSE,TRUE,29.0,Per seat,99.0,FALSE,25.6,TRUE,FALSE,None,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Salesforce,CRM & Sales,Public,Per-seat,FALSE,6,TRUE,TRUE,25.0,Per seat,550.0,TRUE,,TRUE,TRUE,Paid add-on,TRUE,125.0,FALSE,Not mentioned,FALSE,high,apify
+Salesloft,CRM & Sales,Late-stage Private,Contact-only,FALSE,,FALSE,FALSE,,,,TRUE,,FALSE,TRUE,Unknown,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Zoho CRM,CRM & Sales,Bootstrapped,Per-seat,FALSE,4,TRUE,TRUE,,Per seat,,TRUE,,TRUE,TRUE,Higher tier,TRUE,,FALSE,Not mentioned,FALSE,medium,webfetch
+Amplitude,Data & Analytics,Public,Usage-based,TRUE,4,TRUE,FALSE,,Usage,,TRUE,,FALSE,TRUE,Bundled,FALSE,,TRUE,Mid tier,FALSE,high,webfetch
+Census,Data & Analytics,Early,Usage-based,TRUE,4,TRUE,TRUE,,Usage,,TRUE,22.0,TRUE,FALSE,None,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+Databricks,Data & Analytics,Late-stage Private,Usage-based,TRUE,,FALSE,TRUE,,Usage,,TRUE,,FALSE,TRUE,Usage credits,TRUE,,FALSE,Not mentioned,FALSE,high,webfetch
+Datadog,Data & Analytics,Public,Hybrid,TRUE,5,TRUE,TRUE,15.0,Per seat,500.0,TRUE,,TRUE,TRUE,Usage credits,TRUE,62.5,TRUE,Mid tier,FALSE,high,webfetch
+dbt Labs,Data & Analytics,Growth,Hybrid,TRUE,4,TRUE,TRUE,100.0,Per seat,100.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Fivetran,Data & Analytics,Growth,Usage-based,TRUE,4,TRUE,TRUE,,Usage,,TRUE,22.0,TRUE,FALSE,None,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+Grafana,Data & Analytics,Growth,Hybrid,TRUE,3,TRUE,FALSE,19.0,Flat,55.0,TRUE,,TRUE,TRUE,Usage credits,TRUE,20.0,FALSE,Not mentioned,FALSE,high,webfetch
+Hex,Data & Analytics,Growth,Per-seat,FALSE,4,TRUE,TRUE,36.0,Per seat,75.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+Hightouch,Data & Analytics,Growth,Usage-based,TRUE,3,TRUE,FALSE,,Usage,,TRUE,,FALSE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,medium,webfetch
+Metabase,Data & Analytics,Growth,Hybrid,TRUE,4,TRUE,TRUE,90.0,Per seat,517.5,TRUE,10.0,TRUE,TRUE,Usage credits,TRUE,3.75,TRUE,Mid tier,FALSE,high,webfetch
+Mixpanel,Data & Analytics,Growth,Usage-based,TRUE,3,TRUE,FALSE,,Usage,,TRUE,,FALSE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+New Relic,Data & Analytics,Public,Hybrid,TRUE,4,TRUE,FALSE,10.0,Per seat,418.8,TRUE,,TRUE,TRUE,Bundled,FALSE,,TRUE,Mid tier,FALSE,high,webfetch
+Power BI,Data & Analytics,Public,Hybrid,TRUE,4,TRUE,TRUE,14.0,Per seat,24.0,TRUE,,TRUE,TRUE,Higher tier,TRUE,,TRUE,All tiers,FALSE,high,manual
+Segment,Data & Analytics,Public,Contact-only,FALSE,2,FALSE,TRUE,,,,TRUE,,FALSE,TRUE,Bundled,FALSE,,TRUE,Top paid tier,TRUE,high,webfetch
+Sigma,Data & Analytics,Growth,Contact-only,FALSE,,FALSE,TRUE,,,,TRUE,,FALSE,TRUE,Unknown,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Snowflake,Data & Analytics,Public,Usage-based,TRUE,4,FALSE,TRUE,,Usage,,TRUE,,FALSE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Tableau,Data & Analytics,Public,Per-seat,FALSE,4,TRUE,FALSE,15.0,Per seat,40.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,apify
+ThoughtSpot,Data & Analytics,Late-stage Private,Hybrid,TRUE,4,FALSE,TRUE,25.0,Per seat,50.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+Adobe Creative Cloud,Design & Creative,Public,Per-seat,FALSE,6,FALSE,TRUE,9.99,Per seat,89.99,TRUE,20.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,medium,manual
+Balsamiq,Design & Creative,Bootstrapped,Per-seat,FALSE,3,FALSE,TRUE,16.0,Per seat,35.0,FALSE,30.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,medium,webfetch
+Beautiful.ai,Design & Creative,Growth,Per-seat,FALSE,4,FALSE,TRUE,12.0,Flat,45.0,TRUE,20.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+Canva,Design & Creative,Late-stage Private,Per-seat,FALSE,4,TRUE,TRUE,15.0,Per seat,25.0,TRUE,33.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,medium,manual
+Descript,Design & Creative,Growth,Hybrid,TRUE,5,TRUE,FALSE,16.0,Per seat,65.0,TRUE,35.0,TRUE,TRUE,Usage credits,TRUE,,TRUE,Enterprise only,TRUE,high,webfetch
+Figma,Design & Creative,Public,Hybrid,TRUE,4,TRUE,FALSE,12.0,Per seat,90.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+Framer,Design & Creative,Growth,Hybrid,TRUE,4,TRUE,FALSE,10.0,Flat,30.0,TRUE,,TRUE,TRUE,Usage credits,TRUE,,TRUE,Enterprise only,TRUE,high,webfetch
+Lucidchart,Design & Creative,Public,Per-seat,FALSE,4,TRUE,TRUE,9.0,Per seat,10.0,TRUE,18.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,manual
+Marq,Design & Creative,Growth,Per-seat,FALSE,4,TRUE,TRUE,10.0,Per seat,10.0,TRUE,17.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+Piktochart,Design & Creative,Bootstrapped,Per-seat,FALSE,4,TRUE,FALSE,10.0,Per seat,20.0,TRUE,33.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,apify
+Pitch,Design & Creative,Growth,Per-seat,FALSE,5,TRUE,FALSE,10.0,Per seat,20.0,TRUE,17.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,medium,webfetch
+Sketch,Design & Creative,Bootstrapped,Per-seat,FALSE,5,FALSE,TRUE,12.0,Per seat,44.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,TRUE,Mid tier,FALSE,high,webfetch
+Squarespace,Design & Creative,Public,Flat-rate,FALSE,4,FALSE,TRUE,12.0,Flat,33.0,TRUE,36.0,TRUE,TRUE,Usage credits,TRUE,,TRUE,Enterprise only,TRUE,high,webfetch
+Vimeo,Design & Creative,Public,Per-seat,FALSE,5,TRUE,TRUE,12.0,Per seat,75.0,TRUE,40.0,TRUE,TRUE,Higher tier,TRUE,,TRUE,Enterprise only,TRUE,high,manual
+Visme,Design & Creative,Bootstrapped,Per-seat,FALSE,4,TRUE,FALSE,12.25,Per seat,24.75,TRUE,50.0,TRUE,TRUE,Usage credits,TRUE,,TRUE,Enterprise only,TRUE,high,webfetch
+Wistia,Design & Creative,Bootstrapped,Flat-rate,FALSE,4,TRUE,TRUE,79.0,Flat,329.0,TRUE,20.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+Wix,Design & Creative,Public,Flat-rate,FALSE,5,TRUE,FALSE,13.0,Flat,599.0,TRUE,,TRUE,FALSE,None,FALSE,,FALSE,Not mentioned,FALSE,medium,webfetch
+Zeplin,Design & Creative,Growth,Hybrid,TRUE,4,TRUE,FALSE,13.75,Flat,12.0,TRUE,8.33,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+Algolia,Developer Tools,Growth,Usage-based,TRUE,4,TRUE,FALSE,0.5,Usage,1.75,TRUE,,TRUE,TRUE,Higher tier,TRUE,,TRUE,Top paid tier,TRUE,high,webfetch
+CircleCI,Developer Tools,Growth,Hybrid,TRUE,3,TRUE,FALSE,15.0,Usage,,TRUE,,TRUE,FALSE,None,FALSE,,TRUE,Top paid tier,TRUE,high,webfetch
+Docker,Developer Tools,Growth,Per-seat,FALSE,4,TRUE,TRUE,9.0,Per seat,24.0,TRUE,18.18,TRUE,TRUE,Bundled,FALSE,,TRUE,Top paid tier,TRUE,high,webfetch
+Fastly,Developer Tools,Public,Usage-based,TRUE,5,TRUE,FALSE,500.0,Flat,6000.0,TRUE,,TRUE,TRUE,Usage credits,TRUE,,FALSE,Not mentioned,FALSE,high,webfetch
+GitHub,Developer Tools,Public,Per-seat,FALSE,3,TRUE,TRUE,4.0,Per seat,21.0,TRUE,,TRUE,TRUE,Paid add-on,TRUE,,TRUE,Enterprise only,TRUE,high,webfetch
+GitLab,Developer Tools,Public,Per-seat,FALSE,3,TRUE,TRUE,29.0,Per seat,29.0,TRUE,,TRUE,TRUE,Usage credits,TRUE,,FALSE,Not mentioned,FALSE,high,apify
+Linear,Developer Tools,Growth,Per-seat,FALSE,4,TRUE,FALSE,10.0,Per seat,16.0,TRUE,,TRUE,TRUE,Usage credits,TRUE,,TRUE,Top paid tier,TRUE,high,webfetch
+MongoDB,Developer Tools,Public,Usage-based,TRUE,3,TRUE,FALSE,8.0,Usage,33.26,TRUE,,TRUE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Netlify,Developer Tools,Growth,Hybrid,TRUE,4,TRUE,FALSE,9.0,Flat,20.0,TRUE,,TRUE,TRUE,Usage credits,TRUE,,TRUE,Enterprise only,TRUE,high,webfetch
+PlanetScale,Developer Tools,Growth,Flat-rate,FALSE,10,FALSE,FALSE,5.0,Flat,47229.0,FALSE,,TRUE,FALSE,None,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Postman,Developer Tools,Late-stage Private,Hybrid,TRUE,4,TRUE,FALSE,9.0,Flat,49.0,TRUE,25.0,TRUE,TRUE,Usage credits,TRUE,,TRUE,Enterprise only,TRUE,high,webfetch
+Render,Developer Tools,Growth,Hybrid,TRUE,4,TRUE,FALSE,25.0,Flat,499.0,TRUE,,TRUE,FALSE,None,FALSE,,TRUE,Top paid tier,TRUE,high,apify
+Replit,Developer Tools,Growth,Hybrid,TRUE,4,TRUE,FALSE,20.0,Flat,95.0,TRUE,20.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+Retool,Developer Tools,Late-stage Private,Hybrid,TRUE,4,TRUE,FALSE,10.0,Per seat,50.0,TRUE,20.0,TRUE,TRUE,Usage credits,TRUE,,TRUE,Enterprise only,TRUE,high,webfetch
+Sentry,Developer Tools,Growth,Hybrid,TRUE,4,TRUE,TRUE,26.0,Flat,80.0,TRUE,,TRUE,TRUE,Paid add-on,TRUE,,TRUE,Top paid tier,TRUE,high,webfetch
+Supabase,Developer Tools,Growth,Hybrid,TRUE,4,TRUE,FALSE,25.0,Flat,3730.0,TRUE,,TRUE,FALSE,None,FALSE,,TRUE,Mid tier,FALSE,high,webfetch
+Twilio,Developer Tools,Public,Usage-based,TRUE,29,TRUE,TRUE,0.0001,Usage,150.0,TRUE,,TRUE,TRUE,Usage credits,TRUE,0.002,FALSE,Not mentioned,FALSE,high,webfetch
+Vercel,Developer Tools,Late-stage Private,Hybrid,TRUE,3,TRUE,FALSE,20.0,Flat,20.0,TRUE,,TRUE,TRUE,Paid add-on,TRUE,0.25,TRUE,Top paid tier,TRUE,high,webfetch
+Bill.com,Fintech & Ops,Public,Per-seat,FALSE,4,TRUE,TRUE,49.0,Per seat,89.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+Brex,Fintech & Ops,Late-stage Private,Per-seat,FALSE,4,TRUE,FALSE,12.0,Per seat,12.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,TRUE,Mid tier,FALSE,high,webfetch
+Chargebee,Fintech & Ops,Growth,Hybrid,TRUE,2,FALSE,TRUE,400.0,Usage,424.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+Expensify,Fintech & Ops,Public,Per-seat,FALSE,3,TRUE,FALSE,5.0,Per seat,18.0,FALSE,,TRUE,TRUE,Bundled,FALSE,,TRUE,Top paid tier,TRUE,medium,manual
+FreshBooks,Fintech & Ops,Private,Flat-rate,FALSE,4,FALSE,TRUE,23.0,Flat,70.0,TRUE,,TRUE,FALSE,None,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Melio,Fintech & Ops,Growth,Hybrid,TRUE,5,TRUE,TRUE,25.0,Flat,80.0,TRUE,20.0,TRUE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Mercury,Fintech & Ops,Growth,Flat-rate,FALSE,3,TRUE,FALSE,29.9,Flat,299.0,TRUE,15.0,TRUE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Paddle,Fintech & Ops,Growth,Usage-based,TRUE,2,FALSE,FALSE,,Usage,,TRUE,,TRUE,FALSE,None,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Pilot,Fintech & Ops,Growth,Flat-rate,FALSE,3,FALSE,TRUE,99.0,Flat,5250.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+QuickBooks,Fintech & Ops,Public,Flat-rate,FALSE,5,TRUE,TRUE,38.0,Flat,340.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,apify
+Ramp,Fintech & Ops,Late-stage Private,Per-seat,FALSE,3,TRUE,TRUE,15.0,Per seat,,TRUE,20.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Mid tier,FALSE,high,webfetch
+Recurly,Fintech & Ops,Growth,Hybrid,TRUE,3,FALSE,TRUE,249.0,Flat,1600.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,TRUE,Top paid tier,TRUE,high,webfetch
+Rho,Fintech & Ops,Growth,Contact-only,FALSE,,FALSE,FALSE,,,,TRUE,,FALSE,FALSE,None,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Stripe,Fintech & Ops,Late-stage Private,Usage-based,TRUE,2,FALSE,FALSE,,Usage,620.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Wave,Fintech & Ops,Private,Flat-rate,FALSE,3,TRUE,FALSE,19.0,Flat,199.0,FALSE,,TRUE,FALSE,None,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Xero,Fintech & Ops,Public,Flat-rate,FALSE,3,FALSE,TRUE,25.0,Flat,90.0,FALSE,,TRUE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,apify
+Zuora,Fintech & Ops,Public,Contact-only,FALSE,,FALSE,FALSE,,,,TRUE,,FALSE,TRUE,Unknown,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+15Five,HR & People,Growth,Per-seat,FALSE,3,FALSE,FALSE,4.0,Per seat,16.0,FALSE,,TRUE,TRUE,Bundled,FALSE,2.0,TRUE,All tiers,FALSE,high,webfetch
+Ashby,HR & People,Growth,Hybrid,TRUE,4,FALSE,FALSE,400.0,Flat,,TRUE,10.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+BambooHR,HR & People,Private,Per-seat,FALSE,3,FALSE,FALSE,10.0,Per seat,25.0,FALSE,,TRUE,TRUE,Higher tier,TRUE,,FALSE,Not mentioned,FALSE,high,webfetch
+Culture Amp,HR & People,Late-stage Private,Contact-only,FALSE,3,FALSE,FALSE,,,,TRUE,,FALSE,TRUE,Bundled,FALSE,,TRUE,All tiers,FALSE,high,webfetch
+Deel,HR & People,Late-stage Private,Per-seat,FALSE,3,FALSE,TRUE,14.0,Per seat,599.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Greenhouse,HR & People,Late-stage Private,Contact-only,FALSE,3,FALSE,FALSE,,,,TRUE,,FALSE,TRUE,Bundled,FALSE,,TRUE,All tiers,FALSE,high,webfetch
+Gusto,HR & People,Late-stage Private,Flat-rate,FALSE,4,FALSE,FALSE,35.0,Flat,180.0,FALSE,,TRUE,FALSE,None,FALSE,,FALSE,Not mentioned,FALSE,high,apify
+Hibob,HR & People,Late-stage Private,Contact-only,FALSE,,FALSE,FALSE,,,,TRUE,,FALSE,FALSE,None,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Justworks,HR & People,Public,Per-seat,FALSE,4,FALSE,FALSE,8.0,Per seat,599.0,FALSE,,TRUE,FALSE,None,FALSE,,FALSE,Not mentioned,FALSE,high,apify
+Lattice,HR & People,Late-stage Private,Per-seat,FALSE,3,FALSE,FALSE,4.0,Per seat,10.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,TRUE,All tiers,FALSE,medium,webfetch
+Lever,HR & People,Private,Contact-only,FALSE,,FALSE,FALSE,,,,TRUE,,FALSE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Personio,HR & People,Late-stage Private,Per-seat,FALSE,2,FALSE,FALSE,8.2,Per seat,,FALSE,10.0,TRUE,FALSE,None,FALSE,,TRUE,All tiers,FALSE,medium,apify
+Remote,HR & People,Late-stage Private,Per-seat,FALSE,7,FALSE,FALSE,29.0,Per seat,699.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Rippling,HR & People,Late-stage Private,Contact-only,FALSE,,FALSE,FALSE,,,,TRUE,,FALSE,TRUE,Unknown,FALSE,,TRUE,Not mentioned,FALSE,medium,apify
+Workable,HR & People,Growth,Hybrid,TRUE,3,FALSE,TRUE,299.0,Flat,719.0,FALSE,20.0,TRUE,TRUE,Usage credits,TRUE,0.12,TRUE,Top paid tier,TRUE,high,webfetch
+ActiveCampaign,Martech,Growth,Contact-only,FALSE,4,FALSE,TRUE,,,,TRUE,,FALSE,TRUE,Bundled,FALSE,,TRUE,Top paid tier,TRUE,medium,webfetch
+Ahrefs,Martech,Bootstrapped,Flat-rate,FALSE,4,FALSE,FALSE,129.0,Flat,1499.0,TRUE,17.0,TRUE,TRUE,Bundled,FALSE,99.0,TRUE,Enterprise only,TRUE,high,webfetch
+Braze,Martech,Public,Usage-based,TRUE,4,FALSE,TRUE,,Usage,,TRUE,,FALSE,TRUE,Bundled,FALSE,,TRUE,Mid tier,FALSE,high,webfetch
+Brevo,Martech,Growth,Usage-based,TRUE,5,TRUE,FALSE,,Usage,,TRUE,10.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,medium,apify
+Buffer,Martech,Bootstrapped,Per-seat,FALSE,3,TRUE,TRUE,5.0,Per seat,10.0,FALSE,20.0,TRUE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Constant Contact,Martech,Private,Hybrid,TRUE,3,FALSE,TRUE,12.0,Flat,80.0,FALSE,15.0,TRUE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,manual
+Customer.io,Martech,Growth,Usage-based,TRUE,4,FALSE,TRUE,,Usage,,TRUE,,TRUE,TRUE,Usage credits,TRUE,10.0,TRUE,Enterprise only,TRUE,medium,webfetch
+Hootsuite,Martech,Private,Per-seat,FALSE,4,FALSE,TRUE,99.0,Per seat,399.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+Kit,Martech,Growth,Flat-rate,FALSE,3,TRUE,TRUE,33.0,Flat,66.0,FALSE,17.0,TRUE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Klaviyo,Martech,Public,Usage-based,TRUE,8,TRUE,FALSE,,Usage,,TRUE,,TRUE,TRUE,Higher tier,TRUE,,FALSE,Not mentioned,FALSE,medium,webfetch
+Mailchimp,Martech,Public,Usage-based,TRUE,4,TRUE,TRUE,13.0,Usage,350.0,TRUE,15.0,TRUE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Mailgun,Martech,Growth,Usage-based,TRUE,5,TRUE,TRUE,15.0,Usage,90.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,TRUE,Top paid tier,TRUE,high,webfetch
+Moz,Martech,Private,Flat-rate,FALSE,5,FALSE,TRUE,49.0,Flat,299.0,TRUE,20.0,TRUE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,apify
+Semrush,Martech,Public,Flat-rate,FALSE,4,FALSE,TRUE,117.33,Flat,455.67,TRUE,17.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+Sprout Social,Martech,Public,Per-seat,FALSE,5,FALSE,TRUE,79.0,Per seat,399.0,TRUE,20.0,TRUE,TRUE,Higher tier,TRUE,,TRUE,Enterprise only,TRUE,high,webfetch
+Typeform,Martech,Growth,Flat-rate,FALSE,7,TRUE,TRUE,28.0,Flat,266.0,TRUE,30.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+Webflow,Martech,Late-stage Private,Hybrid,TRUE,5,TRUE,FALSE,15.0,Flat,49.0,TRUE,20.0,TRUE,TRUE,Usage credits,TRUE,20.0,TRUE,Enterprise only,TRUE,medium,manual
+1Password,Security & Identity,Late-stage Private,Per-seat,FALSE,2,FALSE,TRUE,8.99,Per seat,24.95,TRUE,,TRUE,FALSE,None,FALSE,,TRUE,Top paid tier,TRUE,medium,webfetch
+Auth0,Security & Identity,Public,Hybrid,TRUE,4,TRUE,FALSE,35.0,Usage,3800.0,TRUE,8.33,TRUE,TRUE,Paid add-on,TRUE,18.0,TRUE,All tiers,FALSE,high,webfetch
+Bitwarden,Security & Identity,Growth,Per-seat,FALSE,4,TRUE,TRUE,1.65,Flat,6.0,TRUE,,TRUE,FALSE,None,FALSE,,TRUE,Top paid tier,TRUE,high,webfetch
+Cloudflare,Security & Identity,Public,Hybrid,TRUE,4,TRUE,FALSE,20.0,Flat,250.0,TRUE,20.0,TRUE,TRUE,Usage credits,TRUE,,TRUE,All tiers,FALSE,high,webfetch
+CrowdStrike,Security & Identity,Public,Per-seat,FALSE,4,FALSE,TRUE,7.99,Usage,19.99,TRUE,37.5,TRUE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Dashlane,Security & Identity,Growth,Contact-only,FALSE,3,FALSE,TRUE,,,,TRUE,,FALSE,TRUE,Bundled,FALSE,,TRUE,Top paid tier,TRUE,high,webfetch
+Drata,Security & Identity,Late-stage Private,Contact-only,FALSE,,FALSE,FALSE,,,,TRUE,,FALSE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Duo Security,Security & Identity,Public,Per-seat,FALSE,4,TRUE,TRUE,3.0,Per seat,9.0,FALSE,,TRUE,TRUE,Higher tier,TRUE,,TRUE,Mid tier,FALSE,high,webfetch
+JumpCloud,Security & Identity,Growth,Per-seat,FALSE,6,FALSE,TRUE,9.0,Per seat,,TRUE,18.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Mid tier,FALSE,high,webfetch
+LastPass,Security & Identity,Private,Per-seat,FALSE,6,TRUE,TRUE,2.99,Flat,,TRUE,30.0,TRUE,FALSE,None,FALSE,,TRUE,Top paid tier,TRUE,medium,webfetch
+Okta,Security & Identity,Public,Per-seat,FALSE,5,FALSE,TRUE,6.0,Per seat,17.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,TRUE,All tiers,FALSE,high,webfetch
+Snyk,Security & Identity,Late-stage Private,Per-seat,FALSE,4,TRUE,FALSE,25.0,Per seat,105.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,TRUE,Mid tier,FALSE,high,webfetch
+Sysdig,Security & Identity,Late-stage Private,Contact-only,FALSE,2,FALSE,FALSE,,,,TRUE,,FALSE,TRUE,Unknown,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Tailscale,Security & Identity,Growth,Per-seat,FALSE,4,TRUE,TRUE,8.0,Per seat,18.0,TRUE,,TRUE,TRUE,Higher tier,TRUE,,TRUE,Mid tier,FALSE,high,webfetch
+Twingate,Security & Identity,Growth,Per-seat,FALSE,5,TRUE,TRUE,5.0,Per seat,10.0,TRUE,15.0,TRUE,FALSE,None,FALSE,,TRUE,Mid tier,FALSE,high,webfetch
+Vanta,Security & Identity,Late-stage Private,Contact-only,FALSE,4,FALSE,FALSE,,,,TRUE,,FALSE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,medium,webfetch
+Wiz,Security & Identity,Late-stage Private,Contact-only,FALSE,5,FALSE,FALSE,,,,TRUE,,FALSE,FALSE,Unknown,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+WorkOS,Security & Identity,Growth,Usage-based,TRUE,2,TRUE,FALSE,,Usage,,TRUE,,TRUE,FALSE,None,FALSE,,TRUE,All tiers,FALSE,high,manual
+Ada,Support & CX,Late-stage Private,Contact-only,FALSE,,FALSE,FALSE,,,,TRUE,,FALSE,TRUE,Unknown,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Crisp,Support & CX,Bootstrapped,Flat-rate,FALSE,5,TRUE,TRUE,45.0,Flat,295.0,TRUE,,TRUE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Dixa,Support & CX,Growth,Per-seat,FALSE,3,FALSE,FALSE,97.8,Per seat,195.9,FALSE,20.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Top paid tier,TRUE,high,webfetch
+Freshdesk,Support & CX,Public,Per-seat,FALSE,3,FALSE,TRUE,19.0,Per seat,89.0,FALSE,20.0,TRUE,TRUE,Paid add-on,TRUE,29.0,TRUE,Mid tier,FALSE,high,webfetch
+Front,Support & CX,Growth,Per-seat,FALSE,3,FALSE,TRUE,25.0,Per seat,105.0,TRUE,24.0,TRUE,TRUE,Paid add-on,TRUE,20.0,TRUE,Mid tier,FALSE,high,webfetch
+Gladly,Support & CX,Late-stage Private,Contact-only,FALSE,,FALSE,FALSE,,,,TRUE,,FALSE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Gorgias,Support & CX,Growth,Contact-only,FALSE,3,FALSE,TRUE,,,,TRUE,,FALSE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,medium,webfetch
+HappyFox,Support & CX,Bootstrapped,Contact-only,FALSE,,FALSE,TRUE,,Per seat,,TRUE,20.0,FALSE,TRUE,Bundled,FALSE,,TRUE,Enterprise only,TRUE,high,webfetch
+Help Scout,Support & CX,Growth,Per-seat,FALSE,4,TRUE,TRUE,25.0,Per seat,75.0,FALSE,16.0,TRUE,TRUE,Paid add-on,TRUE,0.75,TRUE,Top paid tier,TRUE,high,webfetch
+Intercom,Support & CX,Late-stage Private,Hybrid,TRUE,3,FALSE,TRUE,29.0,Per seat,132.0,TRUE,,TRUE,TRUE,Usage credits,TRUE,,TRUE,Top paid tier,TRUE,high,webfetch
+Kayako,Support & CX,Private,Usage-based,TRUE,2,FALSE,FALSE,1.0,Usage,,TRUE,,TRUE,TRUE,Usage credits,TRUE,1.0,FALSE,Not mentioned,FALSE,high,webfetch
+Kustomer,Support & CX,Private,Contact-only,FALSE,,FALSE,FALSE,,,,TRUE,,FALSE,TRUE,Bundled,FALSE,,TRUE,All tiers,FALSE,high,webfetch
+LiveAgent,Support & CX,Bootstrapped,Per-seat,FALSE,4,FALSE,TRUE,10.0,Per seat,46.0,TRUE,33.0,TRUE,TRUE,Bundled,FALSE,,TRUE,Mid tier,FALSE,high,webfetch
+Reamaze,Support & CX,Bootstrapped,Per-seat,FALSE,4,FALSE,TRUE,29.0,Per seat,69.0,FALSE,10.0,TRUE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch
+Tidio,Support & CX,Growth,Hybrid,TRUE,5,TRUE,TRUE,24.17,Flat,300.0,TRUE,16.67,TRUE,TRUE,Higher tier,TRUE,32.5,TRUE,Top paid tier,TRUE,high,webfetch
+Zendesk,Support & CX,Public,Per-seat,FALSE,4,FALSE,TRUE,19.0,Per seat,115.0,TRUE,20.0,TRUE,TRUE,Paid add-on,TRUE,50.0,FALSE,Not mentioned,FALSE,high,webfetch
+Zoho Desk,Support & CX,Bootstrapped,Per-seat,FALSE,5,TRUE,TRUE,5.04,Per seat,28.8,TRUE,34.0,TRUE,TRUE,Bundled,FALSE,,FALSE,Not mentioned,FALSE,high,webfetch

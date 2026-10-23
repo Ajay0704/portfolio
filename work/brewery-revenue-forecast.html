@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forecasting Brewery Revenue with Weather — Ajay Karthick</title>
+  <meta name="description" content="A Random Forest revenue forecast for Ledge Brewing Co., a New Hampshire destination brewery, on three years of sales and weather data. Boston weather, not local weather, predicted demand, raising the model’s R² from 0.70 to 0.88. A normal weekend adds about $2.4K over a weekday, and live music another $1.6K." />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Forecasting Brewery Revenue with Weather — Ajay Karthick" />
+  <meta property="og:description" content="A Random Forest revenue forecast for Ledge Brewing Co., a New Hampshire destination brewery, on three years of sales and weather data. Boston weather, not local weather, predicted demand, raising the model’s R² from 0.70 to 0.88. A normal weekend adds about $2.4K over a weekday, and live music another $1.6K." />
+  <meta property="og:image" content="https://ajay0704.github.io/portfolio/img/og-card.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230c0d0f'/%3E%3Ctext x='16' y='21' font-family='Arial' font-weight='700' font-size='13' fill='white' text-anchor='middle'%3EAK%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" /></noscript>
+  <link rel="stylesheet" href="../assets/site.css" />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <nav class="nav" aria-label="Primary" data-theme="dark">
+    <div class="wrap nav-inner">
+      <a class="logo" href="../index.html"><span class="logo-mark" aria-hidden="true">AK</span>Ajay Karthick</a>
+      <div class="nav-links" id="navLinks">
+        <a href="../index.html#experience">Experience</a>
+        <a href="../work.html" aria-current="page">Work</a>
+        <a href="../index.html#how">How I work</a>
+        <a href="../index.html#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="nav-right">
+        <a class="btn btn-ink btn-sm" href="../Ajay_Karthick_Resume.pdf">Résumé</a>
+        <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <div class="wrap">
+      <p class="crumbs"><a href="../work.html">Work</a> &nbsp;/&nbsp; Forecasting Brewery Revenue with Weather</p>
+      <header class="cs-head">
+        <div>
+          <p class="card-kind"><span>Client project</span><span>Jan–Apr 2025</span></p>
+          <h1>Forecasting Brewery Revenue with Weather</h1>
+          <p class="cs-answer">A Random Forest revenue forecast for Ledge Brewing Co., a New Hampshire destination brewery, on three years of sales and weather data. Boston weather, not local weather, predicted demand, raising the model’s R² from 0.70 to 0.88. A normal weekend adds about $2.4K over a weekday, and live music another $1.6K.</p>
+          
+          
+        </div>
+        <dl class="cs-meta"><div><dt>Type</dt><dd>Northeastern Capstone</dd></div><div><dt>When</dt><dd>Jan–Apr 2025</dd></div><div><dt>Where</dt><dd>Intervale, NH</dd></div><div><dt>Tools</dt><dd>Python, Scikit-learn, Random Forest, Pandas, Weather APIs, Tableau</dd></div></dl>
+      </header>
+      <div class="glance reveal" style="--n:3"><div><b>R² 0.70 → 0.88</b><span>after adding Boston weather</span></div><div><b>+$2.4K</b><span>a normal weekend over a weekday</span></div><div><b>+$1.6K</b><span>from live music</span></div></div>
+      
+      <div class="cs-layout">
+        <nav class="toc" aria-label="On this page"><p class="eyebrow">On this page</p><a href="#the-challenge">The Challenge</a><a href="#what-i-did">What I Did</a><a href="#key-outcomes">Key Outcomes</a><a href="#tools-and-skills">Tools &amp; skills</a></nav>
+        <div class="cs-body">
+          <section id="the-challenge" aria-labelledby="the-challenge-h"><h2 id="the-challenge-h">The Challenge</h2><div class="case-body"> <p> Ledge Brewing Co. is a destination brewery in NH's Mount Washington Valley. Most of their customers do not live nearby. They drive up from Boston for the day, which means a slow Saturday is often a Saturday when Boston is cold or rainy, not when the brewery's local weather is bad. That insight was already in the team's gut, but had never been quantified. They wanted a forecast that combined real sales data with weather signals from both ends of the customer journey, plus a way to measure how much weekends and live music actually contributed to revenue. </p> </div> </section><section id="what-i-did" aria-labelledby="what-i-did-h"><h2 id="what-i-did-h">What I Did</h2><div class="case-body"> <p> The work moved through three phases. </p> <p> The first was data preparation. I worked with three years of POS data and pulled local NH weather plus Boston weather from public APIs. Including both was deliberate. Boston weather captures whether customers decide to make the trip. NH weather captures local conditions once they arrive. The combination tells a more complete story than either alone. </p> <p> The second was modeling. I built a Random Forest regression model on the combined dataset, then validated the structure by running a parallel decision tree and a baseline regression for comparison. Adding Boston weather raised the Random Forest&rsquo;s R&sup2; from 0.70 to 0.88. Snow reduced revenue by roughly $80 per day. Rain modestly increased revenue by about $43, likely because customers who already planned to come stuck with the plan and spent more time indoors. </p> <p> The third was attribution. I used a group-level comparison framework to isolate the revenue impact of weekends and live music. The data was split into four buckets (weekday with no music, weekday with music, weekend with no music, weekend with music), which made the comparison clean. The analysis quantified roughly $2,400 in average weekend uplift and $1,600 in average live music uplift, giving the brewery defensible numbers to use when deciding which weekends to book talent. </p> </div> </section><section id="key-outcomes" aria-labelledby="key-outcomes-h"><h2 id="key-outcomes-h">Key Outcomes</h2><ul class="case-outcomes"> <li>Built a revenue forecasting model that raised R&sup2; from 0.70 to 0.88, turning gut-feel scheduling into data-backed planning.</li> <li>Combined Boston and local NH weather signals to capture the full customer journey, from the decision to drive up to conditions at the brewery.</li> <li>Quantified the revenue lift from live music events, giving leadership a concrete number to weigh when booking talent.</li> <li>Quantified the weekend revenue lift, providing a baseline to compare promotional and event-driven Saturdays against.</li> <li>Delivered clear, defensible operational guidance the brewery's leadership team could act on for booking, staffing, and forecasting.</li> </ul> </section><section id="tools-and-skills" aria-labelledby="tools-and-skills-h"><h2 id="tools-and-skills-h">Tools &amp; skills</h2><h3>Tools</h3><div class="case-tools"><span class="tag">Python</span><span class="tag">Scikit-learn</span><span class="tag">Random Forest</span><span class="tag">Pandas</span><span class="tag">Weather APIs</span><span class="tag">Tableau</span><span class="tag">Jupyter</span></div><h3>Skills</h3><div class="case-tools"><span class="tag">Time-Series Analysis</span><span class="tag">Machine Learning</span><span class="tag">Feature Engineering</span><span class="tag">Group-Level Attribution</span><span class="tag">Business Insight Communication</span></div></section>
+        </div>
+      </div>
+      <nav class="cs-next" aria-label="More work">
+        <a href="saas-pricing-2026.html"><span>&larr; Previous</span><b>The State of SaaS Pricing 2026</b></a>
+        <a href="golden-eyes-garments.html"><span>Next &rarr;</span><b>Data Analyst, Golden Eyes Garments</b></a>
+      </nav>
+    </div>
+  </main>
+  <footer class="contact-wrap" id="contact">
+    <div class="contact">
+      <p class="eyebrow">Hiring a data or BI analyst?</p>
+      <h2>Let&rsquo;s talk.</h2>
+      <div class="contact-actions">
+        <a class="btn btn-white" href="mailto:tajay0704@gmail.com">tajay0704@gmail.com</a>
+        <button class="btn copy" type="button" data-copy="tajay0704@gmail.com">Copy email</button>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/ajay-karthick-thirumurthi-62224b216/" target="_blank" rel="noopener">LinkedIn &#8599;</a>
+        <a class="btn btn-ghost" href="https://github.com/Ajay0704" target="_blank" rel="noopener">GitHub &#8599;</a>
+        <a class="btn btn-ghost" href="../Ajay_Karthick_Resume.pdf">Résumé (PDF)</a>
+      </div>
+      <div class="foot">
+        <span>&copy; 2026 Ajay Karthick &middot; Seattle, WA</span>
+        <span><a href="../work.html">All work</a> &nbsp;&middot;&nbsp; <a href="#main">Back to top &uarr;</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>

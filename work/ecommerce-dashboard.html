@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E-commerce Performance Dashboard — Ajay Karthick</title>
+  <meta name="description" content="On 97.9k real Olist marketplace orders, reviews fall from 4.29 stars on time to 1.70 when delivery is 8+ days late. A 5-page Power BI report, one page per stakeholder team, with 62 DAX measures as code and every headline KPI reconciled against pandas." />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="E-commerce Performance Dashboard — Ajay Karthick" />
+  <meta property="og:description" content="On 97.9k real Olist marketplace orders, reviews fall from 4.29 stars on time to 1.70 when delivery is 8+ days late. A 5-page Power BI report, one page per stakeholder team, with 62 DAX measures as code and every headline KPI reconciled against pandas." />
+  <meta property="og:image" content="https://ajay0704.github.io/portfolio/img/ecommerce-powerbi/4_delivery_operations.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230c0d0f'/%3E%3Ctext x='16' y='21' font-family='Arial' font-weight='700' font-size='13' fill='white' text-anchor='middle'%3EAK%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" /></noscript>
+  <link rel="stylesheet" href="../assets/site.css" />
+  <style>
+    .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;
+      background:var(--hairline);border:1px solid var(--hairline);margin-top:48px}
+    .kpi-cell{background:#fff;padding:30px 26px}
+    .kpi-cell .v{font-family:var(--serif);font-weight:900;font-size:2.6rem;line-height:1}
+    .kpi-cell .v.red{color:var(--accent)}
+    .kpi-cell .k{margin-top:10px;font-weight:600;font-size:.92rem}
+    .kpi-cell .d{margin-top:4px;color:var(--muted);font-size:.84rem;line-height:1.5}
+    .btn-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+    .claimbox{border-left:4px solid var(--accent);background:var(--bg-paper);padding:26px 30px;margin-top:36px}
+    .claimbox .n{font-family:var(--serif);font-weight:900;font-size:2.6rem;color:var(--accent);line-height:1}
+    .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .cmp{width:100%;border-collapse:collapse;margin-top:28px;font-size:.94rem}
+    .cmp th,.cmp td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--hairline);vertical-align:top}
+    .cmp th{background:var(--bg-paper);font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+    .cmp td.num{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+    .cmp tr.mine{background:#fdf3f1}
+    .cmp tr.mine td{font-weight:700}
+    .shot-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:40px 28px;margin-top:40px}
+    .shot-grid figure{margin:0}
+    .shot-grid .case-figure-caption{text-align:left;margin-top:12px}
+    @media (max-width:767px){.cmp{font-size:.86rem}.cmp th,.cmp td{padding:10px 8px}}
+    .source-note{margin-top:28px;font-size:.84rem;color:var(--muted);line-height:1.6}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <nav class="nav" aria-label="Primary" data-theme="dark">
+    <div class="wrap nav-inner">
+      <a class="logo" href="../index.html"><span class="logo-mark" aria-hidden="true">AK</span>Ajay Karthick</a>
+      <div class="nav-links" id="navLinks">
+        <a href="../index.html#experience">Experience</a>
+        <a href="../work.html" aria-current="page">Work</a>
+        <a href="../index.html#how">How I work</a>
+        <a href="../index.html#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="nav-right">
+        <a class="btn btn-ink btn-sm" href="../Ajay_Karthick_Resume.pdf">Résumé</a>
+        <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <div class="wrap">
+      <p class="crumbs"><a href="../work.html">Work</a> &nbsp;/&nbsp; E-commerce Performance Dashboard</p>
+      <header class="cs-head">
+        <div>
+          <p class="card-kind"><span>Self-built</span><span>Oct 2026</span></p>
+          <h1>E-commerce Performance Dashboard</h1>
+          <p class="cs-answer">On 97.9k real Olist marketplace orders, reviews fall from 4.29 stars on time to 1.70 when delivery is 8+ days late. A 5-page Power BI report, one page per stakeholder team, with 62 DAX measures as code and every headline KPI reconciled against pandas.</p>
+          <p style="margin-top:20px"><span class="verified">30 / 30 DAX results match pandas</span></p>
+          <div class="cs-links"><a class="btn btn-ink" href="https://github.com/Ajay0704/ecommerce-powerbi" target="_blank" rel="noopener">View on GitHub &#8599;</a></div>
+        </div>
+        <dl class="cs-meta"><div><dt>Type</dt><dd>Self-Built Project</dd></div><div><dt>My role</dt><dd>Solo: data model, DAX measures and report</dd></div><div><dt>When</dt><dd>Oct 2026</dd></div><div><dt>Where</dt><dd>Seattle, WA</dd></div><div><dt>Tools</dt><dd>Python, Pandas, Power BI, DAX, TMDL, Power Query</dd></div></dl>
+      </header>
+      <div class="glance reveal" style="--n:3"><div><b>4.29★ → 1.70★</b><span>average review, on time vs 8+ days late</span></div><div><b>+138%</b><span>GMV growth, Jan–Aug 2018 vs 2017</span></div><div><b>30 / 30</b><span>DAX results matched an independent pandas check</span></div></div>
+      <div class="cs-hero-media reveal"><div style="width:100%;max-width:880px"><div class="shot" style="--ar:1.6"><img src="../img/ecommerce-powerbi/4_delivery_operations.jpg" width="800" height="500" alt="Screenshot from E-commerce Performance Dashboard." loading="lazy" decoding="async" /><div class="anno" style="left:5.2%;top:36.4%;width:45.6%;height:28.8%" aria-hidden="true"><span class="anno-tag below">4.29★ → 1.70★ when late</span></div></div></div></div>
+      <div class="cs-layout">
+        <nav class="toc" aria-label="On this page"><p class="eyebrow">On this page</p><a href="#the-business-problem">The Business Problem</a><a href="#five-stakeholders-five-pages">Five Stakeholders, Five Pages</a><a href="#approach">Approach</a><a href="#key-findings">Key Findings</a><a href="#recommendations">Recommendations</a><a href="#how-i-checked-the-numbers">How I Checked the Numbers</a><a href="#the-dashboard">The Dashboard</a><a href="#tools-and-skills">Tools &amp; skills</a></nav>
+        <div class="cs-body">
+          <section id="the-business-problem" aria-labelledby="the-business-problem-h"><h2 id="the-business-problem-h">The Business Problem</h2><div class="case-body">
+        <p>A marketplace e-commerce business has one set of order data and five teams asking different questions of it. Leadership wants to know if the business is growing. Merchandising wants to know which categories carry revenue. Marketing wants to know if customers come back. Operations wants to know where deliveries run late, and the partner team wants to know which sellers matter most.</p>
+        <p>I built the dashboard an in-house analyst would hand those teams: one cleaned model, every KPI defined once, and one report page per stakeholder. The data is real: the <strong>Olist Brazilian E-Commerce Public Dataset</strong>, anonymised marketplace orders from January 2017 to August 2018. That is 20 full months, 97.9k orders, 111.8k items, 94.7k customers and 3,029 sellers, in Brazilian reais (R$).</p>
+      </div>
+    </section><section id="five-stakeholders-five-pages" aria-labelledby="five-stakeholders-five-pages-h"><h2 id="five-stakeholders-five-pages-h">Five Stakeholders, Five Pages</h2><div class="case-body"><p>Each report page answers one team&rsquo;s questions. Every page has Year and Customer-region slicers.</p></div>
+      <div class="table-scroll">
+        <table class="cmp">
+          <tr><th>Page</th><th>Stakeholder</th><th>Questions it answers</th></tr>
+          <tr><td><strong>1. Executive overview</strong></td><td>Leadership</td><td>How big is the business and is it growing? GMV, orders, AOV, customers, review score, on-time rate, trend, YoY.</td></tr>
+          <tr><td><strong>2. Sales &amp; product</strong></td><td>Category / merchandising</td><td>Which categories drive GMV (Pareto)? Price points, freight burden by product weight, payment mix.</td></tr>
+          <tr><td><strong>3. Customers &amp; retention</strong></td><td>Marketing / CRM</td><td>Do customers come back? New vs returning, cohort retention matrix, RFM segments to target.</td></tr>
+          <tr><td><strong>4. Delivery &amp; operations</strong></td><td>Ops / logistics</td><td>How fast do we deliver, where are we late, and what does lateness cost in reviews?</td></tr>
+          <tr><td><strong>5. Seller performance</strong></td><td>Marketplace / partner team</td><td>How concentrated is GMV across sellers, and which big sellers deliver late or review poorly?</td></tr>
+        </table>
+      </div>
+    </section><section id="approach" aria-labelledby="approach-h"><h2 id="approach-h">Approach</h2><div class="case-body">
+        <p><strong>Star schema in Python.</strong> A pandas pipeline cleans the 9 raw Olist tables into a 7-table star schema: three fact tables (orders, order items, payments) and four dimensions (customer, product, seller, date), with integer surrogate keys and foreign-key checks. Relationships are single-direction and many-to-one, so there are no ambiguous filter paths.</p>
+        <p><strong>62 DAX measures, defined as code.</strong> Every KPI lives once in a single <code>measures.dax</code> file. A script turns it into the TMDL semantic model, so a definition like GMV, &ldquo;late&rdquo; or &ldquo;repeat customer&rdquo; means the same thing on every page and can be reviewed in a pull request.</p>
+        <p><strong>Reconciliation.</strong> A second, independent pandas script computes the headline numbers without Power BI. The DAX results from the live model are checked against it, number by number.</p>
+        <p><strong>Report as code.</strong> The report layout, titles and theme are generated as PBIR files and published with the Fabric REST API, so the whole dashboard can be rebuilt from the repository.</p>
+        <p><strong>Refreshed from GitHub.</strong> The star-schema CSVs are published in the repository, and Power BI reads them over HTTPS from GitHub, so a refresh needs no gateway.</p>
+      </div>
+    </section><section id="key-findings" aria-labelledby="key-findings-h"><h2 id="key-findings-h">Key Findings</h2><div class="case-body"><p>From 97.9k orders, January 2017 to August 2018.</p></div>
+      <div class="kpi-grid">
+        <div class="kpi-cell"><div class="v">R$13.45M</div><div class="k">GMV</div><div class="d">From 97.9k orders, with an average order value of R$137.</div></div>
+        <div class="kpi-cell"><div class="v">+138%</div><div class="k">YoY growth, Jan&ndash;Aug 2018</div><div class="d">GMV vs the same months of 2017. Black Friday 2017 had 1,166 orders in one day.</div></div>
+        <div class="kpi-cell"><div class="v red">6.8%</div><div class="k">of orders arrive late</div><div class="d">Rising to 12.4% in Nov 2017 and peaking at 19.0% in Mar 2018.</div></div>
+        <div class="kpi-cell"><div class="v red">3.0%</div><div class="k">of customers ever order twice</div><div class="d">Growth is almost entirely new-customer acquisition.</div></div>
+        <div class="kpi-cell"><div class="v">67%</div><div class="k">of GMV from the top 10% of sellers</div><div class="d">And 18 of 74 categories make 80% of GMV.</div></div>
+        <div class="kpi-cell"><div class="v">19.7%</div><div class="k">freight on small items</div><div class="d">Freight as a share of item value for items under 0.5 kg.</div></div>
+      </div>
+
+      <div class="case-body" style="margin-top:48px">
+        <p><strong>The biggest finding: late delivery drives bad reviews.</strong> Orders that arrive on time average 4.29 stars. Every extra few days late costs more stars, down to 1.70 when an order is 8 or more days late.</p>
+      </div>
+      <div class="table-scroll">
+        <table class="cmp">
+          <tr><th>Delivery outcome</th><th class="num">Avg review (stars)</th></tr>
+          <tr><td>On time</td><td class="num">4.29</td></tr>
+          <tr><td>1&ndash;3 days late</td><td class="num">3.29</td></tr>
+          <tr><td>4&ndash;7 days late</td><td class="num">2.10</td></tr>
+          <tr class="mine"><td>8+ days late</td><td class="num">1.70</td></tr>
+        </table>
+      </div>
+      <p class="source-note">Source: Olist, &ldquo;Brazilian E-Commerce Public Dataset by Olist&rdquo;, <a href="https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce" target="_blank" rel="noopener">Kaggle</a>, CC BY-NC-SA 4.0. All figures are my calculations from that dataset; method and checks are in the <a href="https://github.com/Ajay0704/ecommerce-powerbi" target="_blank" rel="noopener">GitHub repository</a>.</p>
+    </section><section id="recommendations" aria-labelledby="recommendations-h"><h2 id="recommendations-h">Recommendations</h2><div class="case-body"><p>These are my own analysis, based on the findings above.</p></div>
+      <ul class="case-outcomes" style="margin-top:28px">
+        <li><strong>Fix delivery before buying more traffic.</strong> Use the seller scorecard to flag high-GMV sellers with late rates above 10%, and pad the delivery promise on Northeast and North routes.</li>
+        <li><strong>Plan peak capacity.</strong> Late deliveries tripled after Black Friday 2017. Pre-book carrier capacity for November to March and onboard sellers before the peak.</li>
+        <li><strong>Start a retention program.</strong> With 97% of customers buying only once, even a small lift in repeat rate matters. Target the &ldquo;High-value one-timer&rdquo; segment first.</li>
+        <li><strong>Bundle small items.</strong> A free-shipping threshold or add-on items would spread the 19.7% freight burden on small items.</li>
+      </ul>
+    </section><section id="how-i-checked-the-numbers" aria-labelledby="how-i-checked-the-numbers-h"><h2 id="how-i-checked-the-numbers-h">How I Checked the Numbers</h2><div class="case-body">
+        <p>I compared 30 DAX results from the live Power BI model with the independent pandas reference. All 30 match to 4 decimal places.</p>
+        <p>The check also caught a real bug. In DAX, <code>BLANK = 0</code> evaluates to TRUE, so a measure filtering on <code>is_late = 0</code> counted orders that were never delivered as &ldquo;on time&rdquo;. That dragged the on-time review score down to 4.21 stars.</p>
+      </div>
+      <div class="claimbox">
+        <div class="n">4.21 &rarr; 4.29</div>
+        <p style="margin-top:10px"><strong>Switching to strict equality (<code>==</code>) fixed it, and the on-time score matched pandas at 4.29 stars.</strong> Without the reconciliation, the dashboard would have shown a wrong number that looked perfectly plausible.</p>
+      </div>
+    </section><section id="the-dashboard" aria-labelledby="the-dashboard-h"><h2 id="the-dashboard-h">The Dashboard</h2><div class="case-body"><p>Screenshots of the five report pages in Power BI.</p></div>
+      <figure class="case-figure" style="margin-top:40px">
+        <a href="../img/ecommerce-powerbi/1_executive_overview.jpg" target="_blank" rel="noopener"><img class="case-figure-img" src="../img/ecommerce-powerbi/1_executive_overview.jpg" width="800" height="500" alt="Executive overview page: GMV, orders, AOV and customer KPI cards, monthly GMV trend, GMV by category group and region" loading="lazy" decoding="async" /></a>
+        <figcaption class="case-figure-caption">Executive overview &mdash; growth, GMV trend and the Black Friday 2017 spike, for leadership</figcaption>
+      </figure>
+      <div class="shot-grid">
+        <figure>
+          <a href="../img/ecommerce-powerbi/2_sales_product.jpg" target="_blank" rel="noopener"><img class="case-figure-img" src="../img/ecommerce-powerbi/2_sales_product.jpg" width="800" height="500" alt="Sales and product page: category Pareto, price points, freight by weight and payment mix" loading="lazy" /></a>
+          <figcaption class="case-figure-caption">Sales &amp; product &mdash; category Pareto, freight burden and payment mix</figcaption>
+        </figure>
+        <figure>
+          <a href="../img/ecommerce-powerbi/3_customers_retention.jpg" target="_blank" rel="noopener"><img class="case-figure-img" src="../img/ecommerce-powerbi/3_customers_retention.jpg" width="800" height="500" alt="Customers and retention page: new vs returning customers, cohort retention and RFM segments" loading="lazy" /></a>
+          <figcaption class="case-figure-caption">Customers &amp; retention &mdash; cohorts, repeat rate and RFM segments</figcaption>
+        </figure>
+        <figure>
+          <a href="../img/ecommerce-powerbi/4_delivery_operations.jpg" target="_blank" rel="noopener"><img class="case-figure-img" src="../img/ecommerce-powerbi/4_delivery_operations.jpg" width="800" height="500" alt="Delivery and operations page: average review by delivery outcome, late rate by month and by state" loading="lazy" /></a>
+          <figcaption class="case-figure-caption">Delivery &amp; operations &mdash; review score by lateness and late rate over time</figcaption>
+        </figure>
+        <figure>
+          <a href="../img/ecommerce-powerbi/5_seller_performance.jpg" target="_blank" rel="noopener"><img class="case-figure-img" src="../img/ecommerce-powerbi/5_seller_performance.jpg" width="800" height="500" alt="Seller performance page: GMV concentration by seller tier and a seller scorecard" loading="lazy" /></a>
+          <figcaption class="case-figure-caption">Seller performance &mdash; GMV concentration and the seller scorecard</figcaption>
+        </figure>
+      </div>
+    </section><section id="tools-and-skills" aria-labelledby="tools-and-skills-h"><h2 id="tools-and-skills-h">Tools &amp; skills</h2><h3>Tools</h3><div class="case-tools"><span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">TMDL</span><span class="tag">Power Query</span><span class="tag">PBIR</span><span class="tag">Fabric REST API</span><span class="tag">Git / GitHub</span></div><h3>Skills</h3><div class="case-tools"><span class="tag">Dimensional Modeling</span><span class="tag">KPI Definition</span><span class="tag">Data Validation</span><span class="tag">Dashboard Design</span><span class="tag">Cohort &amp; RFM Analysis</span><span class="tag">Stakeholder Reporting</span><span class="tag">Data Storytelling</span></div></section>
+        </div>
+      </div>
+      <nav class="cs-next" aria-label="More work">
+        <a href="dominos-japan.html"><span>&larr; Previous</span><b>Domino’s Japan: Fortress or Expand?</b></a>
+        <a href="ai-model-market.html"><span>Next &rarr;</span><b>AI Model Market: Who’s Winning?</b></a>
+      </nav>
+    </div>
+  </main>
+  <footer class="contact-wrap" id="contact">
+    <div class="contact">
+      <p class="eyebrow">Hiring a data or BI analyst?</p>
+      <h2>Let&rsquo;s talk.</h2>
+      <div class="contact-actions">
+        <a class="btn btn-white" href="mailto:tajay0704@gmail.com">tajay0704@gmail.com</a>
+        <button class="btn copy" type="button" data-copy="tajay0704@gmail.com">Copy email</button>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/ajay-karthick-thirumurthi-62224b216/" target="_blank" rel="noopener">LinkedIn &#8599;</a>
+        <a class="btn btn-ghost" href="https://github.com/Ajay0704" target="_blank" rel="noopener">GitHub &#8599;</a>
+        <a class="btn btn-ghost" href="../Ajay_Karthick_Resume.pdf">Résumé (PDF)</a>
+      </div>
+      <div class="foot">
+        <span>&copy; 2026 Ajay Karthick &middot; Seattle, WA</span>
+        <span><a href="../work.html">All work</a> &nbsp;&middot;&nbsp; <a href="#main">Back to top &uarr;</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>
