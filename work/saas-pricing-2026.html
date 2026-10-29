@@ -27,6 +27,9 @@
     .viz-frame{border:1px solid var(--hairline);background:var(--bg-paper);margin-top:40px}
     .viz-frame iframe{display:block;width:100%;height:880px;border:0}
     .viz-cap{padding:14px 20px;border-top:1px solid var(--hairline);font-size:.84rem;color:var(--muted)}
+    .viz-mobile{display:none;padding:28px 20px;text-align:center}
+    .viz-mobile p{font-size:.92rem;color:var(--muted);margin-bottom:16px}
+    @media (max-width:640px){.cs-body .viz-frame iframe{display:none}.viz-mobile{display:block}}
     .btn-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
     .claimbox{border-left:4px solid var(--accent);background:var(--bg-paper);padding:26px 30px;margin-top:36px}
     .claimbox .n{font-family:var(--serif);font-weight:900;font-size:2.6rem;color:var(--accent);line-height:1}
@@ -66,7 +69,7 @@
           <h1>The State of SaaS Pricing 2026</h1>
           <p class="cs-answer">I read 198 SaaS companies&rsquo; public pricing pages to test what the industry only claims. 57% of companies that offer AI visibly charge extra for it, below the 68% vendors self-report, and on AI credits the pages and the survey agree (27% vs 29%). An audit caught my first figure (42%) under-counting, so I re-coded 94 rows from archived pages and corrected it. Shipped as an interactive dashboard and an open dataset.</p>
           <p style="margin-top:20px"><span class="verified">Audited against archived pages</span></p>
-          <div class="cs-links"><a class="btn btn-ink" href="https://ajay0704.github.io/saas-pricing-dashboard.html" target="_blank" rel="noopener">Open the dashboard &#8599;</a><a class="btn btn-line" href="https://ajay0704.github.io/saas-pricing-report.html" target="_blank" rel="noopener">Read the full report &#8599;</a></div>
+          <div class="cs-links"><a class="btn btn-ink" href="saas-pricing-dashboard.html">Open the dashboard</a><a class="btn btn-line" href="https://ajay0704.github.io/saas-pricing-report.html" target="_blank" rel="noopener">Read the full report &#8599;</a></div>
         </div>
         <dl class="cs-meta"><div><dt>Type</dt><dd>Self-Built Project</dd></div><div><dt>My role</dt><dd>Solo: data collection, analysis and dashboard</dd></div><div><dt>When</dt><dd>2026</dd></div><div><dt>Where</dt><dd>Boston, MA</dd></div><div><dt>Tools</dt><dd>Python, Pandas, LLM Structured Extraction, Headless Browser, Wayback Machine, JavaScript/SVG, Tableau</dd></div></dl>
       </header>
@@ -99,9 +102,10 @@
       </div>
       <div class="viz-frame">
         <iframe title="The State of SaaS Pricing 2026 dashboard"
-          src="https://ajay0704.github.io/saas-pricing-dashboard.html"
+          src="saas-pricing-dashboard.html?embed"
           loading="lazy"></iframe>
-        <div class="viz-cap">Interactive dashboard &mdash; 188 companies, 11 categories, August 2026 snapshot corrected in October 2026. <a href="https://ajay0704.github.io/saas-pricing-dashboard.html" target="_blank" rel="noopener">Open full screen &rarr;</a></div>
+        <div class="viz-mobile"><p>Six linked charts, filters and a searchable table of all 188 companies.</p><a class="btn btn-ink" href="saas-pricing-dashboard.html">Open the interactive dashboard</a></div>
+        <div class="viz-cap">Interactive dashboard &mdash; 188 companies, 11 categories, August 2026 snapshot corrected in October 2026. <a href="saas-pricing-dashboard.html">Open full screen &rarr;</a></div>
       </div>
     </section><section id="how-visible-pricing-compares" aria-labelledby="how-visible-pricing-compares-h"><h2 id="how-visible-pricing-compares-h">How Visible Pricing Compares With the Surveys</h2><div class="case-body">
         <p>Public pricing pages show somewhat less AI monetisation than the most-cited survey &mdash; 57% against 68% &mdash; while on AI credits specifically the pages and the survey agree. I am not claiming the reports are wrong: the sources measure different things, part of the higher figure is not visible on public pricing pages, and the gap comes from different definitions, populations and methods.</p>

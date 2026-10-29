@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SaaS Pricing Dashboard — Ajay Karthick</title>
+  <meta name="description" content="Interactive dashboard for The State of SaaS Pricing 2026: how 188 SaaS companies charge, and how they price AI and SSO, by category and company stage." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="SaaS Pricing Dashboard — Ajay Karthick" />
+  <meta property="og:description" content="How 188 SaaS companies charge, and how they price AI and SSO, read from their public pricing pages and audited against archived copies." />
+  <meta property="og:image" content="https://ajay0704.github.io/portfolio/img/og-card.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230c0d0f'/%3E%3Ctext x='16' y='21' font-family='Arial' font-weight='700' font-size='13' fill='white' text-anchor='middle'%3EAK%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" /></noscript>
+  <link rel="stylesheet" href="../assets/site.css" />
+  <script>if (window.self !== window.top || /[?&]embed\b/.test(location.search)) document.documentElement.classList.add('embed');</script>
+  <style>
+    /* Dashboard, scoped to .dash so nothing leaks into site.css components (.card, .filters ...).
+       Chart hues are the validated palettes from the v1 dashboard (checked on a #fff surface). */
+    .dash {
+      --surface: var(--paper);
+      --grid: #ecece7;
+      --axis: #c8c8c1;
+      --m-seat: #2a78d6; --m-hybrid: #eb6834; --m-usage: #1baf7a; --m-flat: #eda100; --m-contact: #c9c7bf;
+      --a-credits: #6250d6; --a-addon: #e87ba4; --a-tier: #008300; --a-bundled: #a9a7a0; --a-unknown: #e6e4df;
+      --study: var(--find); --survey: #6b6d72;
+      padding-bottom: clamp(56px, 8vw, 96px);
+    }
+
+    /* header */
+    .dash-head { padding: 26px 0 30px; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 64px); align-items: end; }
+    .dash-head h1 { font-size: clamp(2.2rem, 4.4vw, 3.5rem); letter-spacing: -0.045em; margin: 14px 0 16px; }
+    .dash-head .lede { max-width: 640px; margin-top: 0; }
+    .dash-head .cs-links { margin-top: 22px; }
+    .proof { border: 1px solid var(--line); border-radius: var(--r-md); padding: 18px 20px; background: var(--paper-2); }
+    .proof .eyebrow { display: flex; align-items: center; gap: 8px; color: var(--ok); }
+    .proof .eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 4px var(--ok-bg); }
+    .proof p { font-size: .9rem; line-height: 1.5; color: var(--ink-2); margin-top: 8px; }
+
+    /* filter bar */
+    .dfilters { position: sticky; top: 66px; z-index: 40; display: flex; flex-wrap: wrap; align-items: end; gap: 12px 14px;
+      margin: 0 -12px 22px; padding: 12px; border-radius: var(--r-md);
+      background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: saturate(1.6) blur(14px); -webkit-backdrop-filter: saturate(1.6) blur(14px);
+      box-shadow: 0 0 0 1px var(--line); }
+    .dfilters label { display: flex; flex-direction: column; gap: 5px; font: 500 .68rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+    .dfilters select, .tbl-search { font: 400 .92rem var(--sans); color: var(--ink); background: var(--paper); border: 1px solid var(--line-2);
+      height: 40px; padding: 0 34px 0 14px; min-width: 200px; border-radius: 999px; appearance: none; -webkit-appearance: none; }
+    .dfilters select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2362656b' stroke-width='1.5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 14px center; cursor: pointer; }
+    .dfilters select:hover, .tbl-search:hover { border-color: var(--ink); }
+    .dfilters .btn { height: 40px; }
+    .f-count { margin-left: auto; padding-bottom: 10px; font: 400 .8rem var(--mono); color: var(--muted); }
+    .f-count b { color: var(--ink); font-weight: 500; }
+
+    /* KPI strip, same anatomy as .glance */
+    .kpis { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; margin-bottom: 22px; }
+    .kpi { padding: 22px 20px 20px; border-left: 1px solid var(--line); }
+    .kpi:first-child { border-left: 0; }
+    .kpi .k { font: 500 .68rem/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); min-height: 2.8em; }
+    .kpi .v { font-weight: 400; font-size: clamp(1.9rem, 3vw, 2.5rem); letter-spacing: -0.045em; line-height: 1.05; margin: 8px 0 6px; color: var(--ink); font-variant-numeric: tabular-nums; }
+    .kpi .v.accent { color: var(--find); }
+    .kpi .d { font-size: .82rem; color: var(--muted); line-height: 1.4; }
+
+    /* panels */
+    .panel { border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); padding: clamp(20px, 2.6vw, 30px); margin-bottom: 22px; min-width: 0; }
+    .panel .eyebrow { margin-bottom: 10px; }
+    .panel h2 { font-size: clamp(1.3rem, 2vw, 1.6rem); letter-spacing: -0.03em; line-height: 1.15; }
+    .panel .sub { font-size: .92rem; color: var(--muted); line-height: 1.5; margin: 8px 0 18px; max-width: 70ch; }
+    .panel .cap { font-size: .8rem; color: var(--muted); line-height: 1.5; margin-top: 14px; }
+    .panel .cap i { font-style: italic; }
+    .grid2 { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 22px; margin-bottom: 22px; }
+    .grid2 > .panel { margin-bottom: 0; }
+
+    .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0 0 14px; font-size: .86rem; color: var(--ink); }
+    .legend li { display: flex; align-items: center; gap: 8px; }
+    .sw { width: 12px; height: 12px; border-radius: 3px; flex: none; }
+    .legend .n { font: 400 .76rem var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+
+    .dash svg text { font-family: var(--sans); }
+    .dash .ax { font: 400 10.5px var(--mono); fill: var(--muted); }
+    .dash .lbl { font-size: 12px; fill: var(--ink); }
+    .dash .lbl-2 { font-size: 12px; fill: var(--ink-2); }
+    .dash .val { font-size: 13px; font-weight: 600; fill: var(--ink); letter-spacing: 0; line-height: normal; }
+    .unit rect { transition: opacity .15s; }
+    .unit rect:hover, .unit rect.hot { opacity: .72; }
+
+    .cmp-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px; padding: 12px 0 4px; border-top: 1px solid var(--grid); }
+    .cmp-row:first-of-type { border-top: 0; }
+    .cmp-row .t { font-size: .88rem; font-weight: 500; line-height: 1.35; }
+    .cmp-row .t span { font-weight: 400; color: var(--muted); font-size: .78rem; margin-left: 6px; }
+
+    .mix { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 22px; align-items: center; }
+    .mix-list { font-size: .88rem; }
+    .mix-list li { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 7px 0; border-top: 1px solid var(--grid); }
+    .mix-list li:first-child { border-top: 0; }
+    .mix-list .p { font: 400 .8rem var(--mono); text-align: right; white-space: nowrap; color: var(--muted); }
+    .mix-list .p b { color: var(--ink); font-weight: 500; margin-left: 6px; }
+    .mix-list .grp { grid-column: 2 / -1; font: 500 .66rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding-top: 4px; }
+
+    .heat-wrap { overflow-x: auto; }
+    .heat { display: grid; grid-template-columns: minmax(150px, 1.3fr) repeat(6, minmax(64px, 1fr)); gap: 2px; min-width: 620px; font-size: .84rem; }
+    .heat .h { font-size: .74rem; font-weight: 500; color: var(--ink-2); line-height: 1.3; padding: 0 4px 8px; align-self: end; }
+    .heat .h span { display: block; font-weight: 400; color: var(--muted); }
+    .heat .rl { padding: 0 8px 0 0; display: flex; align-items: center; min-height: 38px; cursor: pointer; background: none; border: 0; font: 400 .86rem var(--sans); color: var(--ink); text-align: left; }
+    .heat .rl:hover { color: var(--find); }
+    .heat .rl.on { color: var(--find); font-weight: 600; }
+    .heat .c { display: flex; align-items: center; justify-content: center; min-height: 38px; border-radius: 4px; font: 500 .8rem var(--mono); font-variant-numeric: tabular-nums; cursor: default; }
+    .heat .c:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+    .heat .row-on { box-shadow: inset 0 0 0 2px var(--ink); }
+    .scale { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin-top: 14px; font: 400 .74rem var(--mono); color: var(--muted); }
+    .scale .bar { height: 10px; width: 180px; border-radius: 999px; }
+
+    .tbl-tools { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin-bottom: 14px; }
+    .tbl-search { min-width: 260px; padding-right: 14px; }
+    .tbl-wrap { max-height: 540px; overflow: auto; border: 1px solid var(--line); border-radius: var(--r-md); }
+    table.co { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    table.co th { position: sticky; top: 0; background: var(--paper-2); text-align: left; font: 500 .66rem var(--mono); letter-spacing: .08em; text-transform: uppercase;
+      color: var(--muted); padding: 12px 12px 10px; border-bottom: 1px solid var(--line); cursor: pointer; white-space: nowrap; user-select: none; }
+    table.co th:hover { color: var(--ink); }
+    table.co th[aria-sort="ascending"]::after { content: " \2191"; }
+    table.co th[aria-sort="descending"]::after { content: " \2193"; }
+    table.co td { padding: 9px 12px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+    table.co tbody tr:hover td { background: var(--paper-2); }
+    table.co td.num { font-family: var(--mono); font-size: .82rem; text-align: right; white-space: nowrap; }
+    table.co td a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; white-space: nowrap; }
+    table.co td a:hover { text-decoration-color: var(--ink); }
+    .dash .dot { display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-right: 7px; }
+
+    .tip { position: fixed; z-index: 150; pointer-events: none; background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-sm);
+      box-shadow: 0 12px 30px -12px rgba(12,13,15,.25); padding: 10px 12px; font-size: .82rem; line-height: 1.45; max-width: 260px; opacity: 0; transition: opacity .1s; }
+    .tip.on { opacity: 1; }
+    .tip .tv { font-weight: 600; font-size: .92rem; color: var(--ink); }
+    .tip .tl { color: var(--ink-2); }
+    .tip .tk { display: inline-block; width: 12px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+    .empty { padding: 40px 0; text-align: center; color: var(--muted); font-size: .95rem; }
+    .notes { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 8px; }
+    .notes > div { border-top: 1px solid var(--line); padding-top: 16px; font-size: .86rem; color: var(--muted); line-height: 1.6; }
+    .notes .eyebrow { margin-bottom: 8px; }
+    .dash [id] { scroll-margin-top: 160px; }
+    .embed .dash [id] { scroll-margin-top: 90px; }
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+    /* embedded in the case study: just the dashboard */
+    .embed .nav, .embed .crumbs, .embed .dash-head, .embed .contact-wrap, .embed .skip { display: none; }
+    .embed body { background: var(--paper-2); }
+    .embed .dash { padding: 0 0 24px; }
+    .embed .dash > .wrap { padding: 0 16px; }
+    .embed .dfilters { top: 0; margin: 0 -16px 18px; border-radius: 0; box-shadow: 0 1px 0 var(--line); background: color-mix(in srgb, var(--paper-2) 92%, transparent); }
+    .embed .kpis, .embed .panel { background: var(--paper); }
+
+    @media (max-width: 1060px) {
+      .kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .kpi:nth-child(4) { border-left: 0; }
+      .kpi:nth-child(-n+3) { border-bottom: 1px solid var(--line); }
+      .grid2 { grid-template-columns: minmax(0, 1fr); }
+      .dash-head { grid-template-columns: minmax(0, 1fr); align-items: start; }
+    }
+    @media (max-width: 640px) {
+      .dash > .wrap { padding: 0 16px; }
+      .dfilters { position: static; margin: 0 0 18px; }
+      .embed .dfilters { margin: 0 -16px 18px; }
+      .dfilters label { flex: 1 1 140px; }
+      .dfilters select { min-width: 0; width: 100%; }
+      .f-count { margin-left: 0; width: 100%; padding-bottom: 0; }
+      .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .kpi { border-left: 1px solid var(--line) !important; border-bottom: 1px solid var(--line); }
+      .kpi:nth-child(2n+1) { border-left: 0 !important; }
+      .kpi:nth-last-child(-n+2) { border-bottom: 0; }
+      .panel { padding: 18px 14px 16px; }
+      .mix { grid-template-columns: minmax(0, 1fr); }
+      #mix-donut { text-align: center; }
+      .tbl-search { min-width: 0; width: 100%; }
+      .notes { grid-template-columns: minmax(0, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <nav class="nav" aria-label="Primary" data-theme="dark">
+    <div class="wrap nav-inner">
+      <a class="logo" href="../index.html"><span class="logo-mark" aria-hidden="true">AK</span>Ajay Karthick</a>
+      <div class="nav-links" id="navLinks">
+        <a href="../index.html#experience">Experience</a>
+        <a href="../work.html" aria-current="page">Work</a>
+        <a href="../index.html#how">How I work</a>
+        <a href="../index.html#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="nav-right">
+        <a class="btn btn-ink btn-sm" href="../Ajay_Karthick_Resume.pdf">Résumé</a>
+        <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main" class="dash">
+    <div class="wrap">
+      <p class="crumbs"><a href="../work.html">Work</a> &nbsp;/&nbsp; <a href="saas-pricing-2026.html">The State of SaaS Pricing 2026</a> &nbsp;/&nbsp; Dashboard</p>
+      <header class="dash-head">
+        <div>
+          <p class="card-kind"><span>Self-built</span><span>Interactive dashboard</span><span>2026</span></p>
+          <h1>The State of SaaS Pricing 2026</h1>
+          <p class="lede">How <span id="h-n">188</span> leading SaaS companies actually price, read directly from their public pricing pages. Filter by category or company stage; every chart, number and the table update together.</p>
+          <div class="cs-links">
+            <a class="btn btn-ink" href="saas-pricing-2026.html">Read the case study</a>
+            <a class="btn btn-line" href="../saas-pricing-dataset.csv" download>Download the data (CSV)</a>
+          </div>
+        </div>
+        <aside class="proof" aria-label="How the numbers were checked">
+          <p class="eyebrow">Audited against archived pages</p>
+          <p>August 2026 snapshot, corrected October 2026: 137 field corrections logged with sources, a blinded 30-row accuracy check, and every AI row re-coded from Wayback copies of the August pages.</p>
+        </aside>
+      </header>
+
+      <div class="dfilters" role="group" aria-label="Filters">
+        <label>Category<select id="f-cat"><option value="all">All categories</option></select></label>
+        <label>Company stage<select id="f-stage"><option value="all">All stages</option></select></label>
+        <button type="button" class="btn btn-line btn-sm" id="f-reset">Reset</button>
+        <div class="f-count" aria-live="polite">Showing <b id="f-n">188</b> of <span id="f-total">188</span> companies</div>
+      </div>
+
+      <section class="kpis" id="kpis" aria-label="Headline numbers"></section>
+
+      <section class="panel" aria-labelledby="t-unit">
+        <p class="eyebrow">01 &middot; Pricing models</p>
+        <h2 id="t-unit">How they charge</h2>
+        <p class="sub">Each square is one company, grouped by its primary pricing model. Hover a square for the company.</p>
+        <ul class="legend" id="unit-legend"></ul>
+        <div id="unit"></div>
+        <p class="cap" id="unit-cap"></p>
+      </section>
+
+      <div class="grid2">
+        <section class="panel" aria-labelledby="t-cmp">
+          <p class="eyebrow">02 &middot; Pages vs surveys</p>
+          <h2 id="t-cmp">AI pricing: what pages show vs what surveys report</h2>
+          <p class="sub">This study's rate (with its 95% range) next to the published survey that measures the same thing. Survey margins are not published.</p>
+          <ul class="legend">
+            <li><span class="sw" style="background:var(--study);border-radius:50%"></span>This study, pricing pages</li>
+            <li><span class="sw" style="background:var(--survey);border-radius:50%"></span>Published survey (self-reported)</li>
+          </ul>
+          <div id="cmp"></div>
+          <p class="cap">ICONIQ Capital survey of ~300 AI-building software companies, via BCG, <i>Rethinking B2B Software Pricing in the Agentic AI Era</i> (Aug 2025). Kyle Poyar, <i>Growth Unhinged</i>, 2026 State of B2B Monetization (n=230). Different companies and methods, so the gap shows how far visible pricing sits from self-reported pricing.</p>
+        </section>
+
+        <section class="panel" aria-labelledby="t-mix">
+          <p class="eyebrow">03 &middot; AI pricing mix</p>
+          <h2 id="t-mix">How AI is charged</h2>
+          <p class="sub">Among companies whose pricing page mentions AI.</p>
+          <div class="mix">
+            <div id="mix-donut"></div>
+            <ul class="mix-list" id="mix-list"></ul>
+          </div>
+        </section>
+      </div>
+
+      <section class="panel" aria-labelledby="t-heat">
+        <p class="eyebrow">04 &middot; By category</p>
+        <h2 id="t-heat">Category fingerprints</h2>
+        <p class="sub">Each row is a category, each column a pricing practice; darker means more common. Click a category to filter the whole dashboard. Responds to the stage filter.</p>
+        <div class="heat-wrap"><div class="heat" id="heat" role="table" aria-label="Pricing practices by category"></div></div>
+        <div class="scale"><span>0%</span><span class="bar" id="scale-bar"></span><span>100%</span><span style="margin-left:12px">* fewer than 8 companies behind the figure; read as directional</span></div>
+      </section>
+
+      <div class="grid2">
+        <section class="panel" aria-labelledby="t-price">
+          <p class="eyebrow">05 &middot; Entry price</p>
+          <h2 id="t-price">Entry price by pricing model</h2>
+          <p class="sub">Cheapest paid plan in USD per month, one dot per company, on a log scale. The tick marks each model's median.</p>
+          <div id="price"></div>
+          <p class="cap" id="price-cap"></p>
+        </section>
+
+        <section class="panel" aria-labelledby="t-sso">
+          <p class="eyebrow">06 &middot; SSO</p>
+          <h2 id="t-sso">The SSO ladder</h2>
+          <p class="sub">Among pages that list SSO: the share of companies where single sign-on is available at or below each plan level.</p>
+          <div id="sso"></div>
+          <p class="cap" id="sso-cap"></p>
+        </section>
+      </div>
+
+      <section class="panel" aria-labelledby="t-tbl">
+        <p class="eyebrow">07 &middot; The data</p>
+        <h2 id="t-tbl">Every company</h2>
+        <p class="sub">The data behind every chart. Click a column to sort; search by name. Source links go to the live pricing page, which may have changed since August 2026.</p>
+        <div class="tbl-tools"><input class="tbl-search" id="q" type="search" placeholder="Search companies" aria-label="Search companies" /><span class="cap" id="tbl-n" style="margin:0"></span></div>
+        <div class="tbl-wrap"><table class="co" id="tbl"><thead><tr>
+          <th data-k="company" aria-sort="ascending">Company</th><th data-k="category">Category</th><th data-k="pricing_model">Model</th>
+          <th data-k="entry_paid_price_usd_monthly">Entry $/mo</th><th data-k="ai_monetization">AI pricing</th><th data-k="sso_location">SSO from</th><th data-k="source_url">Source</th>
+        </tr></thead><tbody></tbody></table></div>
+      </section>
+
+      <section class="notes" aria-label="Method notes">
+        <div><p class="eyebrow">Method</p><p>198 well-known B2B SaaS companies (18 in each of 11 categories) were read from their public pricing pages in August 2026; 188 had usable pricing. An October 2026 audit re-checked disputed rows against archived copies of the August pages; a blinded recheck then found the AI field under-counted, so every AI row coded as bundled or unclear was re-coded from the archived pages. 137 field corrections are logged with sources. This describes leading SaaS, not all SaaS, and measures visible list pricing only: AI or SSO sold through enterprise contracts never appears on a pricing page.</p></div>
+        <div><p class="eyebrow">Definitions</p><p>&ldquo;Charges extra for AI&rdquo; = AI only on pricier plans, sold as an add-on, or metered by credits with a way to buy more. &ldquo;SSO tax&rdquo; = SSO only on the top paid plan or an Enterprise contract. Ranges are 95% Wilson intervals.</p></div>
+      </section>
+    </div>
+  </main>
+
+  <div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+  <footer class="contact-wrap" id="contact">
+    <div class="contact">
+      <p class="eyebrow">Hiring a data or BI analyst?</p>
+      <h2>Let&rsquo;s talk.</h2>
+      <div class="contact-actions">
+        <a class="btn btn-white" href="mailto:tajay0704@gmail.com">tajay0704@gmail.com</a>
+        <button class="btn copy" type="button" data-copy="tajay0704@gmail.com">Copy email</button>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/ajay-karthick-thirumurthi-62224b216/" target="_blank" rel="noopener">LinkedIn &#8599;</a>
+        <a class="btn btn-ghost" href="https://github.com/Ajay0704" target="_blank" rel="noopener">GitHub &#8599;</a>
+        <a class="btn btn-ghost" href="../Ajay_Karthick_Resume.pdf">Résumé (PDF)</a>
+      </div>
+      <div class="foot">
+        <span>&copy; 2026 Ajay Karthick &middot; Seattle, WA</span>
+        <span><a href="../work.html">All work</a> &nbsp;&middot;&nbsp; <a href="#main">Back to top &uarr;</a></span>
+      </div>
+    </div>
+  </footer>
+
+<script id="saas-data">
+/* Auto-generated by scripts/build_dashboard_data.py */
+window.SAAS_META = {"n_total": 198, "n_ok": 188, "snapshot": "August 2026"};
+window.SAAS_DATA = [{"company":"Anthropic","category":"ai-native","stage":"late-private","pricing_model":"hybrid","has_seat_component":true,"entry_paid_price_usd_monthly":17.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://claude.com/pricing"},{"company":"Copy.ai","category":"ai-native","stage":"growth","pricing_model":"hybrid","has_seat_component":true,"entry_paid_price_usd_monthly":29.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.copy.ai/prices"},{"company":"Cursor","category":"ai-native","stage":"growth","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":20.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://www.cursor.com/pricing"},{"company":"DeepL","category":"ai-native","stage":"late-private","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":8.74,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://www.deepl.com/pro"},{"company":"ElevenLabs","category":"ai-native","stage":"growth","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":6.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://elevenlabs.io/pricing"},{"company":"Fireflies.ai","category":"ai-native","stage":"growth","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":10.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://fireflies.ai/pricing"},{"company":"Gamma","category":"ai-native","stage":"growth","pricing_model":"hybrid","has_seat_component":true,"entry_paid_price_usd_monthly":10.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://gamma.app/pricing"},{"company":"GitHub Copilot","category":"ai-native","stage":"public","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":10.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://github.com/features/copilot/plans"},{"company":"Glean","category":"ai-native","stage":"late-private","pricing_model":"contact_only","has_seat_component":null,"entry_paid_price_usd_monthly":null,"entry_price_basis":null,"has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"unknown","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.glean.com/pricing"},{"company":"Grammarly","category":"ai-native","stage":"late-private","pricing_model":"flat_rate","has_seat_component":false,"entry_paid_price_usd_monthly":12.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.grammarly.com/plans"},{"company":"Jasper","category":"ai-native","stage":"growth","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":59.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.jasper.ai/pricing"},{"company":"Lovable","category":"ai-native","stage":"growth","pricing_model":"usage_based","has_seat_component":false,"entry_paid_price_usd_monthly":null,"entry_price_basis":"usage","has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://lovable.dev/pricing"},{"company":"OpenAI","category":"ai-native","stage":"late-private","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":8.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://openai.com/chatgpt/pricing/"},{"company":"Otter.ai","category":"ai-native","stage":"growth","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":8.33,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://otter.ai/pricing"},{"company":"Perplexity","category":"ai-native","stage":"growth","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":20.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://www.perplexity.ai/pro"},{"company":"Runway","category":"ai-native","stage":"growth","pricing_model":"usage_based","has_seat_component":false,"entry_paid_price_usd_monthly":12.0,"entry_price_basis":"usage","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://runway.com/pricing"},{"company":"Synthesia","category":"ai-native","stage":"late-private","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":18.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.synthesia.io/pricing"},{"company":"Writer","category":"ai-native","stage":"late-private","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":null,"entry_price_basis":"per_seat","has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://writer.com/pricing/"},{"company":"Airtable","category":"collab-productivity","stage":"late-private","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":20.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://airtable.com/pricing"},{"company":"Asana","category":"collab-productivity","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":10.99,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://asana.com/pricing"},{"company":"Basecamp","category":"collab-productivity","stage":"bootstrapped","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":15.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":true,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://basecamp.com/pricing"},{"company":"Box","category":"collab-productivity","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":15.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://www.box.com/pricing"},{"company":"Calendly","category":"collab-productivity","stage":"late-private","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":10.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://calendly.com/pricing"},{"company":"ClickUp","category":"collab-productivity","stage":"late-private","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":7.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://clickup.com/pricing"},{"company":"Confluence","category":"collab-productivity","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":5.5,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://www.atlassian.com/software/confluence/pricing"},{"company":"Dropbox","category":"collab-productivity","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":9.99,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"higher_tier","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://www.dropbox.com/plans"},{"company":"Loom","category":"collab-productivity","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":18.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"higher_tier","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.loom.com/pricing"},{"company":"Miro","category":"collab-productivity","stage":"late-private","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":8.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://miro.com/pricing/"},{"company":"monday.com","category":"collab-productivity","stage":"public","pricing_model":"hybrid","has_seat_component":true,"entry_paid_price_usd_monthly":9.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://monday.com/pricing"},{"company":"Notion","category":"collab-productivity","stage":"late-private","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":10.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://www.notion.com/pricing"},{"company":"Slack","category":"collab-productivity","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":7.25,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"higher_tier","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://slack.com/pricing"},{"company":"Todoist","category":"collab-productivity","stage":"bootstrapped","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":4.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.todoist.com/pricing"},{"company":"Trello","category":"collab-productivity","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":5.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"higher_tier","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://trello.com/pricing"},{"company":"Zoom","category":"collab-productivity","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":14.16,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://zoom.us/pricing"},{"company":"Apollo","category":"crm-sales","stage":"growth","pricing_model":"hybrid","has_seat_component":true,"entry_paid_price_usd_monthly":null,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.apollo.io/pricing"},{"company":"Attio","category":"crm-sales","stage":"growth","pricing_model":"hybrid","has_seat_component":true,"entry_paid_price_usd_monthly":44.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://attio.com/pricing"},{"company":"Clay","category":"crm-sales","stage":"growth","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":167.0,"entry_price_basis":"usage","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.clay.com/pricing"},{"company":"Close","category":"crm-sales","stage":"growth","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":9.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"all_tiers","sso_tax":false,"source_url":"https://www.close.com/pricing"},{"company":"Copper","category":"crm-sales","stage":"growth","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":29.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"higher_tier","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://www.copper.com/pricing"},{"company":"Freshsales","category":"crm-sales","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":9.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.freshworks.com/crm/pricing/"},{"company":"Gong","category":"crm-sales","stage":"late-private","pricing_model":"contact_only","has_seat_component":null,"entry_paid_price_usd_monthly":null,"entry_price_basis":null,"has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"unknown","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.gong.io/pricing/"},{"company":"HubSpot","category":"crm-sales","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":7.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.hubspot.com/pricing/crm"},{"company":"Insightly","category":"crm-sales","stage":"growth","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":29.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"higher_tier","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.insightly.com/pricing/"},{"company":"Keap","category":"crm-sales","stage":"growth","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":249.0,"entry_price_basis":"usage","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://keap.com/pricing"},{"company":"Nimble","category":"crm-sales","stage":"bootstrapped","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":24.9,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.nimble.com/pricing/"},{"company":"Nutshell","category":"crm-sales","stage":"bootstrapped","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":13.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.nutshell.com/pricing"},{"company":"Outreach","category":"crm-sales","stage":"late-private","pricing_model":"hybrid","has_seat_component":true,"entry_paid_price_usd_monthly":null,"entry_price_basis":null,"has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.outreach.ai/pricing"},{"company":"Pipedrive","category":"crm-sales","stage":"late-private","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":14.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.pipedrive.com/en/pricing"},{"company":"Salesflare","category":"crm-sales","stage":"bootstrapped","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":29.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":false,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://salesflare.com/pricing"},{"company":"Salesforce","category":"crm-sales","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":25.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.salesforce.com/editions-pricing/sales-cloud/"},{"company":"Salesloft","category":"crm-sales","stage":"late-private","pricing_model":"contact_only","has_seat_component":null,"entry_paid_price_usd_monthly":null,"entry_price_basis":null,"has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"unknown","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://salesloft.com/pricing"},{"company":"Zoho CRM","category":"crm-sales","stage":"bootstrapped","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":8.36,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"higher_tier","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.zoho.com/crm/zohocrm-pricing.html"},{"company":"Amplitude","category":"data-analytics","stage":"public","pricing_model":"usage_based","has_seat_component":false,"entry_paid_price_usd_monthly":null,"entry_price_basis":"usage","has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://amplitude.com/pricing"},{"company":"Census","category":"data-analytics","stage":"early","pricing_model":"usage_based","has_seat_component":false,"entry_paid_price_usd_monthly":null,"entry_price_basis":"usage","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.fivetran.com/pricing"},{"company":"Databricks","category":"data-analytics","stage":"late-private","pricing_model":"usage_based","has_seat_component":false,"entry_paid_price_usd_monthly":null,"entry_price_basis":"usage","has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.databricks.com/product/pricing"},{"company":"Datadog","category":"data-analytics","stage":"public","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":15.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"all_tiers","sso_tax":false,"source_url":"https://www.datadoghq.com/pricing/"},{"company":"dbt Labs","category":"data-analytics","stage":"growth","pricing_model":"hybrid","has_seat_component":true,"entry_paid_price_usd_monthly":100.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"higher_tier","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.getdbt.com/pricing"},{"company":"Fivetran","category":"data-analytics","stage":"growth","pricing_model":"usage_based","has_seat_component":false,"entry_paid_price_usd_monthly":null,"entry_price_basis":"usage","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.fivetran.com/pricing"},{"company":"Grafana","category":"data-analytics","stage":"growth","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":19.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://grafana.com/pricing/"},{"company":"Hex","category":"data-analytics","stage":"growth","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":36.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://hex.tech/pricing/"},{"company":"Hightouch","category":"data-analytics","stage":"growth","pricing_model":"usage_based","has_seat_component":false,"entry_paid_price_usd_monthly":null,"entry_price_basis":"usage","has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://hightouch.com/pricing"},{"company":"Metabase","category":"data-analytics","stage":"growth","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":90.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://www.metabase.com/pricing/"},{"company":"Mixpanel","category":"data-analytics","stage":"growth","pricing_model":"usage_based","has_seat_component":false,"entry_paid_price_usd_monthly":null,"entry_price_basis":"usage","has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://mixpanel.com/pricing/"},{"company":"New Relic","category":"data-analytics","stage":"public","pricing_model":"hybrid","has_seat_component":true,"entry_paid_price_usd_monthly":10.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://newrelic.com/pricing"},{"company":"Power BI","category":"data-analytics","stage":"public","pricing_model":"hybrid","has_seat_component":true,"entry_paid_price_usd_monthly":14.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"higher_tier","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"all_tiers","sso_tax":false,"source_url":"https://powerbi.microsoft.com/en-us/pricing/"},{"company":"Segment","category":"data-analytics","stage":"public","pricing_model":"contact_only","has_seat_component":null,"entry_paid_price_usd_monthly":null,"entry_price_basis":null,"has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://www.twilio.com/en-us/pricing/customer-data"},{"company":"Sigma","category":"data-analytics","stage":"growth","pricing_model":"contact_only","has_seat_component":null,"entry_paid_price_usd_monthly":null,"entry_price_basis":null,"has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"unknown","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.sigmacomputing.com/pricing"},{"company":"Snowflake","category":"data-analytics","stage":"public","pricing_model":"usage_based","has_seat_component":false,"entry_paid_price_usd_monthly":null,"entry_price_basis":"usage","has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"unknown","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.snowflake.com/en/data-cloud/pricing-options/"},{"company":"Tableau","category":"data-analytics","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":15.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.tableau.com/pricing/teams-orgs"},{"company":"ThoughtSpot","category":"data-analytics","stage":"late-private","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":25.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.thoughtspot.com/pricing"},{"company":"Adobe Creative Cloud","category":"design-creative","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":9.99,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.adobe.com/creativecloud/plans.html"},{"company":"Balsamiq","category":"design-creative","stage":"bootstrapped","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":16.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://balsamiq.com/buy/"},{"company":"Beautiful.ai","category":"design-creative","stage":"growth","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":12.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.beautiful.ai/pricing"},{"company":"Canva","category":"design-creative","stage":"late-private","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":15.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.canva.com/pricing/"},{"company":"Descript","category":"design-creative","stage":"growth","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":16.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.descript.com/pricing"},{"company":"Figma","category":"design-creative","stage":"public","pricing_model":"hybrid","has_seat_component":true,"entry_paid_price_usd_monthly":12.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.figma.com/pricing/"},{"company":"Framer","category":"design-creative","stage":"growth","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":10.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.framer.com/pricing/"},{"company":"Lucidchart","category":"design-creative","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":9.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.lucidchart.com/pages/pricing"},{"company":"Marq","category":"design-creative","stage":"growth","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":10.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.marq.com/pricing"},{"company":"Piktochart","category":"design-creative","stage":"bootstrapped","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":10.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://piktochart.com/pricing/"},{"company":"Pitch","category":"design-creative","stage":"growth","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":11.58,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://pitch.com/pricing"},{"company":"Sketch","category":"design-creative","stage":"bootstrapped","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":12.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://www.sketch.com/pricing/"},{"company":"Squarespace","category":"design-creative","stage":"public","pricing_model":"flat_rate","has_seat_component":false,"entry_paid_price_usd_monthly":12.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.squarespace.com/pricing"},{"company":"Vimeo","category":"design-creative","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":12.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"higher_tier","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://vimeo.com/upgrade"},{"company":"Visme","category":"design-creative","stage":"bootstrapped","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":12.25,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.visme.co/pricing/"},{"company":"Wistia","category":"design-creative","stage":"bootstrapped","pricing_model":"flat_rate","has_seat_component":false,"entry_paid_price_usd_monthly":79.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://wistia.com/pricing"},{"company":"Wix","category":"design-creative","stage":"public","pricing_model":"flat_rate","has_seat_component":false,"entry_paid_price_usd_monthly":13.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.wix.com/plans"},{"company":"Zeplin","category":"design-creative","stage":"growth","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":13.75,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://zeplin.io/pricing/"},{"company":"Algolia","category":"dev-tools","stage":"growth","pricing_model":"usage_based","has_seat_component":false,"entry_paid_price_usd_monthly":0.5,"entry_price_basis":"usage","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"higher_tier","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://www.algolia.com/pricing/"},{"company":"CircleCI","category":"dev-tools","stage":"growth","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":15.0,"entry_price_basis":"usage","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://circleci.com/pricing/"},{"company":"Docker","category":"dev-tools","stage":"growth","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":9.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://www.docker.com/pricing/"},{"company":"Fastly","category":"dev-tools","stage":"public","pricing_model":"usage_based","has_seat_component":false,"entry_paid_price_usd_monthly":500.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.fastly.com/pricing/"},{"company":"GitHub","category":"dev-tools","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":4.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://github.com/pricing"},{"company":"GitLab","category":"dev-tools","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":29.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://about.gitlab.com/pricing/"},{"company":"Linear","category":"dev-tools","stage":"growth","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":10.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://linear.app/pricing"},{"company":"MongoDB","category":"dev-tools","stage":"public","pricing_model":"usage_based","has_seat_component":false,"entry_paid_price_usd_monthly":8.0,"entry_price_basis":"usage","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.mongodb.com/pricing"},{"company":"Netlify","category":"dev-tools","stage":"growth","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":9.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.netlify.com/pricing/"},{"company":"PlanetScale","category":"dev-tools","stage":"growth","pricing_model":"flat_rate","has_seat_component":false,"entry_paid_price_usd_monthly":5.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":false,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://planetscale.com/pricing"},{"company":"Postman","category":"dev-tools","stage":"late-private","pricing_model":"hybrid","has_seat_component":true,"entry_paid_price_usd_monthly":9.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.postman.com/pricing/"},{"company":"Render","category":"dev-tools","stage":"growth","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":25.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://render.com/pricing"},{"company":"Replit","category":"dev-tools","stage":"growth","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":20.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://replit.com/pricing"},{"company":"Retool","category":"dev-tools","stage":"late-private","pricing_model":"hybrid","has_seat_component":true,"entry_paid_price_usd_monthly":10.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://retool.com/pricing"},{"company":"Sentry","category":"dev-tools","stage":"growth","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":26.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://sentry.io/pricing/"},{"company":"Supabase","category":"dev-tools","stage":"growth","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":25.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://supabase.com/pricing"},{"company":"Twilio","category":"dev-tools","stage":"public","pricing_model":"usage_based","has_seat_component":false,"entry_paid_price_usd_monthly":0.0001,"entry_price_basis":"usage","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.twilio.com/en-us/pricing"},{"company":"Vercel","category":"dev-tools","stage":"late-private","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":20.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://vercel.com/pricing"},{"company":"Bill.com","category":"fintech-ops","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":49.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"higher_tier","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.bill.com/product/pricing"},{"company":"Brex","category":"fintech-ops","stage":"late-private","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":12.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://www.brex.com/pricing"},{"company":"Chargebee","category":"fintech-ops","stage":"growth","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":400.0,"entry_price_basis":"usage","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"higher_tier","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.chargebee.com/pricing/"},{"company":"Expensify","category":"fintech-ops","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":5.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://use.expensify.com/pricing"},{"company":"FreshBooks","category":"fintech-ops","stage":"private","pricing_model":"flat_rate","has_seat_component":false,"entry_paid_price_usd_monthly":23.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.freshbooks.com/pricing"},{"company":"Melio","category":"fintech-ops","stage":"growth","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":25.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://melio.com/pricing"},{"company":"Mercury","category":"fintech-ops","stage":"growth","pricing_model":"flat_rate","has_seat_component":false,"entry_paid_price_usd_monthly":29.9,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://mercury.com/pricing"},{"company":"Paddle","category":"fintech-ops","stage":"growth","pricing_model":"usage_based","has_seat_component":false,"entry_paid_price_usd_monthly":null,"entry_price_basis":"usage","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.paddle.com/pricing"},{"company":"Pilot","category":"fintech-ops","stage":"growth","pricing_model":"flat_rate","has_seat_component":false,"entry_paid_price_usd_monthly":99.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://pilot.com/pricing"},{"company":"QuickBooks","category":"fintech-ops","stage":"public","pricing_model":"flat_rate","has_seat_component":false,"entry_paid_price_usd_monthly":38.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://quickbooks.intuit.com/pricing/"},{"company":"Ramp","category":"fintech-ops","stage":"late-private","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":15.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://ramp.com/pricing"},{"company":"Recurly","category":"fintech-ops","stage":"growth","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":249.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"higher_tier","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://recurly.com/pricing/"},{"company":"Rho","category":"fintech-ops","stage":"growth","pricing_model":"contact_only","has_seat_component":null,"entry_paid_price_usd_monthly":null,"entry_price_basis":null,"has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.rho.co/pricing"},{"company":"Stripe","category":"fintech-ops","stage":"late-private","pricing_model":"usage_based","has_seat_component":false,"entry_paid_price_usd_monthly":null,"entry_price_basis":"usage","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://stripe.com/pricing"},{"company":"Wave","category":"fintech-ops","stage":"private","pricing_model":"flat_rate","has_seat_component":false,"entry_paid_price_usd_monthly":19.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":true,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.waveapps.com/pricing"},{"company":"Xero","category":"fintech-ops","stage":"public","pricing_model":"flat_rate","has_seat_component":false,"entry_paid_price_usd_monthly":25.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.xero.com/us/pricing-plans/"},{"company":"Zuora","category":"fintech-ops","stage":"public","pricing_model":"contact_only","has_seat_component":null,"entry_paid_price_usd_monthly":null,"entry_price_basis":null,"has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"unknown","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.zuora.com/pricing/"},{"company":"15Five","category":"hr-people","stage":"growth","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":4.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"all_tiers","sso_tax":false,"source_url":"https://www.15five.com/pricing/"},{"company":"Ashby","category":"hr-people","stage":"growth","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":400.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.ashbyhq.com/pricing"},{"company":"BambooHR","category":"hr-people","stage":"private","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":10.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"higher_tier","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.bamboohr.com/pricing/"},{"company":"Culture Amp","category":"hr-people","stage":"late-private","pricing_model":"contact_only","has_seat_component":null,"entry_paid_price_usd_monthly":null,"entry_price_basis":null,"has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"unknown","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"all_tiers","sso_tax":false,"source_url":"https://www.cultureamp.com/pricing"},{"company":"Deel","category":"hr-people","stage":"late-private","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":14.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.deel.com/pricing/"},{"company":"Greenhouse","category":"hr-people","stage":"late-private","pricing_model":"contact_only","has_seat_component":null,"entry_paid_price_usd_monthly":null,"entry_price_basis":null,"has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"unknown","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"all_tiers","sso_tax":false,"source_url":"https://www.greenhouse.com/pricing"},{"company":"Gusto","category":"hr-people","stage":"late-private","pricing_model":"flat_rate","has_seat_component":false,"entry_paid_price_usd_monthly":35.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":false,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://gusto.com/product/pricing"},{"company":"Hibob","category":"hr-people","stage":"late-private","pricing_model":"contact_only","has_seat_component":null,"entry_paid_price_usd_monthly":null,"entry_price_basis":null,"has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":false,"ai_monetization":"unknown","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.hibob.com/pricing/"},{"company":"Justworks","category":"hr-people","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":8.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":false,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://justworks.com/pricing"},{"company":"Lattice","category":"hr-people","stage":"late-private","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":4.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"all_tiers","sso_tax":false,"source_url":"https://lattice.com/pricing"},{"company":"Lever","category":"hr-people","stage":"private","pricing_model":"contact_only","has_seat_component":null,"entry_paid_price_usd_monthly":null,"entry_price_basis":null,"has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.lever.co/pricing/"},{"company":"Personio","category":"hr-people","stage":"late-private","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":8.8,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":false,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"all_tiers","sso_tax":false,"source_url":"https://www.personio.com/en/pricing/"},{"company":"Remote","category":"hr-people","stage":"late-private","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":29.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://remote.com/pricing"},{"company":"Rippling","category":"hr-people","stage":"late-private","pricing_model":"contact_only","has_seat_component":null,"entry_paid_price_usd_monthly":null,"entry_price_basis":null,"has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"unknown","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.rippling.com/pricing"},{"company":"Workable","category":"hr-people","stage":"growth","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":299.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://www.workable.com/pricing"},{"company":"Ahrefs","category":"martech","stage":"bootstrapped","pricing_model":"flat_rate","has_seat_component":false,"entry_paid_price_usd_monthly":129.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://ahrefs.com/pricing"},{"company":"Braze","category":"martech","stage":"public","pricing_model":"usage_based","has_seat_component":false,"entry_paid_price_usd_monthly":null,"entry_price_basis":"usage","has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://www.braze.com/pricing"},{"company":"Brevo","category":"martech","stage":"growth","pricing_model":"usage_based","has_seat_component":false,"entry_paid_price_usd_monthly":null,"entry_price_basis":"usage","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.brevo.com/pricing/"},{"company":"Buffer","category":"martech","stage":"bootstrapped","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":5.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://buffer.com/pricing"},{"company":"Constant Contact","category":"martech","stage":"private","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":12.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.constantcontact.com/pricing"},{"company":"Customer.io","category":"martech","stage":"growth","pricing_model":"usage_based","has_seat_component":false,"entry_paid_price_usd_monthly":null,"entry_price_basis":"usage","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://customer.io/pricing"},{"company":"Hootsuite","category":"martech","stage":"private","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":99.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.hootsuite.com/plans"},{"company":"Kit","category":"martech","stage":"growth","pricing_model":"flat_rate","has_seat_component":false,"entry_paid_price_usd_monthly":33.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://kit.com/pricing"},{"company":"Klaviyo","category":"martech","stage":"public","pricing_model":"usage_based","has_seat_component":false,"entry_paid_price_usd_monthly":null,"entry_price_basis":"usage","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"higher_tier","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.klaviyo.com/pricing"},{"company":"Mailchimp","category":"martech","stage":"public","pricing_model":"usage_based","has_seat_component":false,"entry_paid_price_usd_monthly":13.0,"entry_price_basis":"usage","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://mailchimp.com/pricing/"},{"company":"Mailgun","category":"martech","stage":"growth","pricing_model":"usage_based","has_seat_component":false,"entry_paid_price_usd_monthly":15.0,"entry_price_basis":"usage","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"higher_tier","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://www.mailgun.com/pricing/"},{"company":"Moz","category":"martech","stage":"private","pricing_model":"flat_rate","has_seat_component":false,"entry_paid_price_usd_monthly":49.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://moz.com/products/pro/pricing"},{"company":"Semrush","category":"martech","stage":"public","pricing_model":"flat_rate","has_seat_component":false,"entry_paid_price_usd_monthly":117.33,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.semrush.com/prices/"},{"company":"Sprout Social","category":"martech","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":79.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"higher_tier","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://sproutsocial.com/pricing/"},{"company":"Typeform","category":"martech","stage":"growth","pricing_model":"flat_rate","has_seat_component":false,"entry_paid_price_usd_monthly":28.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.typeform.com/pricing/"},{"company":"Webflow","category":"martech","stage":"late-private","pricing_model":"hybrid","has_seat_component":true,"entry_paid_price_usd_monthly":15.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://webflow.com/pricing"},{"company":"1Password","category":"security-identity","stage":"late-private","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":8.99,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://1password.com/business-pricing"},{"company":"Auth0","category":"security-identity","stage":"public","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":35.0,"entry_price_basis":"usage","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"all_tiers","sso_tax":false,"source_url":"https://auth0.com/pricing"},{"company":"Bitwarden","category":"security-identity","stage":"growth","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":1.65,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://bitwarden.com/pricing/"},{"company":"Cloudflare","category":"security-identity","stage":"public","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":20.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"all_tiers","sso_tax":false,"source_url":"https://www.cloudflare.com/plans/"},{"company":"CrowdStrike","category":"security-identity","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":7.99,"entry_price_basis":"usage","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.crowdstrike.com/products/"},{"company":"Drata","category":"security-identity","stage":"late-private","pricing_model":"contact_only","has_seat_component":null,"entry_paid_price_usd_monthly":null,"entry_price_basis":null,"has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"unknown","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://drata.com/pricing"},{"company":"Duo Security","category":"security-identity","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":3.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"higher_tier","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://duo.com/pricing"},{"company":"JumpCloud","category":"security-identity","stage":"growth","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":9.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://jumpcloud.com/pricing"},{"company":"LastPass","category":"security-identity","stage":"private","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":2.99,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://www.lastpass.com/pricing"},{"company":"Okta","category":"security-identity","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":6.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"all_tiers","sso_tax":false,"source_url":"https://www.okta.com/pricing/"},{"company":"Snyk","category":"security-identity","stage":"late-private","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":25.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://snyk.io/plans/"},{"company":"Sysdig","category":"security-identity","stage":"late-private","pricing_model":"contact_only","has_seat_component":null,"entry_paid_price_usd_monthly":null,"entry_price_basis":null,"has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"unknown","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://sysdig.com/pricing"},{"company":"Tailscale","category":"security-identity","stage":"growth","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":8.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"higher_tier","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://tailscale.com/pricing"},{"company":"Twingate","category":"security-identity","stage":"growth","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":5.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://www.twingate.com/pricing"},{"company":"Vanta","category":"security-identity","stage":"late-private","pricing_model":"contact_only","has_seat_component":null,"entry_paid_price_usd_monthly":null,"entry_price_basis":null,"has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.vanta.com/pricing"},{"company":"Wiz","category":"security-identity","stage":"late-private","pricing_model":"contact_only","has_seat_component":null,"entry_paid_price_usd_monthly":null,"entry_price_basis":null,"has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":false,"ai_monetization":"unknown","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.wiz.io/pricing"},{"company":"WorkOS","category":"security-identity","stage":"growth","pricing_model":"usage_based","has_seat_component":false,"entry_paid_price_usd_monthly":null,"entry_price_basis":"usage","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":false,"ai_monetization":"none","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"all_tiers","sso_tax":false,"source_url":"https://workos.com/pricing"},{"company":"Ada","category":"support-cx","stage":"late-private","pricing_model":"contact_only","has_seat_component":null,"entry_paid_price_usd_monthly":null,"entry_price_basis":null,"has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"unknown","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.ada.cx/pricing"},{"company":"Crisp","category":"support-cx","stage":"bootstrapped","pricing_model":"flat_rate","has_seat_component":false,"entry_paid_price_usd_monthly":45.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://crisp.chat/en/pricing/"},{"company":"Dixa","category":"support-cx","stage":"growth","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":103.03,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://www.dixa.com/pricing/"},{"company":"Freshdesk","category":"support-cx","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":19.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://www.freshworks.com/freshdesk/pricing/"},{"company":"Front","category":"support-cx","stage":"growth","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":25.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://front.com/pricing"},{"company":"Gladly","category":"support-cx","stage":"late-private","pricing_model":"contact_only","has_seat_component":null,"entry_paid_price_usd_monthly":null,"entry_price_basis":null,"has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"unknown","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.gladly.ai/pricing/"},{"company":"Gorgias","category":"support-cx","stage":"growth","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":40.0,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.gorgias.com/pricing"},{"company":"HappyFox","category":"support-cx","stage":"bootstrapped","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":24.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"enterprise_only","sso_tax":true,"source_url":"https://www.happyfox.com/pricing/"},{"company":"Help Scout","category":"support-cx","stage":"growth","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":25.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://www.helpscout.com/pricing/"},{"company":"Intercom","category":"support-cx","stage":"late-private","pricing_model":"hybrid","has_seat_component":true,"entry_paid_price_usd_monthly":29.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://www.intercom.com/pricing"},{"company":"Kayako","category":"support-cx","stage":"private","pricing_model":"usage_based","has_seat_component":false,"entry_paid_price_usd_monthly":1.0,"entry_price_basis":"usage","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"usage_credits","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"http://kayako.com/pricing"},{"company":"Kustomer","category":"support-cx","stage":"private","pricing_model":"contact_only","has_seat_component":null,"entry_paid_price_usd_monthly":null,"entry_price_basis":null,"has_public_pricing":false,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"unknown","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"all_tiers","sso_tax":false,"source_url":"https://www.kustomer.com/pricing/"},{"company":"LiveAgent","category":"support-cx","stage":"bootstrapped","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":10.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":true,"sso_location":"mid_tier","sso_tax":false,"source_url":"https://www.liveagent.com/pricing/"},{"company":"Reamaze","category":"support-cx","stage":"bootstrapped","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":29.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":false,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.reamaze.com/pricing"},{"company":"Tidio","category":"support-cx","stage":"growth","pricing_model":"hybrid","has_seat_component":false,"entry_paid_price_usd_monthly":24.17,"entry_price_basis":"flat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"higher_tier","charges_extra_for_ai":true,"sso_mentioned":true,"sso_location":"top_paid_tier","sso_tax":true,"source_url":"https://www.tidio.com/pricing/"},{"company":"Zendesk","category":"support-cx","stage":"public","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":19.0,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":false,"ai_features_mentioned":true,"ai_monetization":"paid_addon","charges_extra_for_ai":true,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.zendesk.com/pricing/"},{"company":"Zoho Desk","category":"support-cx","stage":"bootstrapped","pricing_model":"per_seat","has_seat_component":true,"entry_paid_price_usd_monthly":4.39,"entry_price_basis":"per_seat","has_public_pricing":true,"has_enterprise_contact_tier":true,"has_free_tier":true,"ai_features_mentioned":true,"ai_monetization":"bundled","charges_extra_for_ai":false,"sso_mentioned":false,"sso_location":"not_mentioned","sso_tax":false,"source_url":"https://www.zoho.com/desk/pricing.html"}];
+</script>
+<script>
+(function () {
+  const DATA = window.SAAS_DATA || [];
+  const META = window.SAAS_META || { n_ok: DATA.length };
+  const NS = 'http://www.w3.org/2000/svg';
+  const css = getComputedStyle(document.querySelector('.dash'));
+  const v = (n) => css.getPropertyValue(n).trim();
+
+  const CAT = { 'ai-native': 'AI-native', 'collab-productivity': 'Collaboration', 'crm-sales': 'CRM & Sales',
+    'data-analytics': 'Data & Analytics', 'design-creative': 'Design & Creative', 'dev-tools': 'Developer Tools',
+    'fintech-ops': 'Fintech & Ops', 'hr-people': 'HR & People', 'martech': 'Martech',
+    'security-identity': 'Security & Identity', 'support-cx': 'Support & CX' };
+  const STAGE = { public: 'Public', 'late-private': 'Late-stage private', growth: 'Growth', early: 'Early',
+    bootstrapped: 'Bootstrapped', private: 'Private (stage unclear)' };
+  const MODELS = [
+    { k: 'per_seat', label: 'Per seat', c: v('--m-seat') },
+    { k: 'hybrid', label: 'Hybrid (subscription + usage)', c: v('--m-hybrid') },
+    { k: 'usage_based', label: 'Usage-based', c: v('--m-usage') },
+    { k: 'flat_rate', label: 'Flat rate', c: v('--m-flat') },
+    { k: 'contact_only', label: 'No public price', c: v('--m-contact') },
+  ];
+  const MODEL = Object.fromEntries(MODELS.map(m => [m.k, m]));
+  const AIM = [
+    { k: 'usage_credits', label: 'Metered credits', c: v('--a-credits'), extra: true },
+    { k: 'paid_addon', label: 'Separate add-on', c: v('--a-addon'), extra: true },
+    { k: 'higher_tier', label: 'Premium tiers only', c: v('--a-tier'), extra: true },
+    { k: 'bundled', label: 'Bundled', c: v('--a-bundled'), extra: false },
+    { k: 'unknown', label: 'Unclear', c: v('--a-unknown'), extra: false },
+  ];
+  const AIL = Object.fromEntries(AIM.map(a => [a.k, a.label]));
+  AIL.none = 'No AI mentioned';
+  const SSO_LV = [
+    { k: 'all_tiers', label: 'All plans' }, { k: 'mid_tier', label: 'Mid tier' },
+    { k: 'top_paid_tier', label: 'Top paid plan' }, { k: 'enterprise_only', label: 'Enterprise only' },
+  ];
+  const SSOL = Object.fromEntries(SSO_LV.map(s => [s.k, s.label]));
+  SSOL.not_mentioned = 'Not listed';
+  // Survey reference points (see caption for sources)
+  const SURVEYS = [
+    { row: 'extra', name: 'ICONIQ / BCG', pct: 68 },
+    { row: 'credits', name: 'Kyle Poyar', pct: 29 },
+  ];
+  // sequential blue ramp, near-zero step first
+  const RAMP = ['#eef4fc', '#cde2fb', '#b7d3f6', '#9ec5f4', '#86b6ef', '#6da7ec', '#5598e7', '#3987e5', '#2a78d6', '#256abf', '#1c5cab', '#184f95', '#104281'];
+
+  const state = { cat: 'all', stage: 'all', q: '', sort: 'company', dir: 1 };
+  const $ = (id) => document.getElementById(id);
+  const pct = (k, n) => (n ? (100 * k) / n : NaN);
+  const fmtP = (x) => (isFinite(x) ? Math.round(x) + '%' : '—');
+  const money = (x) => (x == null ? '—' : x >= 100 ? '$' + Math.round(x) : x >= 1 ? '$' + (+x.toFixed(2)).toString() : '$' + x);
+  function wilson(k, n) {
+    if (!n) return null;
+    const z = 1.96, p = k / n, d = 1 + (z * z) / n, c = p + (z * z) / (2 * n);
+    const h = z * Math.sqrt((p * (1 - p)) / n + (z * z) / (4 * n * n));
+    return [(100 * (c - h)) / d, (100 * (c + h)) / d];
+  }
+  function el(tag, attrs, parent, text) {
+    const e = document.createElementNS(NS, tag);
+    for (const a in attrs) e.setAttribute(a, attrs[a]);
+    if (text != null) e.textContent = text;
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function h(tag, cls, parent, text) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+
+  // ---------- tooltip (textContent only: names come from data) ----------
+  const tip = $('tip');
+  function showTip(evt, rows) {
+    tip.replaceChildren();
+    rows.forEach((r, i) => {
+      const d = h('div', i === 0 ? 'tv' : 'tl', tip);
+      if (r.key) { const k = h('span', 'tk', d); k.style.background = r.key; }
+      d.appendChild(document.createTextNode(r.t));
+    });
+    tip.classList.add('on');
+    let x, y;
+    if (evt.clientX != null && evt.type !== 'focus') { x = evt.clientX; y = evt.clientY; }
+    else { const b = evt.target.getBoundingClientRect(); x = b.left + b.width / 2; y = b.top; }
+    const w = tip.offsetWidth, ht = tip.offsetHeight;
+    let left = x + 14, top = y - ht - 12;
+    if (left + w > innerWidth - 8) left = x - w - 14;
+    if (top < 8) top = y + 18;
+    tip.style.left = Math.max(8, left) + 'px';
+    tip.style.top = top + 'px';
+  }
+  const hideTip = () => tip.classList.remove('on');
+  function hover(node, rowsFn) {
+    node.addEventListener('pointermove', (e) => showTip(e, rowsFn()));
+    node.addEventListener('pointerleave', hideTip);
+    node.addEventListener('focus', (e) => showTip(e, rowsFn()));
+    node.addEventListener('blur', hideTip);
+  }
+
+  // ---------- filters ----------
+  const byStage = () => DATA.filter(r => state.stage === 'all' || r.stage === state.stage);
+  const rowsNow = () => byStage().filter(r => state.cat === 'all' || r.category === state.cat);
+  function initFilters() {
+    const cats = [...new Set(DATA.map(r => r.category))].sort((a, b) => CAT[a].localeCompare(CAT[b]));
+    cats.forEach(c => { const o = h('option', null, $('f-cat'), CAT[c]); o.value = c; });
+    Object.keys(STAGE).filter(s => DATA.some(r => r.stage === s)).forEach(s => {
+      const o = h('option', null, $('f-stage'), STAGE[s] + ' (' + DATA.filter(r => r.stage === s).length + ')'); o.value = s;
+    });
+    $('f-cat').addEventListener('change', e => { state.cat = e.target.value; render(); });
+    $('f-stage').addEventListener('change', e => { state.stage = e.target.value; render(); });
+    $('f-reset').addEventListener('click', () => { state.cat = 'all'; state.stage = 'all'; $('f-cat').value = 'all'; $('f-stage').value = 'all'; render(); });
+    $('f-total').textContent = DATA.length;
+    $('h-n').textContent = DATA.length;
+  }
+
+  // ---------- KPI tiles ----------
+  function renderKpis(R) {
+    const n = R.length;
+    const ai = R.filter(r => r.ai_features_mentioned);
+    const sso = R.filter(r => r.sso_mentioned);
+    const k = (pred, rows) => rows.filter(pred).length;
+    const extra = k(r => r.charges_extra_for_ai, ai), ci = wilson(extra, ai.length);
+    const tiles = [
+      { k: 'Companies', v: n, d: 'of ' + META.n_ok + ' with usable pricing' },
+      { k: 'Charge per seat', v: fmtP(pct(k(r => r.pricing_model === 'per_seat', R), n)), d: 'primary model; ' + fmtP(pct(k(r => r.has_seat_component === true, R), k(r => r.has_seat_component != null, R))) + ' charge per seat somewhere' },
+      { k: 'Charge extra for AI', v: fmtP(pct(extra, ai.length)), d: extra + ' of ' + ai.length + ' that mention AI' + (ci ? ' · 95% range ' + Math.round(ci[0]) + '–' + Math.round(ci[1]) + '%' : ''), accent: true },
+      { k: 'SSO tax', v: fmtP(pct(k(r => r.sso_tax, sso), sso.length)), d: 'of ' + sso.length + ' pages that list SSO; ' + fmtP(pct(k(r => r.sso_tax, R), n)) + ' of all' },
+      { k: 'Show a public price', v: fmtP(pct(k(r => r.has_public_pricing, R), n)), d: fmtP(pct(k(r => r.has_enterprise_contact_tier, R), n)) + ' also keep a contact-sales tier' },
+      { k: 'Offer a free plan', v: fmtP(pct(k(r => r.has_free_tier, R), n)), d: 'a $0-forever plan, not a trial' },
+    ];
+    const box = $('kpis'); box.replaceChildren();
+    tiles.forEach(t => {
+      const d = h('div', 'kpi', box);
+      h('div', 'k', d, t.k); h('div', 'v' + (t.accent ? ' accent' : ''), d, String(t.v)); h('div', 'd', d, t.d);
+    });
+  }
+
+  // ---------- unit chart ----------
+  function renderUnit(R) {
+    const box = $('unit'); box.replaceChildren();
+    const leg = $('unit-legend'); leg.replaceChildren();
+    const n = R.length;
+    MODELS.forEach(m => {
+      const c = R.filter(r => r.pricing_model === m.k).length;
+      const li = h('li', null, leg); const s = h('span', 'sw', li); s.style.background = m.c;
+      li.appendChild(document.createTextNode(m.label + ' '));
+      h('span', 'n', li, c + ' · ' + fmtP(pct(c, n)));
+    });
+    if (!n) { h('div', 'empty', box, 'No companies match these filters.'); $('unit-cap').textContent = ''; return; }
+    const order = Object.fromEntries(MODELS.map((m, i) => [m.k, i]));
+    const rows = [...R].sort((a, b) => order[a.pricing_model] - order[b.pricing_model] || a.category.localeCompare(b.category) || a.company.localeCompare(b.company));
+    const W = box.clientWidth, cell = W < 520 ? 12 : 16, gap = 2, step = cell + gap;
+    const cols = Math.max(8, Math.floor((W + gap) / step)), lines = Math.ceil(rows.length / cols);
+    const svg = el('svg', { width: cols * step - gap, height: lines * step - gap, class: 'unit', role: 'img',
+      'aria-label': 'Unit chart of ' + n + ' companies by pricing model' }, box);
+    rows.forEach((r, i) => {
+      const m = MODEL[r.pricing_model];
+      const rect = el('rect', { x: (i % cols) * step, y: Math.floor(i / cols) * step, width: cell, height: cell, rx: 2, fill: m.c }, svg);
+      hover(rect, () => [
+        { t: r.company }, { t: m.label, key: m.c }, { t: CAT[r.category] },
+        { t: r.entry_paid_price_usd_monthly != null ? 'Entry price ' + money(r.entry_paid_price_usd_monthly) + '/mo' : 'No entry price shown' },
+      ]);
+    });
+    const seatKnown = R.filter(r => r.has_seat_component != null), seat = seatKnown.filter(r => r.has_seat_component).length;
+    $('unit-cap').textContent = 'Per seat is the largest single model but not a majority. Counting hybrids that also bill per seat, ' + seat + ' of ' + seatKnown.length +
+      ' companies whose page shows how they charge (' + fmtP(pct(seat, seatKnown.length)) + ') charge per seat somewhere.';
+  }
+
+  // ---------- AI comparison dot plot ----------
+  function renderCmp(R) {
+    const box = $('cmp'); box.replaceChildren();
+    const ai = R.filter(r => r.ai_features_mentioned);
+    const defs = [
+      { row: 'extra', t: 'Charge extra for AI in any form', s: 'premium tiers, add-on or credits', k: ai.filter(r => r.charges_extra_for_ai).length },
+      { row: 'credits', t: 'Meter AI with credits', s: 'credits or tokens', k: ai.filter(r => r.ai_monetization === 'usage_credits').length },
+    ];
+    defs.forEach(d => {
+      const row = h('div', 'cmp-row', box);
+      const t = h('div', 't', row, d.t); h('span', null, t, d.s);
+      const holder = h('div', null, row);
+      const W = Math.max(240, holder.clientWidth || row.clientWidth), H = 82, pad = 14;
+      const x = (p) => pad + ((W - 2 * pad) * p) / 100;
+      const svg = el('svg', { width: W, height: H, role: 'img' }, holder);
+      [0, 25, 50, 75, 100].forEach(g => {
+        el('line', { x1: x(g), x2: x(g), y1: 18, y2: H - 18, stroke: v('--grid'), 'stroke-width': 1 }, svg);
+        el('text', { x: x(g), y: H - 4, 'text-anchor': 'middle', class: 'ax' }, svg, g + '%');
+      });
+      const cy = 36, sv = SURVEYS.find(s => s.row === d.row);
+      const p = pct(d.k, ai.length), ci = wilson(d.k, ai.length);
+      svg.setAttribute('aria-label', d.t + ': this study ' + fmtP(p) + ' of ' + ai.length + '; ' + sv.name + ' ' + sv.pct + '%');
+      if (ai.length) {
+        el('line', { x1: x(Math.min(p, sv.pct)), x2: x(Math.max(p, sv.pct)), y1: cy, y2: cy, stroke: v('--axis'), 'stroke-width': 2 }, svg);
+        el('line', { x1: x(ci[0]), x2: x(ci[1]), y1: cy, y2: cy, stroke: v('--study'), 'stroke-width': 2, 'stroke-linecap': 'round', opacity: .55 }, svg);
+        [ci[0], ci[1]].forEach(c => el('line', { x1: x(c), x2: x(c), y1: cy - 5, y2: cy + 5, stroke: v('--study'), 'stroke-width': 2, opacity: .55 }, svg));
+      }
+      // survey labelled above its dot, this study below, so the two never collide
+      const dots = [{ pv: sv.pct, c: v('--survey'), lab: sv.name + ' ' + sv.pct + '%', ly: cy - 12, tipRows: [{ t: sv.pct + '%' }, { t: sv.name + ', self-reported survey', key: v('--survey') }] }];
+      if (ai.length) dots.push({ pv: p, c: v('--study'), lab: 'This study ' + fmtP(p), ly: cy + 22, tipRows: [{ t: fmtP(p) }, { t: 'This study: ' + d.k + ' of ' + ai.length + ' pages', key: v('--study') }, { t: '95% range ' + Math.round(ci[0]) + '–' + Math.round(ci[1]) + '%' }] });
+      dots.forEach(o => {
+        const g = el('g', { tabindex: 0 }, svg);
+        el('circle', { cx: x(o.pv), cy, r: 12, fill: 'transparent' }, g);
+        el('circle', { cx: x(o.pv), cy, r: 6, fill: o.c, stroke: v('--surface'), 'stroke-width': 2 }, g);
+        hover(g, () => o.tipRows);
+        const t = el('text', { x: x(o.pv), y: o.ly, 'text-anchor': 'middle', class: 'val', style: 'font-size:12px' }, svg, o.lab);
+        const tw = t.getComputedTextLength();
+        t.setAttribute('x', Math.max(tw / 2 + 2, Math.min(W - tw / 2 - 2, x(o.pv))));
+      });
+    });
+  }
+
+  // ---------- AI mix donut ----------
+  function arc(cx, cy, r0, r1, a0, a1) {
+    const p = (r, a) => [cx + r * Math.sin(a), cy - r * Math.cos(a)];
+    const large = a1 - a0 > Math.PI ? 1 : 0;
+    const [x0, y0] = p(r1, a0), [x1, y1] = p(r1, a1), [x2, y2] = p(r0, a1), [x3, y3] = p(r0, a0);
+    return `M${x0},${y0}A${r1},${r1} 0 ${large} 1 ${x1},${y1}L${x2},${y2}A${r0},${r0} 0 ${large} 0 ${x3},${y3}Z`;
+  }
+  function renderMix(R) {
+    const box = $('mix-donut'); box.replaceChildren(); const list = $('mix-list'); list.replaceChildren();
+    const ai = R.filter(r => r.ai_features_mentioned), n = ai.length;
+    const S = 180, cx = S / 2, cy = S / 2, r1 = 84, r0 = 58;
+    const svg = el('svg', { width: S, height: S, role: 'img' }, box);
+    if (!n) { el('text', { x: cx, y: cy, 'text-anchor': 'middle', class: 'lbl-2' }, svg, 'No AI mentions'); return; }
+    const parts = AIM.map(a => ({ ...a, c0: ai.filter(r => r.ai_monetization === a.k).length })).filter(a => a.c0 > 0);
+    const gapA = parts.length > 1 ? 2 / r1 : 0; // ~2px surface gap at the outer edge
+    let a = 0;
+    parts.forEach(pt => {
+      const span = (2 * Math.PI * pt.c0) / n;
+      const path = el('path', { d: arc(cx, cy, r0, r1, a + gapA / 2, a + span - gapA / 2), fill: pt.c, tabindex: 0 }, svg);
+      hover(path, () => [{ t: fmtP(pct(pt.c0, n)) + ' · ' + pt.c0 + ' companies' }, { t: pt.label, key: pt.c }]);
+      a += span;
+    });
+    const extra = ai.filter(r => r.charges_extra_for_ai).length;
+    el('text', { x: cx, y: cy + 2, 'text-anchor': 'middle', style: 'font-size:30px;font-weight:600', fill: v('--ink') }, svg, fmtP(pct(extra, n)));
+    el('text', { x: cx, y: cy + 22, 'text-anchor': 'middle', class: 'lbl-2' }, svg, 'charge extra');
+    svg.setAttribute('aria-label', 'Donut chart: ' + parts.map(p => p.label + ' ' + p.c0).join(', '));
+    let shownGroup = null;
+    AIM.forEach(pt => {
+      const grp = pt.extra ? 'Charges extra' : 'No visible extra charge';
+      if (grp !== shownGroup) { const g = h('li', null, list); h('span', 'grp', g, grp); shownGroup = grp; }
+      const c0 = ai.filter(r => r.ai_monetization === pt.k).length;
+      const li = h('li', null, list); const s = h('span', 'sw', li); s.style.background = pt.c;
+      h('span', null, li, pt.label); const pc = h('span', 'p', li, String(c0)); h('b', null, pc, fmtP(pct(c0, n)));
+    });
+  }
+
+  // ---------- category heatmap ----------
+  const METRICS = [
+    { k: 'seat', t: 'Per seat', s: 'of all', den: r => true, num: r => r.pricing_model === 'per_seat' },
+    { k: 'usage', t: 'Usage-based or hybrid', s: 'of all', den: r => true, num: r => r.pricing_model === 'usage_based' || r.pricing_model === 'hybrid' },
+    { k: 'ai', t: 'Charge extra for AI', s: 'of AI mentions', den: r => r.ai_features_mentioned, num: r => r.charges_extra_for_ai },
+    { k: 'sso', t: 'SSO tax', s: 'of SSO listings', den: r => r.sso_mentioned, num: r => r.sso_tax },
+    { k: 'free', t: 'Free plan', s: 'of all', den: r => true, num: r => r.has_free_tier },
+    { k: 'price', t: 'Public price', s: 'of all', den: r => true, num: r => r.has_public_pricing },
+  ];
+  function rampColor(p) { return RAMP[Math.max(0, Math.min(RAMP.length - 1, Math.round((p / 100) * (RAMP.length - 1))))]; }
+  function renderHeat() {
+    const box = $('heat'); box.replaceChildren();
+    const base = byStage();
+    h('div', 'h', box, '');
+    METRICS.forEach(m => { const d = h('div', 'h', box, m.t); h('span', null, d, m.s); d.setAttribute('role', 'columnheader'); });
+    const cats = Object.keys(CAT).filter(c => base.some(r => r.category === c));
+    if (!cats.length) { const e = h('div', 'empty', box, 'No companies at this stage.'); e.style.gridColumn = '1 / -1'; return; }
+    cats.forEach(c => {
+      const rs = base.filter(r => r.category === c);
+      const on = state.cat === c;
+      const lab = h('button', 'rl' + (on ? ' on' : ''), box, CAT[c] + ' (' + rs.length + ')');
+      lab.type = 'button'; lab.setAttribute('aria-pressed', on ? 'true' : 'false');
+      lab.addEventListener('click', () => { state.cat = on ? 'all' : c; $('f-cat').value = state.cat; render(); });
+      METRICS.forEach(m => {
+        const den = rs.filter(m.den), k = den.filter(m.num).length, p = pct(k, den.length);
+        const cell = h('div', 'c' + (on ? ' row-on' : ''), box);
+        cell.tabIndex = 0; cell.setAttribute('role', 'cell');
+        if (!den.length) { cell.textContent = '—'; cell.style.background = v('--paper-2'); cell.style.color = v('--muted'); }
+        else {
+          const col = rampColor(p), idx = RAMP.indexOf(col);
+          cell.style.background = col; cell.style.color = idx >= 7 ? '#fff' : v('--ink');
+          cell.textContent = Math.round(p) + '%' + (den.length < 8 ? '*' : '');
+        }
+        cell.setAttribute('aria-label', CAT[c] + ', ' + m.t + ': ' + (den.length ? Math.round(p) + '%, ' + k + ' of ' + den.length : 'no data'));
+        hover(cell, () => den.length ? [{ t: Math.round(p) + '%' }, { t: m.t + ' · ' + CAT[c] }, { t: k + ' of ' + den.length + ' ' + (m.s === 'of all' ? 'companies' : m.s.replace('of ', '')) }] : [{ t: 'No data' }, { t: m.t + ' · ' + CAT[c] }]);
+      });
+    });
+    $('scale-bar').style.background = 'linear-gradient(90deg,' + RAMP.join(',') + ')';
+  }
+
+  // ---------- entry price strip ----------
+  function hash(s) { let x = 0; for (let i = 0; i < s.length; i++) x = (x * 31 + s.charCodeAt(i)) >>> 0; return (x % 1000) / 1000; }
+  function renderPrice(R) {
+    const box = $('price'); box.replaceChildren();
+    const priced = R.filter(r => r.entry_paid_price_usd_monthly != null);
+    const tiny = priced.filter(r => r.entry_paid_price_usd_monthly < 1);
+    const shown = priced.filter(r => r.entry_paid_price_usd_monthly >= 1);
+    const models = MODELS.filter(m => m.k !== 'contact_only');
+    const W = Math.max(280, box.clientWidth), L = W < 420 ? 72 : 88, Rp = 14, rowH = 50, top = 8, H = top + models.length * rowH + 26;
+    const lo = Math.log10(1), hi = Math.log10(1000);
+    const x = (p) => L + ((W - L - Rp) * (Math.log10(p) - lo)) / (hi - lo);
+    const svg = el('svg', { width: W, height: H, role: 'img', 'aria-label': 'Strip chart of entry prices by pricing model' }, box);
+    [1, 3, 10, 30, 100, 300, 1000].forEach(t => {
+      el('line', { x1: x(t), x2: x(t), y1: top, y2: H - 22, stroke: v('--grid'), 'stroke-width': 1 }, svg);
+      el('text', { x: x(t), y: H - 6, 'text-anchor': 'middle', class: 'ax' }, svg, t >= 1000 ? '$1K' : '$' + t);
+    });
+    const pts = [];
+    models.forEach((m, i) => {
+      const cy = top + i * rowH + rowH / 2;
+      const rs = shown.filter(r => r.pricing_model === m.k);
+      el('text', { x: 0, y: cy - 2, class: 'lbl' }, svg, { hybrid: 'Hybrid', usage_based: 'Usage' }[m.k] || m.label);
+      el('text', { x: 0, y: cy + 13, class: 'ax' }, svg, 'n = ' + rs.length);
+      rs.forEach(r => {
+        const px = x(Math.min(r.entry_paid_price_usd_monthly, 1000)), py = cy + (hash(r.company) - 0.5) * 26;
+        el('circle', { cx: px, cy: py, r: 4.5, fill: m.c, stroke: v('--surface'), 'stroke-width': 2 }, svg);
+        pts.push({ px, py, r, m });
+      });
+      if (rs.length) {
+        const s = rs.map(r => r.entry_paid_price_usd_monthly).sort((a, b) => a - b);
+        const med = s.length % 2 ? s[(s.length - 1) / 2] : (s[s.length / 2 - 1] + s[s.length / 2]) / 2;
+        el('line', { x1: x(med), x2: x(med), y1: cy - 17, y2: cy + 17, stroke: v('--ink'), 'stroke-width': 2, 'stroke-linecap': 'round' }, svg);
+        el('text', { x: x(med) + 5, y: cy - 19, class: 'lbl-2', style: 'font-size:11px' }, svg, 'median ' + money(med));
+      }
+    });
+    // nearest-point hover layer
+    const hit = el('rect', { x: L, y: 0, width: W - L, height: H - 22, fill: 'transparent' }, svg);
+    hit.addEventListener('pointermove', (e) => {
+      const b = svg.getBoundingClientRect(), mx = e.clientX - b.left, my = e.clientY - b.top;
+      let best = null, bd = 18 * 18;
+      pts.forEach(p => { const d = (p.px - mx) ** 2 + (p.py - my) ** 2; if (d < bd) { bd = d; best = p; } });
+      if (!best) return hideTip();
+      showTip(e, [{ t: money(best.r.entry_paid_price_usd_monthly) + '/mo' }, { t: best.r.company, key: best.m.c }, { t: CAT[best.r.category] + ' · priced ' + (best.r.entry_price_basis || 'n/a').replace('_', ' ') }]);
+    });
+    hit.addEventListener('pointerleave', hideTip);
+    const all = priced.map(r => r.entry_paid_price_usd_monthly).sort((a, b) => a - b);
+    const om = all.length ? (all.length % 2 ? all[(all.length - 1) / 2] : (all[all.length / 2 - 1] + all[all.length / 2]) / 2) : null;
+    $('price-cap').textContent = (om != null ? 'Median entry price across all ' + all.length + ' companies with a listed price: ' + money(om) + ' per month. ' : '') +
+      (tiny.length ? tiny.length + ' per-unit usage rate' + (tiny.length > 1 ? 's' : '') + ' under $1 (for example ' + tiny[0].company + ') ' + (tiny.length > 1 ? 'are' : 'is') + ' not plotted. ' : '') +
+      'Mixed units: per seat, per plan or per usage unit.';
+  }
+
+  // ---------- SSO ladder (step chart) ----------
+  function renderSso(R) {
+    const box = $('sso'); box.replaceChildren();
+    const sso = R.filter(r => r.sso_mentioned && SSOL[r.sso_location] && r.sso_location !== 'not_mentioned'), n = sso.length;
+    const W = Math.max(280, box.clientWidth), L = 38, Rp = 16, top = 30, bottom = 40, H = 262;
+    const svg = el('svg', { width: W, height: H, role: 'img' }, box);
+    if (!n) { el('text', { x: W / 2, y: H / 2, 'text-anchor': 'middle', class: 'lbl-2' }, svg, 'No SSO listings in this slice'); $('sso-cap').textContent = ''; return; }
+    const bandW = (W - L - Rp) / SSO_LV.length;
+    const xc = (i) => L + bandW * i + bandW / 2, y = (p) => top + ((H - top - bottom) * (100 - p)) / 100;
+    // SSO-tax zone: the top-paid and enterprise columns
+    el('rect', { x: L + bandW * 2, y: top, width: bandW * 2, height: H - top - bottom, fill: v('--find-bg') }, svg);
+    el('text', { x: L + bandW * 2 + 6, y: y(0) - 8, 'text-anchor': 'start', class: 'lbl-2', style: 'font-size:11px;font-weight:600' }, svg, 'SSO-tax zone');
+    [0, 25, 50, 75, 100].forEach(g => {
+      el('line', { x1: L, x2: W - Rp, y1: y(g), y2: y(g), stroke: v('--grid'), 'stroke-width': 1 }, svg);
+      el('text', { x: L - 6, y: y(g) + 4, 'text-anchor': 'end', class: 'ax' }, svg, g + '%');
+    });
+    let cum = 0;
+    const pts = SSO_LV.map((lv, i) => { const c = sso.filter(r => r.sso_location === lv.k).length; cum += c; return { lv, c, p: pct(cum, n), i }; });
+    // step-after path from the left edge of each band
+    let d = '';
+    pts.forEach((pt, i) => { const x0 = L + bandW * i, x1 = L + bandW * (i + 1); d += (i ? 'L' : 'M') + x0 + ',' + y(pt.p) + 'L' + x1 + ',' + y(pt.p); });
+    el('path', { d: d + 'L' + (W - Rp) + ',' + y(0) + 'L' + L + ',' + y(0) + 'Z', fill: v('--m-seat'), opacity: .1 }, svg);
+    el('path', { d, fill: 'none', stroke: v('--m-seat'), 'stroke-width': 2, 'stroke-linejoin': 'round' }, svg);
+    pts.forEach(pt => {
+      const g = el('g', { tabindex: 0 }, svg);
+      el('circle', { cx: xc(pt.i), cy: y(pt.p), r: 14, fill: 'transparent' }, g);
+      el('circle', { cx: xc(pt.i), cy: y(pt.p), r: 5, fill: v('--m-seat'), stroke: v('--surface'), 'stroke-width': 2 }, g);
+      el('text', { x: xc(pt.i), y: y(pt.p) - 11, 'text-anchor': 'middle', class: 'val' }, svg, fmtP(pt.p));
+      el('text', { x: xc(pt.i), y: H - bottom + 16, 'text-anchor': 'middle', class: 'lbl', style: 'font-size:11px' }, svg, pt.lv.label);
+      el('text', { x: xc(pt.i), y: H - bottom + 30, 'text-anchor': 'middle', class: 'ax' }, svg, '+' + pt.c);
+      hover(g, () => [{ t: fmtP(pt.p) + ' have SSO by this level' }, { t: pt.c + ' companies first offer SSO on: ' + pt.lv.label, key: v('--m-seat') }]);
+    });
+    const tax = sso.filter(r => r.sso_tax).length;
+    svg.setAttribute('aria-label', 'Step chart: SSO available on all plans ' + fmtP(pts[0].p) + ', by mid tier ' + fmtP(pts[1].p) + ', by top paid plan ' + fmtP(pts[2].p) + ', by enterprise 100%');
+    $('sso-cap').textContent = fmtP(pct(tax, n)) + ' of the ' + n + ' pages that list SSO keep it to the top paid plan or an Enterprise contract (' + tax + ' companies). ' +
+      'Pages that do not list SSO are excluded, so across all ' + R.length + ' companies at least ' + fmtP(pct(tax, R.length)) + ' visibly gate it.';
+  }
+
+  // ---------- table ----------
+  function renderTable(R) {
+    const q = state.q.trim().toLowerCase();
+    const rows = R.filter(r => !q || r.company.toLowerCase().includes(q));
+    const k = state.sort, dir = state.dir;
+    rows.sort((a, b) => {
+      let x = a[k], y = b[k];
+      if (k === 'category') { x = CAT[x]; y = CAT[y]; }
+      if (x == null && y == null) return 0; if (x == null) return 1; if (y == null) return -1;
+      return (typeof x === 'number' ? x - y : String(x).localeCompare(String(y))) * dir;
+    });
+    const tb = document.querySelector('#tbl tbody'); tb.replaceChildren();
+    rows.forEach(r => {
+      const tr = h('tr', null, tb);
+      h('td', null, tr, r.company);
+      h('td', null, tr, CAT[r.category]);
+      const m = MODEL[r.pricing_model]; const td = h('td', null, tr); const dt = h('span', 'dot', td); dt.style.background = m.c; td.appendChild(document.createTextNode(m.label));
+      h('td', 'num', tr, r.entry_paid_price_usd_monthly != null ? money(r.entry_paid_price_usd_monthly) : '—');
+      h('td', null, tr, AIL[r.ai_monetization] || r.ai_monetization);
+      h('td', null, tr, r.sso_mentioned ? (SSOL[r.sso_location] || 'Not listed') : 'Not listed');
+      const s = h('td', null, tr);
+      if (r.source_url && /^https?:\/\//.test(r.source_url)) { const a = h('a', null, s, 'Page ↗'); a.href = r.source_url; a.target = '_blank'; a.rel = 'noopener noreferrer'; }
+    });
+    $('tbl-n').textContent = rows.length + ' shown';
+    document.querySelectorAll('#tbl th').forEach(th => th.setAttribute('aria-sort', th.dataset.k === k ? (dir > 0 ? 'ascending' : 'descending') : 'none'));
+  }
+  function initTable() {
+    $('q').addEventListener('input', e => { state.q = e.target.value; renderTable(rowsNow()); });
+    document.querySelectorAll('#tbl th').forEach(th => {
+      th.tabIndex = 0;
+      const go = () => { if (state.sort === th.dataset.k) state.dir *= -1; else { state.sort = th.dataset.k; state.dir = 1; } renderTable(rowsNow()); };
+      th.addEventListener('click', go);
+      th.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+    });
+  }
+
+  function render() {
+    const R = rowsNow();
+    $('f-n').textContent = R.length;
+    hideTip();
+    renderKpis(R); renderUnit(R); renderCmp(R); renderMix(R); renderHeat(); renderPrice(R); renderSso(R); renderTable(R);
+  }
+
+  initFilters(); initTable(); render();
+  let t; addEventListener('resize', () => { clearTimeout(t); t = setTimeout(render, 120); });
+})();
+</script>
+  <script src="../assets/site.js"></script>
+</body>
+</html>
