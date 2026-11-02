@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Olist Text-to-SQL Technical Report</title>
+<style>
+/* Print-first technical report: US Letter, one column, numbered sections, figures drawn to scale */
+:root {
+  --ink: #1a2230; --muted: #5a6577; --rule: #d9dee6; --soft: #f3f6fa;
+  --accent: #1f4e79; --good: #2f7d4f; --warn: #a86512;
+  --qwen-a: #a9c4e2; --qwen-b: #2f5f93; --llama-a: #f5c79a; --llama-b: #c8691c; --ref: #9aa0a8;
+  --font-body: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-data: Menlo, "SF Mono", Consolas, monospace;
+}
+@page {
+  size: Letter; margin: 0.8in 0.85in 0.85in;
+  @top-left { content: "Olist Text-to-SQL · Technical Report"; font: 8pt var(--font-body); color: #5a6577; }
+  @top-right { content: "OLIST-T2S-TR-001 · v1.0"; font: 8pt var(--font-body); color: #5a6577; }
+  @bottom-right { content: "Page " counter(page) " of " counter(pages); font: 8pt var(--font-body); color: #5a6577; }
+}
+@page :first { @top-left { content: none; } @top-right { content: none; } }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; background: #fff; color: var(--ink); font-family: var(--font-body); font-size: 9.6pt; line-height: 1.5; }
+h1, h2, h3 { text-wrap: balance; break-after: avoid; }
+h1 { font-size: 22pt; line-height: 1.15; margin: 0 0 6pt; color: var(--accent); font-weight: 700; }
+h2 { font-size: 13pt; margin: 20pt 0 6pt; padding-bottom: 3pt; border-bottom: 1px solid var(--rule); }
+h2 .n { color: var(--accent); margin-right: 6pt; }
+h3 { font-size: 10.4pt; margin: 12pt 0 4pt; }
+p { margin: 0 0 6pt; }
+ul, ol { margin: 0 0 6pt; padding-left: 16pt; }
+li { margin-bottom: 3pt; }
+.kicker { font-size: 8.5pt; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 6pt; }
+.subtitle { font-size: 11pt; color: var(--muted); margin-bottom: 14pt; }
+table { width: 100%; border-collapse: collapse; margin: 4pt 0 8pt; font-size: 8.8pt; font-variant-numeric: tabular-nums; break-inside: avoid; }
+th, td { text-align: left; padding: 4pt 6pt; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { background: var(--soft); font-weight: 600; color: var(--ink); }
+td.n, th.n { text-align: right; white-space: nowrap; }
+td.nw { white-space: nowrap; }
+.control td:first-child { width: 28%; color: var(--muted); }
+.callout { background: var(--soft); border-left: 3pt solid var(--accent); padding: 8pt 11pt; margin: 6pt 0 10pt; break-inside: avoid; }
+.callout p:last-child, .callout ul:last-child { margin-bottom: 0; }
+.kpis { display: table; width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 6pt 0; margin: 6pt -6pt 10pt; }
+.kpi { display: table-cell; border: 1px solid var(--rule); padding: 7pt 9pt; vertical-align: top; }
+.kpi b { display: block; font-size: 16pt; color: var(--accent); line-height: 1.2; }
+.kpi span { font-size: 8.2pt; color: var(--muted); }
+figure { margin: 6pt 0 10pt; break-inside: avoid; }
+figure svg { width: 100%; height: auto; display: block; }
+figcaption { font-size: 8.3pt; color: var(--muted); margin-top: 3pt; }
+figcaption b { color: var(--ink); }
+svg text { font-family: var(--font-body); fill: var(--ink); }
+svg .muted { fill: var(--muted); }
+code { font-family: var(--font-data); font-size: 8.2pt; }
+.small { font-size: 8.4pt; color: var(--muted); }
+.tag { font-size: 7.6pt; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: 1pt 4pt; border-radius: 2pt; }
+.tag.ok { color: var(--good); border: 1px solid var(--good); }
+.tag.plan { color: var(--warn); border: 1px solid var(--warn); }
+.pb { break-before: page; }
+a { color: var(--accent); text-decoration: none; }
+.refs li { margin-bottom: 4pt; }
+
+/* Screen view for the portfolio: a readable page width plus a top bar. Print and PDF output are unchanged. */
+@media screen {
+  body { max-width: 8.2in; margin: 0 auto; padding: 0 28px 64px; font-size: 10.5pt; }
+  svg { max-width: 100%; height: auto; }
+  .web-bar { position: sticky; top: 0; z-index: 5; display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    margin: 0 -28px 28px; padding: 12px 28px; background: rgba(255,255,255,.94); border-bottom: 1px solid var(--rule);
+    backdrop-filter: blur(6px); font-size: 9.5pt; }
+  .web-bar a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  .web-bar .dl { border: 1px solid var(--accent); border-radius: 6px; padding: 6px 12px; }
+  .web-bar .dl:hover { background: var(--accent); color: #fff; }
+}
+@media screen and (max-width: 700px) {
+  body { padding: 0 16px 48px; }
+  .web-bar { margin: 0 -16px 20px; padding: 10px 16px; }
+  table { display: block; overflow-x: auto; }
+}
+@media print { .web-bar { display: none; } }
+</style>
+</head>
+<body>
+<nav class="web-bar"><a href="work/olist-text2sql.html">&larr; Back to the case study</a><a class="dl" href="olist-text2sql-report.pdf" download="Olist_Text2SQL_Technical_Report.pdf">Download PDF &darr;</a></nav>
+
+<div class="kicker">Technical report · Machine learning</div>
+<h1>Fine-tuning small open models for text-to-SQL on a company database</h1>
+<div class="subtitle">LoRA fine-tuning of Qwen3.5-4B and Llama 3.2 3B on the Olist e-commerce database, evaluated on a locked 150-question test</div>
+
+<table class="control">
+  <tr><td>Document ID</td><td>OLIST-T2S-TR-001</td></tr>
+  <tr><td>Version</td><td>1.0 (final)</td></tr>
+  <tr><td>Date</td><td>17 October 2026</td></tr>
+  <tr><td>Author</td><td class="nw">Ajay Karthick</td></tr>
+  <tr><td>Data classification</td><td>Public. All data comes from Olist's public dataset; no customer personal data is used.</td></tr>
+  <tr><td>Repository</td><td><code>olist-text2sql</code> (commit <code>35e57e3</code>); test set fingerprint <code>53cd9d63…8693d8</code></td></tr>
+</table>
+
+<h2><span class="n">1</span>Executive summary</h2>
+<p>This project tested whether a small open-source language model, fine-tuned on a few hundred examples, can reliably turn business questions into correct SQL for one company's database. Two models were fine-tuned with LoRA and scored on a 150-question test that was locked before any model was run.</p>
+<div class="kpis">
+  <div class="kpi"><b>52 → 78</b><span>Qwen3.5-4B, correct of 150, untrained → fine-tuned (mean of 3 runs)</span></div>
+  <div class="kpi"><b>18 → 51.7</b><span>Llama 3.2 3B, correct of 150, untrained → fine-tuned (mean of 3 runs)</span></div>
+  <div class="kpi"><b>6 of 6</b><span>training runs beat their untrained model (McNemar p ≤ 0.0002)</span></div>
+  <div class="kpi"><b>~2 h</b><span>of single-GPU training per Qwen run (NVIDIA L4)</span></div>
+</div>
+<div class="callout">
+  <p><b>Findings</b></p>
+  <ul>
+    <li>Fine-tuning works and is repeatable. Every one of the 6 training runs beat its untrained model, and the gain held across three random seeds.</li>
+    <li>Qwen3.5-4B is the stronger base model. It beat Llama 3.2 3B before training (52 vs 18) and after it, winning all three same-seed comparisons.</li>
+    <li>The fine-tuned model is not ready to run unsupervised. It answers 52% of all questions and 25% of hard ones, against 95% for a large hosted model (Gemini 3.8 Flash). It is suited to drafting SQL that an analyst reviews.</li>
+    <li>Training-data design mattered more than training time. The first attempt memorised its data and gave no clear gain; a more varied dataset with gentler settings gave a clear one.</li>
+  </ul>
+</div>
+
+<h2><span class="n">2</span>Background</h2>
+<p>Most business questions about an online marketplace (which sellers are late, where freight is expensive, which categories get poor reviews) can be answered from its order database, but only by someone who writes SQL and knows where the data's traps are. A model that writes correct SQL for that specific database would let more people get answers without waiting for an analyst.</p>
+<p>Large hosted models already write SQL well, but they send company data to an outside service and are billed per request. A small open model can run on the company's own hardware. The question is whether a small model can be made good enough on one company's schema with a modest amount of training.</p>
+
+<h2><span class="n">3</span>Objectives and non-goals</h2>
+<table>
+  <tr><th style="width:50%">Objectives</th><th>Non-goals</th></tr>
+  <tr>
+    <td><ul style="margin:0">
+      <li>Measure how much LoRA fine-tuning improves a small open model's SQL on one real schema.</li>
+      <li>Compare two open base models under identical conditions.</li>
+      <li>Place the results against a large hosted model as a reference point.</li>
+      <li>Report results that hold up statistically, including run-to-run variation.</li>
+    </ul></td>
+    <td><ul style="margin:0">
+      <li>Beat large hosted models.</li>
+      <li>Build a production service, user interface or chat assistant.</li>
+      <li>Generalise across many databases (one schema only).</li>
+      <li>Tune for speed or serving cost.</li>
+    </ul></td>
+  </tr>
+</table>
+
+<h2><span class="n">4</span>System overview</h2>
+<figure>
+  <svg viewBox="0 0 640 150" role="img" aria-label="Pipeline from data to report">
+    <defs><marker id="ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#5a6577"/></marker></defs>
+    <g font-size="9.5">
+      <rect x="4" y="52" width="96" height="44" rx="3" fill="#f3f6fa" stroke="#d9dee6"/>
+      <text x="52" y="70" text-anchor="middle" font-weight="600">Olist CSVs</text><text x="52" y="84" text-anchor="middle" class="muted">9 tables → SQLite</text>
+
+      <rect x="132" y="8" width="118" height="44" rx="3" fill="#f3f6fa" stroke="#d9dee6"/>
+      <text x="191" y="26" text-anchor="middle" font-weight="600">Locked test set</text><text x="191" y="40" text-anchor="middle" class="muted">150 questions, SHA-256</text>
+      <rect x="132" y="96" width="118" height="44" rx="3" fill="#f3f6fa" stroke="#d9dee6"/>
+      <text x="191" y="114" text-anchor="middle" font-weight="600">Training set</text><text x="191" y="128" text-anchor="middle" class="muted">574 train · 108 validation</text>
+
+      <rect x="282" y="96" width="112" height="44" rx="3" fill="#e6eef7" stroke="#1f4e79"/>
+      <text x="338" y="114" text-anchor="middle" font-weight="600">LoRA fine-tuning</text><text x="338" y="128" text-anchor="middle" class="muted">Unsloth · L4 GPU</text>
+
+      <rect x="282" y="8" width="112" height="44" rx="3" fill="#f3f6fa" stroke="#d9dee6"/>
+      <text x="338" y="26" text-anchor="middle" font-weight="600">Models answer</text><text x="338" y="40" text-anchor="middle" class="muted">same prompt, greedy</text>
+
+      <rect x="426" y="8" width="104" height="44" rx="3" fill="#f3f6fa" stroke="#d9dee6"/>
+      <text x="478" y="26" text-anchor="middle" font-weight="600">Execution scorer</text><text x="478" y="40" text-anchor="middle" class="muted">run SQL, compare</text>
+
+      <rect x="548" y="8" width="88" height="44" rx="3" fill="#f3f6fa" stroke="#d9dee6"/>
+      <text x="592" y="26" text-anchor="middle" font-weight="600">Statistics</text><text x="592" y="40" text-anchor="middle" class="muted">McNemar · Wilson</text>
+    </g>
+    <g stroke="#5a6577" stroke-width="1.2" fill="none" marker-end="url(#ar)">
+      <path d="M100,66 L130,32"/><path d="M100,82 L130,116"/>
+      <path d="M250,118 L280,118"/><path d="M250,30 L280,30"/>
+      <path d="M338,96 L338,54"/><path d="M394,30 L424,30"/><path d="M530,30 L546,30"/>
+    </g>
+    <text x="345" y="80" font-size="8.5" class="muted">adapter</text>
+  </svg>
+  <figcaption><b>Figure 1.</b> Pipeline. The test set is fixed before training; the training set is checked so that no example resembles a test question. Every model, trained or not, is scored by the same code.</figcaption>
+</figure>
+
+<h2><span class="n">5</span>Data</h2>
+<ul>
+  <li><b>Source database.</b> Olist's public Brazilian e-commerce dataset: 99,441 orders placed between September 2016 and October 2018, in 9 tables (orders, order items, payments, reviews, customers, sellers, products, category names, geolocation). It is loaded into SQLite with 18 indexes. Table names match the Spider 2.0 benchmark's copy of the same data. [1]</li>
+  <li><b>Test set (150 questions).</b> 139 questions were written for this project across the 9 business themes listed in Olist's own README, and reviewed in batches. The other 11 are the Olist questions published in the Spider 2.0 benchmark [2], used for testing only.</li>
+  <li><b>Data traps.</b> Questions deliberately test known pitfalls in the real data, for example that an order has one row per item, that delivery dates are missing for undelivered orders, and that some orders have several reviews.</li>
+  <li><b>Training set.</b> 574 training and 108 validation examples, generated from 118 question "families" written with Claude (Anthropic). Every query was run against the database and cross-checked by a second, independently written query. Whole families are held out for validation.</li>
+  <li><b>Leakage controls.</b> Each training question is compared with all 150 test questions: text similarity below 0.75, word overlap below 0.6, and no identical results. No output from the reference model (Gemini) was used for training.</li>
+</ul>
+
+<h2><span class="n">6</span>Evaluation design</h2>
+<h3>Metric</h3>
+<p><b>Execution accuracy.</b> An answer is correct only if the generated SQL runs and returns the same result as the reference query. Results are compared on values, not column names; row order counts only when the question asks for an order; numbers are rounded to 2 decimal places. The 11 Spider questions use Spider's own grading rule. Generated SQL runs against a read-only connection, must be a single <code>SELECT</code>, and is stopped after 30 seconds.</p>
+<h3>Controls</h3>
+<ul>
+  <li>The test files were fingerprinted with SHA-256 before any model was run and verified before every scoring run.</li>
+  <li>All models receive the same prompt (instructions plus the database schema) and decode greedily, so answers are deterministic.</li>
+  <li>The untrained baseline for each model was run on the same GPU and code as its fine-tuned version.</li>
+  <li>Checkpoints are chosen on the validation set only. The test set is never used to choose anything.</li>
+  <li>Each model was trained three times (seeds 3407, 42 and 1234), and every run is reported.</li>
+</ul>
+<h3>Statistical method and decision rules</h3>
+<p>Two runs on the same 150 questions are compared with McNemar's exact test [4], which uses only the questions where the runs disagree. Single scores carry 95% Wilson intervals [5]. At 150 questions, a paired difference of about ±9 points can arise by chance. Three rules were written down before the repeat runs:</p>
+<ol>
+  <li>All three seeds are reported for each model, never only the best.</li>
+  <li>Fine-tuning counts as working for a model only if every seed beats its untrained model with p &lt; 0.05.</li>
+  <li>Qwen counts as better than Llama only if its mean is higher and it wins every same-seed pair.</li>
+</ol>
+
+<h2><span class="n">7</span>Training</h2>
+<p>Both models were fine-tuned with LoRA [3], which freezes the original weights and trains small low-rank matrices added to the attention and feed-forward layers. Training used Unsloth on one NVIDIA L4 GPU in bf16 (Google Colab). Loss is computed on the SQL answer only; the prompt is identical to the one used at test time.</p>
+<table>
+  <tr><th>Setting</th><th>Round 1 (Qwen only)</th><th>Round 2 (both models, all seeds)</th></tr>
+  <tr><td>Training data</td><td>540 examples, 63 families</td><td>574 examples, 118 families, several SQL styles per family</td></tr>
+  <tr><td>Learning rate, epochs</td><td>2e-4, 3 epochs</td><td>1e-4, 2 epochs</td></tr>
+  <tr><td>Weight decay, LoRA dropout</td><td>0.001, 0</td><td>0.01, 0.05</td></tr>
+  <tr><td>Validation</td><td>76 examples, after each epoch</td><td>108 examples, every half epoch</td></tr>
+  <tr><td>Unchanged</td><td colspan="2">LoRA rank 16, alpha 16; batch 2 × 4 accumulation; 10 warm-up steps; adamw_8bit; linear decay</td></tr>
+</table>
+<p>Round 1 memorised its training data: training loss fell to 0.0003 and the model began copying the training SQL's alias style, which broke 16 questions it had answered correctly before. Round 2 changed the data and settings following Unsloth's guidance on overfitting [6]; final training loss stayed between about 0.06 and 0.12.</p>
+
+<h2><span class="n">8</span>Results</h2>
+<table>
+  <tr><th>Run</th><th class="n">Correct /150</th><th class="n">Accuracy (95% CI)</th><th class="n">Gain, points (95% CI)</th><th class="n">Fixed / broken</th><th class="n">p</th></tr>
+  <tr><td>Qwen3.5-4B, untrained</td><td class="n">52</td><td class="n">34.7% (27.5–42.6)</td><td class="n">–</td><td class="n">–</td><td class="n">–</td></tr>
+  <tr><td>Qwen3.5-4B, round 1</td><td class="n">63</td><td class="n">42.0% (34.4–50.0)</td><td class="n">+7.3 (−1.2 to +15.8)</td><td class="n">27 / 16</td><td class="n">0.13</td></tr>
+  <tr><td>Qwen3.5-4B, seed 3407</td><td class="n">80</td><td class="n">53.3% (45.4–61.1)</td><td class="n">+18.7 (+11.0 to +26.4)</td><td class="n">34 / 6</td><td class="n">&lt; 0.0001</td></tr>
+  <tr><td>Qwen3.5-4B, seed 42</td><td class="n">75</td><td class="n">50.0% (42.1–57.9)</td><td class="n">+15.3 (+7.8 to +22.9)</td><td class="n">30 / 7</td><td class="n">0.0002</td></tr>
+  <tr><td>Qwen3.5-4B, seed 1234</td><td class="n">79</td><td class="n">52.7% (44.7–60.5)</td><td class="n">+18.0 (+10.4 to +25.6)</td><td class="n">33 / 6</td><td class="n">&lt; 0.0001</td></tr>
+  <tr><td>Llama 3.2 3B, untrained</td><td class="n">18</td><td class="n">12.0% (7.7–18.2)</td><td class="n">–</td><td class="n">–</td><td class="n">–</td></tr>
+  <tr><td>Llama 3.2 3B, seed 3407</td><td class="n">50</td><td class="n">33.3% (26.3–41.2)</td><td class="n">+21.3 (+14.0 to +28.6)</td><td class="n">35 / 3</td><td class="n">&lt; 0.0001</td></tr>
+  <tr><td>Llama 3.2 3B, seed 42</td><td class="n">57</td><td class="n">38.0% (30.6–46.0)</td><td class="n">+26.0 (+18.3 to +33.7)</td><td class="n">42 / 3</td><td class="n">&lt; 0.0001</td></tr>
+  <tr><td>Llama 3.2 3B, seed 1234</td><td class="n">48</td><td class="n">32.0% (25.1–39.8)</td><td class="n">+20.0 (+12.8 to +27.2)</td><td class="n">33 / 3</td><td class="n">&lt; 0.0001</td></tr>
+  <tr><td>Gemini 3.8 Flash (reference)</td><td class="n">142</td><td class="n">94.7% (89.8–97.3)</td><td class="n">–</td><td class="n">–</td><td class="n">–</td></tr>
+</table>
+<p class="small"><b>Table 1.</b> All runs. Gain, fixed/broken and p are against the same model untrained (McNemar exact test). Gemini was not trained and is shown for reference only.</p>
+
+<figure>
+  <svg viewBox="0 0 640 165" role="img" aria-label="Untrained versus fine-tuned scores">
+    <g stroke="#d9dee6" stroke-width="1">
+      <line x1="120" y1="18" x2="120" y2="128"/><line x1="203.3" y1="18" x2="203.3" y2="128"/><line x1="286.7" y1="18" x2="286.7" y2="128"/>
+      <line x1="370" y1="18" x2="370" y2="128"/><line x1="453.3" y1="18" x2="453.3" y2="128"/><line x1="536.7" y1="18" x2="536.7" y2="128"/>
+      <line x1="620" y1="18" x2="620" y2="128"/>
+    </g>
+    <g font-size="9" class="muted" text-anchor="middle">
+      <text x="120" y="142" class="muted">0</text><text x="203.3" y="142" class="muted">25</text><text x="286.7" y="142" class="muted">50</text>
+      <text x="370" y="142" class="muted">75</text><text x="453.3" y="142" class="muted">100</text><text x="536.7" y="142" class="muted">125</text>
+      <text x="620" y="142" class="muted">150</text><text x="370" y="159" class="muted">correct answers out of 150</text>
+    </g>
+    <line x1="593.3" y1="14" x2="593.3" y2="128" stroke="#9aa0a8" stroke-width="1.6" stroke-dasharray="4 3"/>
+    <text x="588" y="12" font-size="9" text-anchor="end" class="muted">Gemini 3.8 Flash: 142</text>
+
+    <text x="0" y="52" font-size="10" font-weight="600">Qwen3.5-4B</text>
+    <line x1="293.3" y1="48" x2="380" y2="48" stroke="#2f5f93" stroke-width="2.5"/>
+    <circle cx="293.3" cy="48" r="5" fill="#fff" stroke="#2f5f93" stroke-width="2"/>
+    <circle cx="370" cy="48" r="3" fill="#2f5f93" opacity=".4"/><circle cx="383.3" cy="48" r="3" fill="#2f5f93" opacity=".4"/><circle cx="386.7" cy="48" r="3" fill="#2f5f93" opacity=".4"/>
+    <circle cx="380" cy="48" r="6" fill="#2f5f93"/>
+    <text x="293.3" y="36" font-size="9" text-anchor="middle" class="muted">52</text><text x="380" y="36" font-size="9" text-anchor="middle" font-weight="600">78.0</text>
+
+    <text x="0" y="98" font-size="10" font-weight="600">Llama 3.2 3B</text>
+    <line x1="180" y1="94" x2="292.3" y2="94" stroke="#c8691c" stroke-width="2.5"/>
+    <circle cx="180" cy="94" r="5" fill="#fff" stroke="#c8691c" stroke-width="2"/>
+    <circle cx="280" cy="94" r="3" fill="#c8691c" opacity=".4"/><circle cx="286.7" cy="94" r="3" fill="#c8691c" opacity=".4"/><circle cx="310" cy="94" r="3" fill="#c8691c" opacity=".4"/>
+    <circle cx="292.3" cy="94" r="6" fill="#c8691c"/>
+    <text x="180" y="82" font-size="9" text-anchor="middle" class="muted">18</text><text x="292.3" y="82" font-size="9" text-anchor="middle" font-weight="600">51.7</text>
+  </svg>
+  <figcaption><b>Figure 2.</b> Untrained (hollow) against fine-tuned mean (solid); faint dots are the three individual runs. The dashed line is the large reference model.</figcaption>
+</figure>
+
+<h3>Qwen against Llama, same seed</h3>
+<table>
+  <tr><th>Seed</th><th class="n">Llama</th><th class="n">Qwen</th><th class="n">Qwen lead, points (95% CI)</th><th class="n">Right only by Qwen / Llama</th><th class="n">p</th></tr>
+  <tr><td>3407</td><td class="n">50</td><td class="n">80</td><td class="n">+20.0 (+12.2 to +27.8)</td><td class="n">36 / 6</td><td class="n">&lt; 0.0001</td></tr>
+  <tr><td>42</td><td class="n">57</td><td class="n">75</td><td class="n">+12.0 (+4.9 to +19.1)</td><td class="n">25 / 7</td><td class="n">0.0021</td></tr>
+  <tr><td>1234</td><td class="n">48</td><td class="n">79</td><td class="n">+20.7 (+13.0 to +28.4)</td><td class="n">36 / 5</td><td class="n">&lt; 0.0001</td></tr>
+</table>
+<p class="small"><b>Table 2.</b> Head-to-head on the same 150 questions. All three decision rules from section 6 pass: every seed of both models beats its untrained model, and Qwen wins every pair. Seed variation is 5 questions for Qwen (75–80) and 9 for Llama (48–57).</p>
+
+<figure>
+  <svg viewBox="0 0 640 215" role="img" aria-label="Accuracy by difficulty">
+    <g stroke="#d9dee6" stroke-width="1">
+      <line x1="60" y1="20" x2="620" y2="20"/><line x1="60" y1="57.5" x2="620" y2="57.5"/><line x1="60" y1="95" x2="620" y2="95"/>
+      <line x1="60" y1="132.5" x2="620" y2="132.5"/><line x1="60" y1="170" x2="620" y2="170"/>
+    </g>
+    <g font-size="9" text-anchor="end"><text x="54" y="23" class="muted">100%</text><text x="54" y="60.5" class="muted">75%</text><text x="54" y="98" class="muted">50%</text><text x="54" y="135.5" class="muted">25%</text><text x="54" y="173" class="muted">0%</text></g>
+    <g>
+      <rect x="88" y="68" width="28" height="102" fill="#a9c4e2"/><rect x="122" y="36.5" width="28" height="133.5" fill="#2f5f93"/>
+      <rect x="156" y="108.5" width="28" height="61.5" fill="#f5c79a"/><rect x="190" y="59" width="28" height="111" fill="#c8691c"/>
+      <rect x="274.7" y="120.5" width="28" height="49.5" fill="#a9c4e2"/><rect x="308.7" y="84.5" width="28" height="85.5" fill="#2f5f93"/>
+      <rect x="342.7" y="162.5" width="28" height="7.5" fill="#f5c79a"/><rect x="376.7" y="116" width="28" height="54" fill="#c8691c"/>
+      <rect x="461.3" y="143" width="28" height="27" fill="#a9c4e2"/><rect x="495.3" y="132.5" width="28" height="37.5" fill="#2f5f93"/>
+      <rect x="529.3" y="165.5" width="28" height="4.5" fill="#f5c79a"/><rect x="563.3" y="158" width="28" height="12" fill="#c8691c"/>
+    </g>
+    <g font-size="8.5" text-anchor="middle">
+      <text x="102" y="64">68</text><text x="136" y="32.5">89</text><text x="170" y="104.5">41</text><text x="204" y="55">74</text>
+      <text x="288.7" y="116.5">33</text><text x="322.7" y="80.5">57</text><text x="356.7" y="158.5">5</text><text x="390.7" y="112">36</text>
+      <text x="475.3" y="139">18</text><text x="509.3" y="128.5">25</text><text x="543.3" y="161.5">3</text><text x="577.3" y="154">8</text>
+    </g>
+    <g font-size="10" font-weight="600" text-anchor="middle"><text x="153.3" y="186">Easy (34)</text><text x="340" y="186">Medium (66)</text><text x="526.7" y="186">Hard (39)</text></g>
+    <g font-size="9">
+      <rect x="110" y="200" width="10" height="10" fill="#a9c4e2"/><text x="124" y="209">Qwen untrained</text>
+      <rect x="220" y="200" width="10" height="10" fill="#2f5f93"/><text x="234" y="209">Qwen fine-tuned</text>
+      <rect x="340" y="200" width="10" height="10" fill="#f5c79a"/><text x="354" y="209">Llama untrained</text>
+      <rect x="452" y="200" width="10" height="10" fill="#c8691c"/><text x="466" y="209">Llama fine-tuned</text>
+    </g>
+  </svg>
+  <figcaption><b>Figure 3.</b> Accuracy (%) by difficulty on the 139 project questions; question counts in brackets. Fine-tuned values pool all three runs.</figcaption>
+</figure>
+
+<h3>By data trap</h3>
+<table>
+  <tr><th>Trap (questions)</th><th class="n">Qwen untrained</th><th class="n">Qwen fine-tuned</th><th class="n">Llama untrained</th><th class="n">Llama fine-tuned</th></tr>
+  <tr><td>Missing delivery date (16)</td><td class="n">19%</td><td class="n">62%</td><td class="n">0%</td><td class="n">33%</td></tr>
+  <tr><td>Which date to use (44)</td><td class="n">39%</td><td class="n">53%</td><td class="n">2%</td><td class="n">33%</td></tr>
+  <tr><td>Order status filter (69)</td><td class="n">33%</td><td class="n">48%</td><td class="n">9%</td><td class="n">30%</td></tr>
+  <tr><td>One row per item (32)</td><td class="n">31%</td><td class="n">44%</td><td class="n">9%</td><td class="n">21%</td></tr>
+  <tr><td>Customer vs person ID (8)</td><td class="n">0%</td><td class="n">25%</td><td class="n">0%</td><td class="n">21%</td></tr>
+  <tr><td>Several reviews per order (12)</td><td class="n">17%</td><td class="n">33%</td><td class="n">8%</td><td class="n">14%</td></tr>
+</table>
+<p class="small"><b>Table 3.</b> Accuracy on questions that test each trap (traps with at least 8 questions; a question can test several traps).</p>
+
+<h2><span class="n">9</span>Error analysis</h2>
+<table>
+  <tr><th>Outcome (answers per run, of 150)</th><th class="n">Qwen untrained</th><th class="n">Qwen fine-tuned</th><th class="n">Llama untrained</th><th class="n">Llama fine-tuned</th></tr>
+  <tr><td>Correct</td><td class="n">52</td><td class="n">78.0</td><td class="n">18</td><td class="n">51.7</td></tr>
+  <tr><td>Ran, wrong result</td><td class="n">55</td><td class="n">43.0</td><td class="n">54</td><td class="n">65.7</td></tr>
+  <tr><td>Wrong column or table</td><td class="n">27</td><td class="n">19.0</td><td class="n">34</td><td class="n">19.3</td></tr>
+  <tr><td>Syntax error</td><td class="n">9</td><td class="n">4.7</td><td class="n">34</td><td class="n">8.0</td></tr>
+  <tr><td>Other SQL error</td><td class="n">3</td><td class="n">2.3</td><td class="n">5</td><td class="n">4.7</td></tr>
+  <tr><td>Function from another SQL dialect</td><td class="n">3</td><td class="n">1.0</td><td class="n">5</td><td class="n">0.7</td></tr>
+  <tr><td>Exceeded 30 s</td><td class="n">1</td><td class="n">2.0</td><td class="n">0</td><td class="n">0</td></tr>
+</table>
+<p class="small"><b>Table 4.</b> Every answer falls into exactly one outcome. Fine-tuned values are means of three runs.</p>
+<ul>
+  <li><b>Training mostly removes SQL that does not run.</b> Llama's syntax errors fell from 34 to 8 per run and invented columns from 34 to 19; Qwen's invented columns fell from 27 to 19.</li>
+  <li><b>Logic errors remain.</b> For Llama, many queries that no longer crash now run and return the wrong result (54 → 65.7). The main remaining weakness for both models is query logic on hard questions. The traps that stay hardest after training are one row per item, which date to use, and the order status filter (Table 3).</li>
+  <li><b>Invented columns are still the largest error group</b> after wrong results, at about 19 per run for both models.</li>
+</ul>
+
+<h2><span class="n">10</span>Cost and performance</h2>
+<table>
+  <tr><th>Model</th><th class="n">Training time per run</th><th class="n">Adapter size</th><th class="n">Median time per answer</th></tr>
+  <tr><td>Qwen3.5-4B (4B parameters)</td><td class="n">107–115 min</td><td class="n">≈ 120 MB</td><td class="n">10.8 s</td></tr>
+  <tr><td>Llama 3.2 3B (3B parameters)</td><td class="n">49–56 min</td><td class="n">≈ 90 MB</td><td class="n">4.4 s</td></tr>
+  <tr><td>Gemini 3.8 Flash (hosted)</td><td class="n">not trained</td><td class="n">–</td><td class="n">5.5 s (API, incl. network)</td></tr>
+</table>
+<p class="small"><b>Table 5.</b> One NVIDIA L4 GPU (Google Colab). Answer times are for one question at a time with standard Hugging Face generation and no batching or serving optimisation, so they overstate production latency. Training time includes the validation passes.</p>
+
+<h2><span class="n">11</span>Risks and limitations</h2>
+<ul>
+  <li><b>Test difficulty.</b> The project questions state exactly what is wanted, so the large reference model answers all 139 of them correctly. The test shows a small model closing the gap with a large one, not beating it.</li>
+  <li><b>Hard questions.</b> Accuracy on hard questions is 25% (Qwen). The 11 Spider questions, which are less precisely worded, stayed at 0 or 1 correct for every small-model run.</li>
+  <li><b>Scope.</b> One database and one SQL dialect. Results do not show how the method transfers to another schema.</li>
+  <li><b>Training data origin.</b> Training examples were written with an AI assistant and validated by execution, not collected from real users, so real questions may be phrased differently.</li>
+  <li><b>Operational safety.</b> Wrong SQL that runs returns a plausible-looking wrong number. Any use needs read-only access (as in this evaluation), query time limits, and human review of results.</li>
+  <li><b>Test size.</b> With 150 questions, differences under about 9 points cannot be separated from chance. The main results are well above that level.</li>
+</ul>
+
+<h2><span class="n">12</span>Conclusions and recommendations</h2>
+<ol>
+  <li>LoRA fine-tuning on about 600 checked, schema-specific examples reliably improves a small open model's SQL on that schema: +26 questions for Qwen and +34 for Llama on average, consistent across seeds.</li>
+  <li>Qwen3.5-4B is the recommended base model among those tested.</li>
+  <li>The fine-tuned model should be used to draft SQL for an analyst to review, not to answer business users directly.</li>
+  <li>The next improvement should target query logic on hard questions, through more hard training families and a harder, less precisely worded evaluation set, rather than longer training.</li>
+</ol>
+
+<h2><span class="n">13</span>Next steps</h2>
+<table>
+  <tr><th>Item</th><th>Owner</th><th>Status</th></tr>
+  <tr><td>Publish the Qwen adapter with a model card (evaluation results and limitations) on Hugging Face</td><td class="nw">Ajay Karthick</td><td><span class="tag plan">Planned</span></td></tr>
+  <tr><td>Publish code, locked test set and results in a public GitHub repository</td><td class="nw">Ajay Karthick</td><td><span class="tag plan">Planned</span></td></tr>
+  <tr><td>Publish the results dashboard on Tableau Public</td><td class="nw">Ajay Karthick</td><td><span class="tag plan">Planned</span></td></tr>
+  <tr><td>Build a second, harder evaluation set (vague, real-world phrasing), locked before use</td><td class="nw">Ajay Karthick</td><td><span class="tag plan">Proposed</span></td></tr>
+  <tr><td>Results dashboard (6 views) and this report</td><td class="nw">Ajay Karthick</td><td><span class="tag ok">Done</span></td></tr>
+</table>
+
+<h2 class="pb">Appendix A · Reproducibility</h2>
+<table>
+  <tr><th>Step</th><th>Command or file</th></tr>
+  <tr><td>Build the database</td><td><code>python scripts/build_db.py</code></td></tr>
+  <tr><td>Verify the locked test set</td><td><code>python scripts/lock_test_set.py verify</code> (50 files, SHA-256)</td></tr>
+  <tr><td>Export the shared prompts</td><td><code>python scripts/export_prompts.py</code> → <code>results/prompts.jsonl</code></td></tr>
+  <tr><td>Build the training set</td><td><code>python scripts/make_train_set.py</code> → <code>data/train_r2/</code></td></tr>
+  <tr><td>Build a training notebook</td><td><code>python scripts/make_finetune_notebook.py --round 2|llama [--seed N]</code></td></tr>
+  <tr><td>Score a run / compare two runs</td><td><code>python scripts/score.py &lt;run&gt;</code>, <code>--compare &lt;a&gt; &lt;b&gt;</code></td></tr>
+  <tr><td>Rebuild the dashboard data</td><td><code>python scripts/export_tableau_data.py</code>, then <code>make_tableau_workbook.py</code></td></tr>
+</table>
+<p>Every run's predictions, scores and training log are stored under <code>results/&lt;run&gt;/</code>. Notebooks embed their data and check it by SHA-256. Adapters are stored outside version control because of their size.</p>
+
+<h2>Appendix B · Licences and terms</h2>
+<table>
+  <tr><th>Component</th><th>Licence or terms</th></tr>
+  <tr><td>Olist dataset</td><td>MIT licence [1]</td></tr>
+  <tr><td>Spider 2.0 questions and grading code</td><td>MIT licence [2]</td></tr>
+  <tr><td>Qwen3.5-4B</td><td>Apache-2.0 [7]</td></tr>
+  <tr><td>Llama 3.2 3B Instruct</td><td>Llama 3.2 Community License: a distributed derived model's name must begin with "Llama", and "Built with Llama" must be displayed [8]</td></tr>
+  <tr><td>Training examples</td><td>Written with Claude (Anthropic) and validated by running every query against the database.</td></tr>
+  <tr><td>Gemini 3.8 Flash</td><td>Used for evaluation only. Its outputs were never used for training, in line with Google's terms.</td></tr>
+</table>
+
+<h2>Appendix C · Glossary</h2>
+<table>
+  <tr><td style="width:24%"><b>LoRA</b></td><td>Low-Rank Adaptation. Trains small added matrices instead of the whole model, so training fits on one GPU and the result is a small adapter file.</td></tr>
+  <tr><td><b>Execution accuracy</b></td><td>The share of questions where the generated SQL returns the same result as the reference query.</td></tr>
+  <tr><td><b>Seed</b></td><td>The number that fixes the random choices in training (starting values, data order, dropout). Different seeds give different runs of the same recipe.</td></tr>
+  <tr><td><b>Validation set</b></td><td>Held-back training-style examples used to choose the checkpoint, so the test set is never used for any choice.</td></tr>
+  <tr><td><b>McNemar's test</b></td><td>A paired test for two systems scored on the same items; it uses only the items where they disagree.</td></tr>
+  <tr><td><b>Data trap</b></td><td>A property of the real data that makes a question easy to answer wrongly, such as missing dates or one row per item.</td></tr>
+</table>
+
+<h2>References</h2>
+<ol class="refs">
+  <li>Olist. Brazilian E-Commerce Public Dataset. <a href="https://github.com/olist/work-at-olist-data">github.com/olist/work-at-olist-data</a></li>
+  <li>Lei, F. et al. (2024). Spider 2.0: Evaluating Language Models on Real-World Enterprise Text-to-SQL Workflows. <a href="https://github.com/xlang-ai/Spider2">github.com/xlang-ai/Spider2</a></li>
+  <li>Hu, E. J. et al. (2021). LoRA: Low-Rank Adaptation of Large Language Models. <a href="https://arxiv.org/abs/2106.09685">arXiv:2106.09685</a></li>
+  <li>McNemar, Q. (1947). Note on the sampling error of the difference between correlated proportions or percentages. <i>Psychometrika</i>, 12(2).</li>
+  <li>Wilson, E. B. (1927). Probable inference, the law of succession, and statistical inference. <i>Journal of the American Statistical Association</i>, 22(158).</li>
+  <li>Unsloth. LoRA hyperparameters guide. <a href="https://unsloth.ai/docs/get-started/fine-tuning-llms-guide/lora-hyperparameters-guide">unsloth.ai/docs</a></li>
+  <li>Qwen. Qwen3.5-4B model card. <a href="https://huggingface.co/Qwen/Qwen3.5-4B">huggingface.co/Qwen/Qwen3.5-4B</a></li>
+  <li>Meta. Llama 3.2 Community License. <a href="https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/LICENSE">github.com/meta-llama/llama-models</a></li>
+</ol>
+
+</body>
+</html>
