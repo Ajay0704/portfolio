@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Markdown Runway — Ajay Karthick</title>
+  <meta name="description" content="Most fashion brands are always on some discount, so I asked when a brand goes deeper than its usual with a big whole-site sale. From 23,353 saved homepages of 30 US brands (2021 to 2026), the answer is the brand's own habit: it picked which brand goes first 79% of the time. Company filings, weather, online interest, shipping costs and rivals didn't help. Built on Azure and Microsoft Fabric, with Power BI and a 3D app." />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="The Markdown Runway — Ajay Karthick" />
+  <meta property="og:description" content="Most fashion brands are always on some discount, so I asked when a brand goes deeper than its usual with a big whole-site sale. From 23,353 saved homepages of 30 US brands (2021 to 2026), the answer is the brand's own habit: it picked which brand goes first 79% of the time. Company filings, weather, online interest, shipping costs and rivals didn't help. Built on Azure and Microsoft Fabric, with Power BI and a 3D app." />
+  <meta property="og:image" content="https://ajay0704.github.io/portfolio/img/markdown-runway/poster-pulse.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230c0d0f'/%3E%3Ctext x='16' y='21' font-family='Arial' font-weight='700' font-size='13' fill='white' text-anchor='middle'%3EAK%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" /></noscript>
+  <link rel="stylesheet" href="../assets/site.css" />
+  <style>
+    .kpi-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--hairline);border:1px solid var(--hairline);margin-top:36px}
+    @media (min-width:1280px){.kpi-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+    @media (max-width:520px){.kpi-grid{grid-template-columns:minmax(0,1fr)}}
+    .kpi-cell{background:#fff;padding:28px 24px}
+    .kpi-cell .v{font-family:var(--serif);font-weight:900;font-size:2.2rem;line-height:1;white-space:nowrap}
+    .kpi-cell .v.red{color:var(--accent)}
+    .kpi-cell .k{margin-top:12px;font-weight:700;font-size:.98rem}
+    .kpi-cell .d{margin-top:6px;color:var(--muted);font-size:.88rem;line-height:1.55}
+    .btn-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+    .claimbox{border-left:4px solid var(--accent);background:var(--bg-paper);padding:26px 30px;margin-top:36px}
+    .claimbox .n{font-family:var(--serif);font-weight:900;font-size:2.4rem;color:var(--accent);line-height:1}
+    .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .cmp{width:100%;border-collapse:collapse;margin-top:28px;font-size:.95rem}
+    .cmp th,.cmp td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--hairline);vertical-align:top}
+    .cmp th{background:var(--bg-paper);font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+    @media (max-width:767px){.cmp{font-size:.88rem}.cmp th,.cmp td{padding:10px 8px}}
+    .source-note{margin-top:24px;font-size:.86rem;color:var(--muted);line-height:1.6}
+    .steps{margin:28px 0 0;padding:0;list-style:none;counter-reset:s;display:grid;gap:18px}
+    .steps li{counter-increment:s;display:grid;grid-template-columns:42px minmax(0,1fr);gap:4px 14px;line-height:1.6}
+    .steps li::before{content:counter(s);grid-row:span 2;font-family:var(--serif);font-weight:900;font-size:1.7rem;color:var(--accent);line-height:1.1}
+    .steps li b{display:block}
+    .video-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:40px;margin-top:36px}
+    .video-grid figure{margin:0;display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:8px 26px;align-items:center}
+    .video-grid figure > video{grid-row:span 2;width:100%;height:auto;display:block;background:#141217;border:1px solid var(--hairline);aspect-ratio:16/9}
+    .video-grid h3{font-family:var(--serif);font-size:1.25rem;margin:0;align-self:end}
+    .video-grid p{font-size:.93rem;color:var(--muted);line-height:1.6;margin:0;align-self:start}
+    .pbi-list{display:grid;gap:48px;margin-top:36px}
+    .pbi-row{display:grid;gap:16px}
+    .pbi-row img{width:100%;height:auto;display:block;border:1px solid var(--hairline)}
+    .pbi-row h3{font-family:var(--serif);font-size:1.25rem;margin:0 0 12px}
+    .pbi-row dl{margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 26px}
+    .pbi-row dt{font-size:.7rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+    .pbi-row dd{margin:3px 0 0;font-size:.92rem;line-height:1.6}
+    .pbi-row dd.say{font-weight:600;color:var(--ink,#1a1a1a)}
+    .pbi-more{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:44px}
+    .pbi-more figure{margin:0}.pbi-more img{width:100%;height:auto;display:block;border:1px solid var(--hairline)}
+    .pbi-more figcaption{font-size:.86rem;color:var(--muted);line-height:1.55;margin-top:10px}
+    @media (max-width:767px){.video-grid figure,.pbi-row dl{grid-template-columns:minmax(0,1fr)}.video-grid figure > video{grid-row:auto}.pbi-more{grid-template-columns:minmax(0,1fr)}}
+    .pill{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;white-space:nowrap}
+    .pill.ok{background:#e6f2ea;color:#1f6b45}.pill.weak{background:#fbf0dc;color:#8a5a0c}.pill.no{background:#eeece8;color:#5c5a55}.pill.tiny{background:#e8eef8;color:#2d548f}
+    .arx{margin-top:32px}
+    .arx-layer{background:#fff;border:1px solid var(--hairline);border-left:5px solid var(--c,#5c5a55);padding:18px 20px}
+    .arx-layer.src{--c:#5c5a55}.arx-layer.az{--c:#2d548f}.arx-layer.fb{--c:#1f6b45}.arx-layer.ml{--c:var(--accent);background:#fdf3f1}
+    .arx-plat{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--c)}
+    .arx-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 14px;margin-bottom:12px}
+    .arx-head h3{font-family:var(--serif);font-size:1.2rem;line-height:1.25;margin:0}
+    .arx-head p{font-size:.85rem;color:var(--muted);line-height:1.5;margin:0}
+    .arx-cards{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:10px}
+    .arx-card{border:1px solid var(--hairline);background:var(--bg-paper);padding:12px 14px}
+    .arx-layer.ml .arx-card{background:#fff}
+    .arx-card b{display:block;font-size:.9rem;line-height:1.35}
+    .arx-card .num{display:block;font-style:normal;font-weight:700;font-size:.95rem;color:var(--c);margin-top:4px}
+    .arx-card span{display:block;font-size:.82rem;color:var(--muted);line-height:1.5;margin-top:4px}
+    .arx-arrow{display:flex;align-items:center;gap:10px;padding:6px 0 6px 20px;font-size:.8rem;color:var(--muted)}
+    .arx-arrow::before{content:"↓";font-size:1.4rem;line-height:1;color:var(--muted)}
+    .arx-rules{margin-top:14px;border:1px dashed var(--muted);padding:14px 18px;font-size:.86rem;line-height:1.6}
+    .arx-rules b{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+    @media (max-width:1000px){.arx-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (max-width:560px){.arx-cards{grid-template-columns:minmax(0,1fr)}.arx-layer{padding:16px}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <nav class="nav" aria-label="Primary" data-theme="dark">
+    <div class="wrap nav-inner">
+      <a class="logo" href="../index.html"><span class="logo-mark" aria-hidden="true">AK</span>Ajay Karthick</a>
+      <div class="nav-links" id="navLinks">
+        <a href="../index.html#experience">Experience</a>
+        <a href="../work.html" aria-current="page">Work</a>
+        <a href="../index.html#how">How I work</a>
+        <a href="../index.html#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="nav-right">
+        <a class="btn btn-ink btn-sm" href="../Ajay_Karthick_Resume.pdf">Résumé</a>
+        <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <div class="wrap">
+      <p class="crumbs"><a href="../work.html">Work</a> &nbsp;/&nbsp; The Markdown Runway</p>
+      <header class="cs-head">
+        <div>
+          <p class="card-kind"><span>Self-built</span><span>Oct 2026</span></p>
+          <h1>The Markdown Runway: When Will a Brand Run Its Next Big Sale?</h1>
+          <p class="cs-answer">Most fashion brands are on some discount all the time, so I asked: when will a brand go deeper than its usual, with a big discount on its whole website? I read 23,353 saved copies of 30 brands&rsquo; homepages from 2021 to 2026 to find out. The answer is the brand&rsquo;s own habit: brands that did it recently keep doing it, at about the same discount. Company filings, weather, online interest, shipping costs and rivals didn&rsquo;t help; the saved homepages alone were enough.</p>
+          <p style="margin-top:20px"><span class="verified">Test written down first, scored once on 2024</span></p>
+          <div class="cs-links"><a class="btn btn-ink" href="#the-3d-show">Watch the 3D show &darr;</a><a class="btn btn-line" href="#the-power-bi-report">See the Power BI report &darr;</a></div>
+        </div>
+        <dl class="cs-meta"><div><dt>Type</dt><dd>Self-Built Project</dd></div><div><dt>My role</dt><dd>Solo: data collection, pipeline, models, report and 3D app</dd></div><div><dt>When</dt><dd>Oct 2026</dd></div><div><dt>Where</dt><dd>Seattle, WA</dd></div><div><dt>Tools</dt><dd>Python, SQL, Microsoft Fabric, Azure, Power BI, three.js</dd></div></dl>
+      </header>
+      <div class="glance reveal" style="--n:3"><div><b>79%</b><span>habit picked which brand goes on sale first (a coin flip gets 50%)</span></div><div><b>7 in 10</b><span>next discounts within 5 points of the brand&rsquo;s last one</span></div><div><b>No gain</b><span>from inventory, weather, online interest, costs or rivals</span></div></div>
+      <div class="cs-hero-media reveal"><div style="width:100%;max-width:900px"><div class="shot" style="--ar:1.7525"><img src="../img/markdown-runway/powerbi_01_runway.jpg" width="1600" height="913" alt="The Runway page of the Power BI report: every brand at its day of the quarter, with its chance of a big sale." decoding="async" /></div></div></div>
+      <div class="cs-layout">
+        <nav class="toc" aria-label="On this page"><p class="eyebrow">On this page</p><a href="#why-i-built-this">Why I built it</a><a href="#the-3d-show">The 3D show</a><a href="#the-question">The question</a><a href="#what-i-did">What I did</a><a href="#how-its-built">How it&rsquo;s built</a><a href="#what-i-found">What I found</a><a href="#every-idea-i-tested">Every idea I tested</a><a href="#how-i-made-sure-its-real">How I made sure it&rsquo;s real</a><a href="#the-power-bi-report">The Power BI report</a><a href="#what-it-means">What it means</a><a href="#tools-and-skills">Tools &amp; skills</a></nav>
+        <div class="cs-body">
+          <section id="why-i-built-this" aria-labelledby="why-i-built-this-h"><h2 id="why-i-built-this-h">Why I Built This</h2>
+        <div class="case-body">
+          <p>In 2022 many fashion brands were stuck with too much stock. Their own SEC filings show it: Gap&rsquo;s inventory grew 47 points faster than its sales in mid-2022, and Nike&rsquo;s 41 points. The common belief is that piled-up stock forces brands into deep sales, and that weather, shipping costs and rivals&rsquo; sales push them too. I wanted to test that belief with real data instead of assuming it.</p>
+          <p><strong>The goal had four parts:</strong></p>
+        </div>
+        <ol class="steps">
+          <li><b>When.</b> Predict when a brand will run its next big whole-site sale, and which brand will go first.</li>
+          <li><b>How deep.</b> Predict how big that discount will be.</li>
+          <li><b>Why.</b> Find out what actually drives it: the brand&rsquo;s own habit, or outside pressure like unsold stock, weather, shipping costs and rivals.</li>
+          <li><b>Build it like a real team would.</b> Use free public data only, and build the whole system end to end on Azure and Microsoft Fabric: data pipeline, prediction models, a fair test, a Power BI report and a 3D app.</li>
+        </ol></section><section id="the-3d-show" aria-labelledby="the-3d-show-h"><h2 id="the-3d-show-h">The 3D Show in Three 30-Second Clips</h2>
+        <div class="case-body"><p>I built a 3D app inside Microsoft Fabric that replays every big sale by the 30 brands since February 2021, then walks through what the test found. Each clip shows one of its three views.</p></div>
+        <div class="video-grid">
+          <figure><video controls muted playsinline preload="metadata" poster="../img/markdown-runway/poster-pulse.jpg" aria-label="The Pulse: 30-second clip"><source src="../img/markdown-runway/video-pulse.mp4" type="video/mp4" /></video><h3>1. The Pulse</h3><p>Each line is a brand. Each spike is a big whole-site sale; the taller the spike, the bigger the discount. The glow ahead shows the model&rsquo;s chance of a sale before the quarter ends.</p></figure>
+          <figure><video controls muted playsinline preload="metadata" poster="../img/markdown-runway/poster-stacks.jpg" aria-label="The Habit Stacks: 30-second clip"><source src="../img/markdown-runway/video-stacks.mp4" type="video/mp4" /></video><h3>2. The Habit Stacks</h3><p>Each stack is a brand, and each block is a quarter in which it ran a big whole-site sale. Watch the same brands pile up from 2021.</p></figure>
+          <figure><video controls muted playsinline preload="metadata" poster="../img/markdown-runway/poster-skyline.jpg" aria-label="The Habit Skyline: 30-second clip"><source src="../img/markdown-runway/video-skyline.mp4" type="video/mp4" /></video><h3>3. The Habit Skyline</h3><p>Every brand and every quarter as a city of discounts, with the 2024 test results as pillars and each brand&rsquo;s chance this quarter as a glowing ball.</p></figure>
+        </div>
+        <p class="source-note">Recorded from the 3D app running on my laptop with the Fabric data exported on October 25, 2026. The numbers match the live app exactly.</p></section><section id="the-question" aria-labelledby="the-question-h"><h2 id="the-question-h">The Question</h2>
+        <div class="case-body">
+          <p>Most fashion brands are on some kind of discount almost all the time, so &ldquo;when will they discount?&rdquo; isn&rsquo;t a useful question. The useful one is: <em>when will a brand go deeper than its usual, how deep, and which brand will do it first?</em> A pricing team watching rivals, a deal website or a shopper timing a purchase would want to know.</p>
+          <p>A <strong>big sale</strong> here has to meet two rules. The discount covers the <strong>whole website</strong> (&ldquo;40% off everything&rdquo;), and it is at least <strong>10 points deeper than that brand&rsquo;s usual</strong> over the past year. If a brand normally shows 20% off sitewide, only 30% or more counts. Sale sections (&ldquo;up to 65% off sale&rdquo;), clearance, &ldquo;select styles&rdquo; and sign-up codes don&rsquo;t count.</p>
+        </div></section><section id="what-i-did" aria-labelledby="what-i-did-h"><h2 id="what-i-did-h">What I Did</h2>
+        <ol class="steps">
+          <li><b>Collected 5&frac12; years of homepages.</b> The Internet Archive keeps dated copies of websites. I pulled 23,353 copies of 30 US fashion brands&rsquo; homepages (23 public companies), from February 2021 to October 2026.</li>
+          <li><b>Read the sale banners automatically.</b> Rules read each page, like &ldquo;40% off everything&rdquo;, and record the discount, skipping store-card and sign-up offers.</li>
+          <li><b>Added the outside data.</b> Unsold inventory from company filings (SEC), weather (NOAA), online interest (Wikipedia page views), shipping and cotton prices (FRED), and each brand&rsquo;s rivals. Every number was used only from the day it became public.</li>
+          <li><b>Wrote the test down first.</b> On October 23, 2026, before looking at any 2024 results, I wrote down exactly how each idea would be judged.</li>
+          <li><b>Trained on 2021&ndash;2023, tested once on 2024.</b> Three kinds of prediction model learned from three years of data, were frozen, and got a single shot at 2024.</li>
+        </ol></section><section id="how-its-built" aria-labelledby="how-its-built-h"><h2 id="how-its-built-h">How It&rsquo;s Built</h2>
+        <div class="case-body"><p>Read it top to bottom: free public data goes in at the top, and the Power BI report and the 3D app come out at the bottom. The collecting runs on Azure; everything after that runs in one Microsoft Fabric workspace.</p></div>
+        <div class="arx" role="figure" aria-label="Architecture: public sources, collected on Azure, cleaned in a Fabric lakehouse, modelled in Fabric notebooks, shown in Power BI and a 3D app">
+          <div class="arx-layer src"><div class="arx-head"><span class="arx-plat">Free public data</span><h3>Sources</h3><p>Everything is free and public.</p></div><div class="arx-cards" style="--n:5"><div class="arx-card"><b>Internet Archive</b><i class="num">23,353 pages</i><span>Saved copies of the 30 brands&rsquo; homepages, Feb 2021 to Oct 2026. The main source.</span></div><div class="arx-card"><b>SEC filings</b><i class="num">13,018 numbers</i><span>From 628 company reports: inventory, sales and cash.</span></div><div class="arx-card"><b>NOAA + Census</b><i class="num">Daily</i><span>Weather for each US state, weighted by where people live.</span></div><div class="arx-card"><b>Wikipedia</b><i class="num">Daily</i><span>Page views for each brand, a stand-in for public interest.</span></div><div class="arx-card"><b>FRED</b><i class="num">Monthly</i><span>Ocean shipping prices and cotton prices.</span></div></div></div>
+          <div class="arx-arrow">Downloaded by</div>
+          <div class="arx-layer az"><div class="arx-head"><span class="arx-plat">Azure</span><h3>1. Collect</h3><p>Downloads the data and keeps it safe.</p></div><div class="arx-cards" style="--n:3"><div class="arx-card"><b>Collector computer</b><i class="num">1 page / 15 s</i><span>A small Azure VM downloaded the archived homepages slowly and paused when the archive said &ldquo;slow down&rdquo;. Deleted when done.</span></div><div class="arx-card"><b>Cloud storage</b><i class="num">23,382 files</i><span>2 GB in Azure storage, locked against deletion, with backups on my Mac and GitHub.</span></div><div class="arx-card"><b>Python scripts</b><i class="num">4 sources</i><span>Pulled the SEC, NOAA, Wikipedia and FRED data from their official public sites.</span></div></div></div>
+          <div class="arx-arrow">Read into the lakehouse</div>
+          <div class="arx-layer fb"><div class="arx-head"><span class="arx-plat">Microsoft Fabric lakehouse</span><h3>2. Store and clean</h3><p>Three layers, each cleaner than the last.</p></div><div class="arx-cards" style="--n:3"><div class="arx-card"><b>Bronze</b><i class="num">14 tables</i><span>The raw data as it arrived. The pages are read from Azure storage through a link, not copied.</span></div><div class="arx-card"><b>Silver</b><i class="num">10 tables</i><span>Each page&rsquo;s discount read, whole-site big sales marked, the other data tidied.</span></div><div class="arx-card"><b>Gold</b><i class="num">13 tables</i><span>One row per brand per day (62,610 rows), with only what was known on that day.</span></div></div></div>
+          <div class="arx-arrow">Gold table becomes the training data</div>
+          <div class="arx-layer ml"><div class="arx-head"><span class="arx-plat">Fabric notebooks + MLflow</span><h3>3. Learn</h3><p>Train, freeze, test once.</p></div><div class="arx-cards" style="--n:4"><div class="arx-card"><b>Train on 2021&ndash;2023</b><i class="num">330 quarters</i><span>Three timing models (a statistical model, a survival model, XGBoost) plus discount models. Every run is logged in MLflow.</span></div><div class="arx-card"><b>Freeze</b><i class="num">Saved in git</i><span>The finished models were saved and locked before the test.</span></div><div class="arx-card"><b>Test once on 2024</b><i class="num">119 quarters</i><span>Scored one time, against rules written down beforehand.</span></div><div class="arx-card"><b>Predict and simulate</b><i class="num">1,000 runs</i><span>Each brand&rsquo;s chance of a big sale every day, plus what-if runs for weather, costs and rivals.</span></div></div></div>
+          <div class="arx-arrow">Predictions and test results</div>
+          <div class="arx-layer fb"><div class="arx-head"><span class="arx-plat">Fabric warehouse + Power BI</span><h3>4. Show</h3><p>Where people see the results.</p></div><div class="arx-cards" style="--n:4"><div class="arx-card"><b>Data warehouse</b><i class="num">72 data tests</i><span>Built with dbt: 11 tables, checked automatically on every build.</span></div><div class="arx-card"><b>Semantic model</b><i class="num">Direct Lake</i><span>One shared model that the report and the 3D app both read.</span></div><div class="arx-card"><b>Power BI report</b><i class="num">9 pages</i><span>A &ldquo;Force a flash sale&rdquo; button runs a Fabric function that re-runs the simulation and writes the result back.</span></div><div class="arx-card"><b>3D Fabric app</b><i class="num">3 views</i><span>Pulse, Habit Stacks and Skyline, recorded in the clips above.</span></div></div></div>
+          <div class="arx-rules"><b>Rules across every layer</b>Each number is used only from the day it became public, so the models never see the future. The test was written down on October 23, 2026, before any 2024 result was seen. The raw pages and every Fabric table are also backed up outside Fabric, on my Mac and GitHub.</div></div></section><section id="what-i-found" aria-labelledby="what-i-found-h"><h2 id="what-i-found-h">What I Found</h2>
+        <div class="case-body"><p>From the 2024 test: 119 brand-quarters and 47 big sales.</p></div>
+        <div class="kpi-grid">
+          <div class="kpi-cell"><div class="v red">79%</div><div class="k">Habit picks who goes first</div><div class="d">A brand&rsquo;s own record (how many of its last 4 quarters had a big sale) picked which of two brands would go on sale first 79% of the time. A coin flip gets 50%.</div></div>
+          <div class="kpi-cell"><div class="v red">7 in 10</div><div class="k">The discount repeats</div><div class="d">70% of the next big sales were within 5 points of that brand&rsquo;s last one, about as good as any model I built.</div></div>
+          <div class="kpi-cell"><div class="v">78%</div><div class="k">Extra data didn&rsquo;t help</div><div class="d">With inventory, weather, online interest, costs and rivals added, the score was 78%, against 79% for habit alone.</div></div>
+          <div class="kpi-cell"><div class="v">~5 weeks</div><div class="k">A window, not a date</div><div class="d">Guesses at the exact day were a month or more off. The honest answer is a 5-week stretch, which held the start about half the time.</div></div>
+        </div>
+        <div class="case-body" style="margin-top:40px">
+          <p><strong>The story in one line:</strong> brands run big whole-site sales out of habit. The ones that did it recently keep doing it, at about the same discount. The outside data, including the company filings (inventory, sales, cash), didn&rsquo;t help. The saved homepages alone were enough.</p>
+          <p><strong>What this doesn&rsquo;t cover:</strong> only whole-site sales. Nike, Nordstrom, lululemon, Coach, UGG and Dillard&rsquo;s never ran one since 2021. They discount through sale sections, clearance and &ldquo;select styles&rdquo; instead (Nike&rsquo;s sale section went up to 65% off, Nordstrom&rsquo;s designer clearance up to 70%), and this project doesn&rsquo;t measure those. A homepage also shows the advertised discount, not what shoppers paid, and the test could only spot a strong effect.</p>
+        </div></section><section id="every-idea-i-tested" aria-labelledby="every-idea-i-tested-h"><h2 id="every-idea-i-tested-h">Every Idea I Tested</h2>
+        <div class="table-scroll"><table class="cmp"><tr><th>Idea</th><th>What happened on 2024</th><th>Verdict</th></tr><tr><td><strong>A brand&rsquo;s own track record (habit)</strong></td><td>Picked the right brand to go first 79% of the time, the best of everything I tried</td><td><span class="pill ok">Worked</span></td></tr><tr><td><strong>Same discount as last time</strong></td><td>7 in 10 next sales were within 5 points of the last one</td><td><span class="pill ok">Worked</span></td></tr><tr><td><strong>How far into its quarter a brand is</strong></td><td>48% on its own, worse than a coin flip, and no help on top of habit</td><td><span class="pill weak">Weak</span></td></tr><tr><td><strong>An inventory &ldquo;pressure&rdquo; score, tried first on 2022</strong></td><td>Mostly re-found the brands that are always on sale</td><td><span class="pill weak">Weak</span></td></tr><tr><td><strong>Company filings: unsold inventory, sales, cash</strong></td><td>No improvement: 78% with all the extra data, vs 79% without</td><td><span class="pill no">No help</span></td></tr><tr><td><strong>Weather</strong></td><td>No improvement. Even a much warmer season moves a brand by under 4 points</td><td><span class="pill no">No help</span></td></tr><tr><td><strong>Online interest (Wikipedia page views)</strong></td><td>No improvement</td><td><span class="pill no">No help</span></td></tr><tr><td><strong>Shipping and cotton costs</strong></td><td>No improvement. A 50% freight jump moves a brand by about 2 points</td><td><span class="pill no">No help</span></td></tr><tr><td><strong>Rivals copying each other</strong></td><td>Real, but tiny: a rival&rsquo;s sale moves another brand by under half a point</td><td><span class="pill tiny">Real but tiny</span></td></tr><tr><td><strong>Inventory and profit margin setting the discount</strong></td><td>No better than &ldquo;same discount as last time&rdquo;</td><td><span class="pill no">No help</span></td></tr><tr><td><strong>The original plan&rsquo;s discount formula</strong></td><td>30 points off on average, vs 7.6 for &ldquo;same as last time&rdquo;</td><td><span class="pill no">No help</span></td></tr><tr><td><strong>A machine-learning model (XGBoost)</strong></td><td>77% right, no better than habit alone</td><td><span class="pill no">No better</span></td></tr><tr><td><strong>Guessing the exact day</strong></td><td>About one to two months off; a 5-week window is the honest answer</td><td><span class="pill weak">Weak</span></td></tr></table></div></section><section id="how-i-made-sure-its-real" aria-labelledby="how-i-made-sure-its-real-h"><h2 id="how-i-made-sure-its-real-h">How I Made Sure It&rsquo;s Real</h2>
+        <ul class="case-outcomes" style="margin-top:28px">
+          <li><strong>The rules came first.</strong> I wrote down how to judge each idea before seeing 2024, and scored it once.</li>
+          <li><strong>Someone else re-checked it.</strong> A separate check recomputed every 2024 number and re-read 300 random pages. No differences.</li>
+          <li><strong>The inputs match their sources.</strong> All 18 numbers spot-checked against SEC and FRED matched.</li>
+          <li><strong>It held up on new data.</strong> On 2025, a year the models never saw, habit still ranked the brands well.</li>
+          <li><strong>It doesn&rsquo;t depend on my definition.</strong> Calling a big sale 5, 15 or 20 points deeper than usual, instead of 10, gave the same answer.</li>
+          <li><strong>Known weak spots.</strong> It counts whole-site sales only. The page reader gets about 1 page in 5 wrong (for example &ldquo;doorbuster&rdquo; deals). The test could only catch a strong effect.</li>
+        </ul>
+        <div class="claimbox">
+          <div class="n">57 &rarr; 31 days</div>
+          <p style="margin-top:10px"><strong>I also found and fixed a mistake in my own test.</strong> While re-checking, I saw that the timing score only counted the days when a page was saved. Scored properly, the main model&rsquo;s timing error drops from 57 to 31 days. The main finding doesn&rsquo;t change, and the correction is written up in the project&rsquo;s model card.</p>
+        </div></section><section id="the-power-bi-report" aria-labelledby="the-power-bi-report-h"><h2 id="the-power-bi-report-h">The Power BI Report, Page by Page</h2>
+        <div class="case-body"><p>Nine pages, all reading the same Fabric data. A date slider replays any day from February 2021 to October 2026. Here is what each main page shows and what it says. On every page, Nike, Nordstrom, lululemon, Coach, UGG and Dillard&rsquo;s sit near 0%: that means no whole-site sale expected, not no sales.</p></div>
+        <div class="pbi-list"><div class="pbi-row"><a href="../img/markdown-runway/powerbi_01_runway.jpg" target="_blank" rel="noopener"><img src="../img/markdown-runway/powerbi_01_runway.jpg" width="1600" height="913" alt="Runway: where every brand stands today page of the Power BI report" loading="lazy" /></a><div><h3>1. Runway: where every brand stands today</h3><dl><div><dt>What it shows</dt><dd>Each dot is a brand on October 19, 2026, the last saved day.</dd></div><div><dt>How to read it</dt><dd>Left to right is how far the brand is into its own 3-month quarter. Rows are price level (premium, mid, value). The label gives the chance of a big whole-site sale before the quarter ends, then the last discount: &ldquo;Columbia &middot; 61% | &minus;25%&rdquo; means a 61% chance, and 25% off last time. Red means it already had its sale this quarter.</dd></div><div><dt>What it says</dt><dd class="say">9 of the 30 brands already had their sale this quarter. Columbia (61%) and Allbirds (40%) are the likeliest to go next.</dd></div></dl></div></div><div class="pbi-row"><a href="../img/markdown-runway/powerbi_09_backtest.jpg" target="_blank" rel="noopener"><img src="../img/markdown-runway/powerbi_09_backtest.jpg" width="1600" height="913" alt="Backtest: the scorecard page of the Power BI report" loading="lazy" /></a><div><h3>2. Backtest: the scorecard</h3><dl><div><dt>What it shows</dt><dd>How every model did on 2024, the year it was tested on once.</dd></div><div><dt>How to read it</dt><dd>Left: how often each model picked the right brand to go first (longer is better). Middle: how many days off its date guess was (shorter is better). Right: how many points off its discount guess was. In the table, &ldquo;False&rdquo; means the extra data made no real difference.</dd></div><div><dt>What it says</dt><dd class="say">Habit alone is as good as any model. No model gets the exact day right. &ldquo;Same discount as last time&rdquo; is the best discount guess.</dd></div></dl></div></div><div class="pbi-row"><a href="../img/markdown-runway/powerbi_08_why.jpg" target="_blank" rel="noopener"><img src="../img/markdown-runway/powerbi_08_why.jpg" width="1600" height="913" alt="Why: what moves a brands chance page of the Power BI report" loading="lazy" /></a><div><h3>3. Why: what moves a brand&rsquo;s chance</h3><dl><div><dt>What it shows</dt><dd>Which factors push a brand&rsquo;s chance up or down.</dd></div><div><dt>How to read it</dt><dd>The bars on the right show how much each factor separates one brand from another. Pick a brand to see its own breakdown on the left.</dd></div><div><dt>What it says</dt><dd class="say">Only two factors matter: the brand&rsquo;s habit and how far it is into its quarter. Inventory, weather, interest, costs and rivals are close to zero.</dd></div></dl></div></div><div class="pbi-row"><a href="../img/markdown-runway/powerbi_03_what-if.jpg" target="_blank" rel="noopener"><img src="../img/markdown-runway/powerbi_03_what-if.jpg" width="1600" height="913" alt="What-if: change the weather or costs page of the Power BI report" loading="lazy" /></a><div><h3>4. What-if: change the weather or costs</h3><dl><div><dt>What it shows</dt><dd>Each brand&rsquo;s chance under a scenario you pick: a warmer season, a jump in freight costs, or a rival&rsquo;s flash sale.</dd></div><div><dt>How to read it</dt><dd>Light bars are the scenario; dark bars are the normal forecast. The cards at the top show the average change.</dd></div><div><dt>What it says</dt><dd class="say">The bars barely move. Even a season 6&deg;F warmer moves a brand&rsquo;s chance by less than 4 points.</dd></div></dl></div></div><div class="pbi-row"><a href="../img/markdown-runway/powerbi_07_flash-sale.jpg" target="_blank" rel="noopener"><img src="../img/markdown-runway/powerbi_07_flash-sale.jpg" width="1600" height="913" alt="Force a flash sale page of the Power BI report" loading="lazy" /></a><div><h3>5. Force a flash sale</h3><dl><div><dt>What it shows</dt><dd>Pick a brand and press the button. The model re-runs as if that brand starts a big sale tomorrow, and the page updates.</dd></div><div><dt>How to read it</dt><dd>Each bar is a brand&rsquo;s chance after the forced sale (light) next to normal (dark). In this run, Merrell was forced on sale, so the +2.9% average at the top is almost all Merrell itself.</dd></div><div><dt>What it says</dt><dd class="say">Merrell jumps to 100%, but every other brand moves by a fifth of a point or less. Brands barely copy each other.</dd></div></dl></div></div><div class="pbi-row"><a href="../img/markdown-runway/powerbi_06_brand-dossier.jpg" target="_blank" rel="noopener"><img src="../img/markdown-runway/powerbi_06_brand-dossier.jpg" width="1600" height="913" alt="Brand dossier: one brand over time page of the Power BI report" loading="lazy" /></a><div><h3>6. Brand dossier: one brand over time</h3><dl><div><dt>What it shows</dt><dd>A brand&rsquo;s chance of a big sale, day by day since 2021, with its company details.</dd></div><div><dt>How to read it</dt><dd>With no brand picked, the line is the average of all 30 brands. It climbs through each quarter as brands run their sales, then drops back when a new quarter starts.</dd></div><div><dt>What it says</dt><dd class="say">It shows the quarter-by-quarter rhythm the models learned. Pick a brand to see its own line.</dd></div></dl></div></div></div>
+        <div class="case-body" style="margin-top:44px"><p><strong>Three supporting pages</strong></p></div>
+        <div class="pbi-more"><figure><a href="../img/markdown-runway/powerbi_02_data-board.jpg" target="_blank" rel="noopener"><img src="../img/markdown-runway/powerbi_02_data-board.jpg" width="1600" height="913" alt="" loading="lazy" /></a><figcaption>Data board: every brand&rsquo;s numbers on the chosen day in one table: chance, habit, last discount and day of quarter.</figcaption></figure><figure><a href="../img/markdown-runway/powerbi_04_freshness.jpg" target="_blank" rel="noopener"><img src="../img/markdown-runway/powerbi_04_freshness.jpg" width="1600" height="913" alt="" loading="lazy" /></a><figcaption>Freshness: days since each brand&rsquo;s last readable homepage copy. Guess has had none for 347 days, so its numbers are the least reliable.</figcaption></figure><figure><a href="../img/markdown-runway/powerbi_05_contagion.jpg" target="_blank" rel="noopener"><img src="../img/markdown-runway/powerbi_05_contagion.jpg" width="1600" height="913" alt="" loading="lazy" /></a><figcaption>Contagion: who might copy whom, built from shared category, price level and wholesale links named in company filings. The effect turned out tiny.</figcaption></figure></div></section><section id="what-it-means" aria-labelledby="what-it-means-h"><h2 id="what-it-means-h">What It Means</h2>
+        <div class="case-body"><p><em>For a pricing team watching competitors, a deal website, or a shopper deciding when to buy. It covers whole-site sales only.</em></p></div>
+        <ul class="case-outcomes" style="margin-top:20px">
+          <li><strong>Brands that had whole-site sales recently will have more.</strong> Old Navy and Gap each had one in 20 of their last 22 quarters, so expect another. You can check this for free from a brand&rsquo;s old homepages.</li>
+          <li><strong>The discount usually repeats.</strong> If a brand&rsquo;s last whole-site sale was 40% off, expect about 40% next time. That guess was within 5 points 7 times out of 10, about as good as any model I built.</li>
+          <li><strong>Extra data isn&rsquo;t worth paying for here.</strong> Adding company filings (unsold stock, sales, cash), weather, online interest and shipping costs didn&rsquo;t improve the guess: 79% right without them, 78% with them.</li>
+          <li><strong>You can predict roughly when, not the exact day.</strong> &ldquo;A big sale in the next 5 weeks&rdquo; is realistic; &ldquo;the sale starts November 14&rdquo; isn&rsquo;t. Exact-day guesses were a month or more off.</li>
+          <li><strong>What this doesn&rsquo;t cover.</strong> Nike, Nordstrom, lululemon and Coach discount through sale sections, clearance and &ldquo;select styles&rdquo;, not the whole site. This project doesn&rsquo;t measure those sales.</li>
+        </ul></section><section id="tools-and-skills" aria-labelledby="tools-and-skills-h"><h2 id="tools-and-skills-h">Tools &amp; skills</h2><h3>Tools</h3><div class="case-tools"><span class="tag">Python</span><span class="tag">SQL</span><span class="tag">DuckDB</span><span class="tag">Pandas</span><span class="tag">statsmodels</span><span class="tag">XGBoost</span><span class="tag">MLflow</span><span class="tag">dbt</span><span class="tag">Microsoft Fabric</span><span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">Direct Lake</span><span class="tag">Azure (VM, ADLS Gen2)</span><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">three.js</span><span class="tag">Git / GitHub</span></div><h3>Skills</h3><div class="case-tools"><span class="tag">Survival Analysis</span><span class="tag">Pre-registration</span><span class="tag">Time-series Validation</span><span class="tag">Point-in-time Features</span><span class="tag">Bootstrap Inference</span><span class="tag">Monte Carlo Simulation</span><span class="tag">Web Data Collection</span><span class="tag">Data Validation</span><span class="tag">Dashboard Design</span><span class="tag">Data Storytelling</span></div></section>
+        </div>
+      </div>
+      <nav class="cs-next" aria-label="More work">
+        <a href="olist-text2sql.html"><span>&larr; Previous</span><b>Olist Text-to-SQL Fine-Tuning</b></a>
+        <a href="ecommerce-dashboard.html"><span>Next &rarr;</span><b>E-commerce Performance Dashboard</b></a>
+      </nav>
+    </div>
+  </main>
+  <footer class="contact-wrap" id="contact">
+    <div class="contact">
+      <p class="eyebrow">Hiring a data or BI analyst?</p>
+      <h2>Let&rsquo;s talk.</h2>
+      <div class="contact-actions">
+        <a class="btn btn-white" href="mailto:tajay0704@gmail.com">tajay0704@gmail.com</a>
+        <button class="btn copy" type="button" data-copy="tajay0704@gmail.com">Copy email</button>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/ajay-karthick-thirumurthi-62224b216/" target="_blank" rel="noopener">LinkedIn &#8599;</a>
+        <a class="btn btn-ghost" href="https://github.com/Ajay0704" target="_blank" rel="noopener">GitHub &#8599;</a>
+        <a class="btn btn-ghost" href="../Ajay_Karthick_Resume.pdf">Résumé (PDF)</a>
+      </div>
+      <div class="foot">
+        <span>&copy; 2026 Ajay Karthick &middot; Seattle, WA</span>
+        <span><a href="../work.html">All work</a> &nbsp;&middot;&nbsp; <a href="#main">Back to top &uarr;</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>
