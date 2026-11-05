@@ -332,6 +332,13 @@ h2.title { font-size: clamp(2rem, 4.2vw, 3.2rem); margin-top: 12px; }
 .tile .what { color: var(--ink-2); font-size: .95rem; max-width: 340px; }
 .tile .tile-tag { align-self: flex-start; }
 
+/* Client-logo plate for projects whose work can't be shown */
+.logo-plate { width: 100%; height: 100cqh; align-self: stretch; display: flex; align-items: center; justify-content: center; background: var(--plate, #fff); border-radius: var(--r-sm); box-shadow: 0 1px 0 var(--line), 0 14px 30px -20px rgba(0,0,0,.35); transition: transform .5s var(--ease); }
+.card:hover .logo-plate { transform: scale(1.015); }
+.logo-plate img { width: var(--logo-w, 60%); height: 62%; object-fit: contain; }
+.logo-plate .logo-word { font: 600 clamp(1.6rem, 3.2vw, 2.2rem)/1.05 var(--sans); letter-spacing: -0.03em; color: #111; text-align: center; }
+.logo-plate .logo-word small { display: block; margin-top: 8px; font: 500 .72rem/1 var(--mono, ui-monospace, monospace); letter-spacing: .14em; text-transform: uppercase; color: #6b6b66; }
+
 .more-row { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; border: 1px dashed var(--line-2); border-radius: var(--r-md); padding: 18px 22px; color: var(--muted); }
 .more-row a { color: var(--ink); white-space: nowrap; }
 
