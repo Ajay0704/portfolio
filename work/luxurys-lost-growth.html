@@ -26,18 +26,152 @@
     .figs-col a.fig-link{display:block}
     .figs-col img{width:100%;height:auto;background:#fff}
     .figs-col figcaption strong{display:block;font:500 .72rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin-bottom:6px}
-    .cmp{width:100%;border-collapse:collapse;margin-top:28px;font-size:.93rem}
-    .cmp th,.cmp td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--hairline);vertical-align:top}
-    .cmp th{background:var(--bg-paper);font:500 .7rem var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
-    .cmp td:first-child{font-weight:500;color:var(--ink);width:34%}
-    .cmp td{color:var(--ink-2);line-height:1.5}
-    .cmp .who{display:block;margin-top:3px;font:400 .74rem var(--mono);color:var(--muted);letter-spacing:.02em}
     .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-    .types{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:28px}
-    .types div{border:1px solid var(--line);border-radius:var(--r-md);background:var(--paper);padding:14px 16px}
-    .types b{display:block;font-weight:500;color:var(--ink)}
-    .types span{display:block;margin-top:4px;font-size:.84rem;color:var(--muted);line-height:1.45}
-    @media (max-width:640px){.cmp td:first-child{width:auto}}
+  </style>
+  <style id="rep-css">
+
+/* Report, scoped to .rep so nothing leaks into site.css components. Tokens re-skinned to the v2 system:
+   ink/paper/line for structure, red for a finding, green for verified; chart hues are the report's validated palette. */
+.rep {
+  --bg: #ffffff; --plate: #ffffff; --ink: #0c0d0f; --ink-2: #34363b; --muted: #62656b;
+  --rule: #e5e5e0; --chip: #efefeb; --accent: #0c0d0f;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s5: #e87ba4; --ref: #b3b8c0;
+  --neg: #c0392b; --pos: #17803d; --mid: #f0efec;
+  --grid: #ecece7; --axis: #d6d6d0;
+  --f-text: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-head: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-data: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  max-width: 1040px; margin: 0 auto; display: grid; gap: 64px; padding: 8px 0 104px;
+  color: var(--ink); font-family: var(--f-text); font-size: 16px; line-height: 1.62;
+}
+.rep * { box-sizing: border-box; }
+.rep .col { max-width: 70ch; }
+.rep h1, .rep h2, .rep h3 { font-family: var(--f-head); text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+.rep h1 { font-size: clamp(2.1rem, 5.2vw, 3.4rem); font-weight: 700; line-height: 1.06; }
+.rep h2 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 600; line-height: 1.15; }
+.rep h3 { font-size: 1.15rem; font-weight: 600; line-height: 1.25; }
+.rep p { margin: 0; }
+.rep a { color: var(--accent); }
+.rep section { display: grid; gap: 20px; min-width: 0; scroll-margin-top: 16px; }
+.rep .eyebrow { font-size: 0.76rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.rep .lede { font-size: 1.15rem; color: var(--ink-2); }
+.rep .chapter { display: grid; gap: 8px; border-top: 2px solid var(--ink); padding-top: 18px; }
+.rep .chapter .no { font-family: var(--f-head); font-size: 0.95rem; color: var(--muted); font-weight: 600; }
+.rep .exec { background: var(--plate); border: 1px solid var(--rule); border-radius: 4px; padding: 26px 28px; display: grid; gap: 16px; }
+.rep .exec ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; counter-reset: m; }
+.rep .exec li { counter-increment: m; display: grid; grid-template-columns: 2rem minmax(0, 1fr); gap: 10px; }
+.rep .exec li::before { content: counter(m); font-family: var(--f-head); font-weight: 700; font-size: 1.25rem; color: var(--accent); line-height: 1.3; }
+.rep .exec li b { color: var(--ink); }
+.rep .exec li span { color: var(--ink-2); }
+.rep .figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.rep .fig { background: var(--plate); padding: 18px 18px 16px; display: grid; gap: 6px; align-content: start; }
+.rep .fig .v { font-family: var(--f-head); font-size: 2rem; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.05; }
+.rep .fig .k { font-size: 0.88rem; color: var(--ink-2); line-height: 1.45; }
+.rep .fig .s { font-size: 0.76rem; color: var(--muted); }
+.rep .exhibit { background: var(--plate); border: 1px solid var(--rule); border-radius: 4px; padding: 22px 22px 16px; display: grid; gap: 12px; min-width: 0; margin: 0; }
+.rep .exhibit .xno { font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+.rep .exhibit .xt { font-family: var(--f-head); font-size: 1.3rem; font-weight: 600; line-height: 1.25; text-wrap: balance; }
+.rep .exhibit .xs { font-size: 0.9rem; color: var(--ink-2); }
+.rep .exhibit .xsrc { font-size: 0.78rem; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 10px; line-height: 1.5; }
+.rep .chart { position: relative; width: 100%; height: 340px; }
+.rep .chart.tall { height: 440px; }
+.rep .chart.short { height: 260px; }
+@media (max-width: 560px) {
+.rep .chart { height: 300px; }
+.rep .chart.tall { height: 460px; }
+ }
+.rep .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 0.84rem; color: var(--ink-2); }
+.rep .legend span { display: inline-flex; align-items: center; gap: 6px; }
+.rep .legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.rep .legend i.line { height: 3px; border-radius: 2px; width: 16px; }
+.rep .tablewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.rep table { border-collapse: collapse; width: 100%; font-size: 0.88rem; font-variant-numeric: tabular-nums; }
+.rep th, .rep td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.rep th { font-weight: 600; color: var(--ink-2); font-size: 0.78rem; letter-spacing: 0.02em; }
+.rep td.n, .rep th.n { text-align: right; white-space: nowrap; }
+.rep td.hm { text-align: center; white-space: nowrap; font-weight: 500; }
+.rep .neg { color: var(--neg); }
+.rep .pos { color: var(--pos); }
+.rep .na { color: var(--muted); }
+.rep .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+.rep .rcard { background: var(--plate); border: 1px solid var(--rule); border-radius: 4px; padding: 18px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.rep .rcard .who { font-size: 0.82rem; color: var(--muted); }
+.rep .rcard dl { margin: 0; display: grid; gap: 6px; }
+.rep .rcard dt { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.rep .rcard dd { margin: 0; font-size: 0.93rem; color: var(--ink-2); }
+.rep .move { background: var(--plate); border: 1px solid var(--rule); border-radius: 4px; padding: 20px 22px; display: grid; gap: 12px; }
+.rep .move .top { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline; justify-content: space-between; }
+.rep .move .prize { font-family: var(--f-head); font-weight: 700; font-size: 1.15rem; font-variant-numeric: tabular-nums; }
+.rep .move .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px 22px; }
+.rep .move .grid div { display: grid; gap: 3px; min-width: 0; align-content: start; }
+.rep .move .lbl { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.rep .move .txt { font-size: 0.92rem; color: var(--ink-2); }
+.rep .conf { display: inline-flex; gap: 6px; align-items: center; font-size: 0.78rem; font-weight: 600; padding: 2px 9px; border-radius: 99px; background: var(--chip); color: var(--ink-2); white-space: nowrap; }
+.rep .conf::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.rep .conf.hi { color: var(--pos); }
+.rep .conf.md { color: var(--s4); }
+.rep .conf.lo { color: var(--neg); }
+.rep .conf span { color: var(--ink-2); }
+.rep .note { font-size: 0.86rem; color: var(--muted); }
+.rep .plain { border-left: 3px solid var(--accent); padding: 2px 0 2px 14px; color: var(--ink-2); }
+.rep .plain b { color: var(--ink); }
+.rep ul.list, .rep ol.list { margin: 0; padding-left: 1.2rem; display: grid; gap: 8px; }
+.rep details summary { cursor: pointer; color: var(--accent); font-weight: 500; font-size: 0.9rem; }
+.rep details[open] summary { margin-bottom: 10px; }
+.rep a:focus-visible, .rep summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+.rep .pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+.rep .pair > *, .rep .grid2 > * { min-width: 0; }
+.rep .grid2 { display: grid; gap: 16px; }
+.rep nav.rtoc ol { margin: 0; padding-left: 1.2rem; display: grid; gap: 4px; columns: 2 260px; }
+@media (prefers-reduced-motion: reduce) {
+.rep * { animation: none !important; transition: none !important; }
+ }
+
+
+/* v2 look: light headings with tight tracking, mono labels, 14px panels, red only for findings */
+.rep h1 { font-weight: 400; letter-spacing: -0.045em; font-size: clamp(2.3rem, 4.6vw, 3.8rem); line-height: 1.04; }
+.rep h2 { font-weight: 400; letter-spacing: -0.03em; }
+.rep h3 { font-weight: 500; letter-spacing: -0.01em; }
+.rep .eyebrow { font: 500 .74rem/1.4 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.rep .lede { margin-top: 0; max-width: none; color: var(--ink-2); }
+.rep a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; }
+.rep a:hover { text-decoration-color: var(--ink); }
+.rep .exhibit, .rep .exec, .rep .rcard, .rep .move { border-radius: var(--r-md); }
+.rep .figs { border-radius: var(--r-lg); overflow: hidden; }
+.rep .fig { padding: 22px 22px 20px; }
+.rep .fig .v { font-weight: 400; letter-spacing: -0.045em; font-size: 2.1rem; }
+.rep .figs .fig:nth-child(3) .v { color: var(--find); }
+.rep .fig .s { font: 400 .72rem var(--mono); letter-spacing: .03em; }
+.rep .exhibit { padding: 24px 24px 18px; }
+.rep .exhibit .xno { font: 500 .72rem var(--mono); letter-spacing: .1em; color: var(--muted); }
+.rep .exhibit .xt { font-weight: 500; letter-spacing: -0.02em; font-size: 1.35rem; }
+.rep .exec li::before { color: var(--find); font-weight: 400; }
+.rep .chapter { border-top: 1px solid var(--ink); }
+.rep .chapter .no { font: 500 .74rem var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+.rep .move .prize { font-weight: 500; }
+.rep .move .lbl, .rep .rcard dt { font: 500 .68rem var(--mono); letter-spacing: .08em; }
+.rep .conf { font-family: var(--mono); font-weight: 500; font-size: .72rem; }
+.rep .plain { border-left-color: var(--find); }
+.rep details summary { color: var(--ink); text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; }
+.rep ul.list { list-style: disc; }
+.rep ol.list, .rep nav.rtoc ol { list-style: decimal; }
+.rep nav.rtoc { border: 1px solid var(--line); border-radius: var(--r-md); padding: 20px 22px; }
+.rep [id] { scroll-margin-top: 90px; }
+.rep th { font-family: var(--mono); font-weight: 500; font-size: .7rem; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.rep-crumbs { padding-bottom: 28px; }
+@media (max-width: 560px) { .rep .exec, .rep .move { padding: 20px 18px; } .rep .exhibit { padding: 20px 16px 14px; } }
+
+  
+/* embedded inside the case study: same look as the report, fitted to the reading column */
+.rep.rep-embed { max-width: none; margin: 28px 0 0; padding: 0; gap: 16px; font-size: 15.5px; }
+.cs-body .rep p { font-size: inherit; line-height: inherit; margin: 0; color: inherit; }
+.cs-body .rep h3 { margin: 0; font-size: 1.12rem; }
+.rep th small { display: block; margin-top: 4px; font: 400 .66rem/1.35 var(--mono); letter-spacing: 0; text-transform: none; color: var(--muted); }
+.rep #x15 table { table-layout: fixed; }
+.rep #x15 th:first-child { width: 30%; }
+.rep #x15 th { vertical-align: bottom; } .rep #x15 th.n { white-space: normal; text-align: center; }
+.rep #x15 td.hm { text-align: center; }
+@media (max-width: 640px) { .rep #x15 table { table-layout: auto; min-width: 640px; } }
   </style>
 </head>
 <body>
@@ -117,29 +251,51 @@
           </div></section>
 
           <section id="what-houses-can-do" aria-labelledby="what-houses-can-do-h"><h2 id="what-houses-can-do-h">What Houses Can Do</h2><div class="case-body">
-            <p>The results make more sense by business model than by company size, so the report sorts houses into five types:</p>
+            <p>The report groups the houses into five types by how they make money, rates which of eight moves matters most for each type (Exhibit 15), and sets out each move the same way: why, what to do, proof it works, the size of the prize, how to measure it and what to watch out for. The sizes are illustrative ranges, not forecasts.</p>
           </div>
-          <div class="types">
-            <div><b>Scarcity houses</b><span>Herm&egrave;s, Brunello Cucinelli</span></div>
-            <div><b>Mega-brands</b><span>LVMH, Chanel, Kering</span></div>
-            <div><b>Jewellers</b><span>Richemont, LVMH Watches &amp; Jewelry, Kering Jewelry</span></div>
-            <div><b>Accessible luxury with heat</b><span>Tapestry (Coach), Ralph Lauren</span></div>
-            <div><b>Creative-cycle brands</b><span>Prada, Moncler, Burberry, Capri</span></div>
-          </div>
-          <div class="case-body" style="margin-top:28px">
-            <p>It then sets out eight moves. Each one comes with its evidence, a company where it has worked, an illustrative size of the prize, a number to track and its risks.</p>
-          </div>
-          <div class="tablewrap"><table class="cmp">
-            <tr><th>Move</th><th>Size of the prize (illustrative)</th></tr>
-            <tr><td>1. Re-earn the price, and reopen the entry door<span class="who">Mega-brands first</span></td><td>About &euro;2.4bn of revenue if LVMH Fashion &amp; Leather Goods won back the 6% of organic sales it lost in 2024&ndash;2025. Coach shows it can be done: 11.0m new customers across Tapestry in a year.</td></tr>
-            <tr><td>2. Grow where the category is growing<span class="who">Jewellers; mega-brands with jewellery</span></td><td>&euro;2.6&ndash;3.2bn of new jewellery spending in 2026 alone, on a &euro;32bn market growing 8&ndash;10%.</td></tr>
-            <tr><td>3. Restart the product engine<span class="who">Mega-brands; creative-cycle brands</span></td><td>Gucci&rsquo;s revenue fell from &euro;9.9bn to &euro;6.0bn. Winning back a third of that would add &euro;0.4&ndash;0.5bn of operating profit.</td></tr>
-            <tr><td>4. Rebalance exposure across regions and channels<span class="who">All houses</span></td><td>Mostly a risk reduction: Richemont&rsquo;s Middle East and Africa region swung from +22% to &minus;7% in a year.</td></tr>
-            <tr><td>5. Own the second life of the product<span class="who">Jewellers and watchmakers first</span></td><td>&euro;2&ndash;3bn of new secondhand spending in 2026, on a &euro;50bn market, plus the next new purchase.</td></tr>
-            <tr><td>6. Win the AI shelf<span class="who">All houses</span></td><td>Not yet measurable from public data; 70% of luxury questions put to AI assistants name no brand (Bain).</td></tr>
-            <tr><td>7. Deepen the relationships that are still growing<span class="who">Scarcity houses; jewellers; top-client teams</span></td><td>The largest pool in luxury: Bain estimates longer lives alone could add &euro;300&ndash;600bn over 2026&ndash;2030.</td></tr>
-            <tr><td>8. Make every store and every euro earn its place<span class="who">Mega-brands; creative-cycle brands</span></td><td>Each point of operating margin on LVMH&rsquo;s 2025 revenue is worth about &euro;0.81bn.</td></tr>
-          </table></div>
+<div class="rep rep-embed">
+<figure class="exhibit" id="x15"><div class="xno">Exhibit 15</div><div class="xt">Where each move matters most</div><div class="xs">Our priority rating by type of house.</div><div class="tablewrap"><table><thead><tr><th>Move</th><th class="n">Scarcity houses<small>Hermès, Cucinelli</small></th><th class="n">Mega-brands<small>LVMH, Chanel, Kering</small></th><th class="n">Jewellers<small>Richemont, LVMH W&amp;J, Kering Jewelry</small></th><th class="n">Accessible luxury with heat<small>Tapestry, Ralph Lauren</small></th><th class="n">Creative-cycle brands<small>Prada, Moncler, Burberry, Capri</small></th></tr></thead><tbody><tr><td>1. Re-earn the price, and reopen the entry door</td><td class="hm na">Low</td><td class="hm pos">High</td><td class="hm">Medium</td><td class="hm na">Low</td><td class="hm pos">High</td></tr><tr><td>2. Grow where the category is growing</td><td class="hm na">Low</td><td class="hm pos">High</td><td class="hm pos">High</td><td class="hm na">Low</td><td class="hm">Medium</td></tr><tr><td>3. Restart the product engine</td><td class="hm na">Low</td><td class="hm pos">High</td><td class="hm na">Low</td><td class="hm">Medium</td><td class="hm pos">High</td></tr><tr><td>4. Rebalance exposure across regions and channels</td><td class="hm">Medium</td><td class="hm pos">High</td><td class="hm">Medium</td><td class="hm">Medium</td><td class="hm">Medium</td></tr><tr><td>5. Own the second life of the product</td><td class="hm">Medium</td><td class="hm">Medium</td><td class="hm pos">High</td><td class="hm">Medium</td><td class="hm">Medium</td></tr><tr><td>6. Win the AI shelf</td><td class="hm">Medium</td><td class="hm pos">High</td><td class="hm">Medium</td><td class="hm pos">High</td><td class="hm pos">High</td></tr><tr><td>7. Deepen the relationships that are still growing</td><td class="hm pos">High</td><td class="hm">Medium</td><td class="hm pos">High</td><td class="hm">Medium</td><td class="hm na">Low</td></tr><tr><td>8. Make every store and every euro earn its place</td><td class="hm na">Low</td><td class="hm pos">High</td><td class="hm na">Low</td><td class="hm na">Low</td><td class="hm pos">High</td></tr></tbody></table></div><div class="xsrc">Source: our analysis, based on Exhibits 1–14.</div></figure>
+<div style="display:grid;gap:14px"><article class="move"><div class="top"><h3>1. Re-earn the price, and reopen the entry door</h3><span class="conf md"><span>Evidence: Medium</span></span></div>
+<div class="note">Who should lead: Mega-brands first; creative-cycle brands</div>
+<div class="grid"><div><span class="lbl">Why</span><span class="txt">About 70% of luxury consumers walked away from a purchase because the price felt unjustified (BCG, 2026). Buyers fell by about 85 million from 2022 to 2026 (Bain). Yet more than 75% of aspirational buyers expect to keep or raise their spending (BCG), and McKinsey sizes the underserved “established and aspirational” client pool at US$70–90bn.</span></div><div><span class="lbl">What to do</span><span class="txt">Hold or selectively lower list prices on the core icons where the gap to perceived value is widest, and measure units sold, not just revenue. Build a real entry range, around €1,000–3,000, of well-made leather goods, small accessories and fragrance-led gifting that carries the house’s craft rather than a bigger logo. Track first-time buyers and second purchases as a board-level KPI.</span></div>
+<div><span class="lbl">Proof it works</span><span class="txt">Coach: revenue +23% at constant currency in the year to Jun 2026, a segment margin of 35.8%, and 11.0m new customers across Tapestry, with its Tabby priced at about the rate of inflation.</span></div><div><span class="lbl">Size of the prize (illustrative)</span><span class="txt">If LVMH Fashion &amp; Leather Goods won back the 6% of organic sales it lost in 2024–2025, that would be about €2.4bn of revenue, or €0.8–1.2bn of operating profit at the division’s 35% margin or a 50% incremental margin. For Chanel, each 1% of volume is about $193m of revenue.</span></div>
+<div><span class="lbl">Measure it by</span><span class="txt">Units per store; new-to-brand clients; share of sales under €3,000; second-purchase rate within 12 months.</span></div><div><span class="lbl">Watch out for</span><span class="txt">Cheapening the brand. Any entry range must be built on craft, not logos, and kept separate from the icons.</span></div></div></article>
+<article class="move"><div class="top"><h3>2. Grow where the category is growing</h3><span class="conf hi"><span>Evidence: High</span></span></div>
+<div class="note">Who should lead: Mega-brands with jewellery businesses; jewellers</div>
+<div class="grid"><div><span class="lbl">Why</span><span class="txt">Bain expects jewellery to grow 8–10% in 2026, against 0–2% for leather goods and −3 to −5% for shoes. Richemont’s Jewellery Maisons lifted operating profit from €4.7bn to €5.0bn while its watchmakers fell from €572m to €107m. Kering Jewelry grew 17% in Jan–Sep 2026.</span></div><div><span class="lbl">What to do</span><span class="txt">Put capital and store space behind jewellery and other high-value hard luxury. Build signature collections that become icons (the Love and Alhambra model). Hedge gold costs and price with care, given that China’s gold and jewellery retail sales fell 28.7% in October 2026.</span></div>
+<div><span class="lbl">Proof it works</span><span class="txt">Richemont: Jewellery Maisons sales +19% at constant rates in Apr–Sep 2026, with a 33.4% operating margin excluding tariff one-offs.</span></div><div><span class="lbl">Size of the prize (illustrative)</span><span class="txt">Jewellery is a €32bn market (2025). At 8–10% growth that is €2.6–3.2bn of new spending in 2026 alone. LVMH Watches &amp; Jewelry earned a 14.4% margin in 2025 against Richemont’s 30.5%; each margin point on its €10.5bn of sales is worth about €105m.</span></div>
+<div><span class="lbl">Measure it by</span><span class="txt">Jewellery share of sales; jewellery gross margin after gold hedging; repeat purchase of signature lines.</span></div><div><span class="lbl">Watch out for</span><span class="txt">Gold prices (spot peak $5,589/oz on 28 Jan 2026, per Kitco, and below $3,900 by mid-November, per Reuters). A weaker US jewellery shopper. Watches only began to recover in Apr–Sep 2026 (Richemont’s watchmakers +10%).</span></div></div></article>
+<article class="move"><div class="top"><h3>3. Restart the product engine</h3><span class="conf md"><span>Evidence: Medium</span></span></div>
+<div class="note">Who should lead: Mega-brands; creative-cycle brands</div>
+<div class="grid"><div><span class="lbl">Why</span><span class="txt">Bain finds launches of new hero bags fell 70–80% in 2023–2025 compared with 2016–2019, while prices of the old ones rose. When Gucci’s second-quarter sales beat expectations, Kering’s shares rose 16.9% on the day (29 Jul 2026, <a href="https://wwd.com/business-news/financial/kering-share-reaction-second-quarter-results-1239086670/" target="_blank" rel="noopener">WWD</a>). BCG finds 68% of top clients know the creative director, against 44% of all consumers.</span></div><div><span class="lbl">What to do</span><span class="txt">Fund a pipeline of genuinely new product families every season, alongside the icons. Give creative directors time: Kering changed the creative lead at three houses in October–November 2026. Measure the share of sales from products launched in the last 24 months.</span></div>
+<div><span class="lbl">Proof it works</span><span class="txt">Miu Miu (retail +58% in 2023 and +93% in 2024) and Coach’s Tabby show how far new product can carry a house. Miu Miu’s stall to +0.8% in 2026 shows it has to be renewed.</span></div><div><span class="lbl">Size of the prize (illustrative)</span><span class="txt">Gucci’s revenue fell from €9.9bn (2023) to €6.0bn (2025). Winning back a third of the €3.9bn lost, at a 30–40% incremental margin, would add €0.4–0.5bn of operating profit.</span></div>
+<div><span class="lbl">Measure it by</span><span class="txt">Sales from products launched in the last 24 months; full-price sell-through; launch hit rate.</span></div><div><span class="lbl">Watch out for</span><span class="txt">Newness that dilutes the house codes, and frequent creative changes that confuse clients.</span></div></div></article>
+<article class="move"><div class="top"><h3>4. Rebalance exposure across regions and channels</h3><span class="conf hi"><span>Evidence: High</span></span></div>
+<div class="note">Who should lead: All; most urgent for houses with high Gulf, tourist or department-store exposure</div>
+<div class="grid"><div><span class="lbl">Why</span><span class="txt">Tourists made up 40% of personal luxury spending in 2019 and 30–35% in 2026 (Bain). Shocks hit through travel corridors: Dubai visitors −44% (Jan–Aug 2026), Chinese arrivals in Japan −54.7% (Jan–Oct 2026). Saks Global’s bankruptcy left Chanel as the largest unsecured trade creditor at $136m. Meanwhile Bain sees the Americas growing 7–9% in 2026.</span></div><div><span class="lbl">What to do</span><span class="txt">Build local client bases in each market, especially local Japanese, American and Korean clients, rather than following tourists. Set exposure limits on any single travel corridor or wholesale partner. Prefer concessions and own stores to credit-heavy wholesale.</span></div>
+<div><span class="lbl">Proof it works</span><span class="txt">Richemont: Japan +30% in Apr–Sep 2026 on double-digit growth in both local and tourist demand, even as Chinese arrivals fell. Burberry’s Americas comparable sales rose 12%, driven by local customers.</span></div><div><span class="lbl">Size of the prize (illustrative)</span><span class="txt">Mostly a risk reduction rather than new sales. Richemont’s Middle East and Africa region (9% of sales) swung from +22% to −7% in a year. Houses that limit any single corridor to a small share of sales cap that kind of swing.</span></div>
+<div><span class="lbl">Measure it by</span><span class="txt">Share of sales to local clients by market; share of sales through the top three tourist corridors; wholesale credit exposure.</span></div><div><span class="lbl">Watch out for</span><span class="txt">Building local demand takes years. Pulling out of wholesale too fast cuts reach.</span></div></div></article>
+<article class="move"><div class="top"><h3>5. Own the second life of the product</h3><span class="conf md"><span>Evidence: Medium</span></span></div>
+<div class="note">Who should lead: Jewellers and watchmakers first; all houses</div>
+<div class="grid"><div><span class="lbl">Why</span><span class="txt">Secondhand personal luxury reached about €50bn in 2025, growing 7–8% a year since 2019, three to four times faster than new goods (Bain). About half of shoppers check resale before buying new. 53.8% of luxury executives already run certified pre-owned or trade-in programmes (Deloitte, 2026).</span></div><div><span class="lbl">What to do</span><span class="txt">Offer certified pre-owned and trade-in credit through your own stores, so the trade-in becomes the next new purchase. Use authentication and repair to own the relationship over the product’s life. Treat resale prices as a live gauge of desirability.</span></div>
+<div><span class="lbl">Proof it works</span><span class="txt">83% of secondhand luxury sales are hard luxury (Bain), which is why watch and jewellery houses have the most to gain. BCG and Vestiaire project watch resale at 35–40% of the watch market by 2030.</span></div><div><span class="lbl">Size of the prize (illustrative)</span><span class="txt">At 4–6% growth, the €50bn secondhand market adds €2–3bn of spending in 2026. A brand-run programme captures part of that and, more importantly, the next new purchase.</span></div>
+<div><span class="lbl">Measure it by</span><span class="txt">Trade-in credit redeemed on new products; share of the brand’s own resale volume that goes through its channels.</span></div><div><span class="lbl">Watch out for</span><span class="txt">Cannibalising new sales, and the cost of authentication.</span></div></div></article>
+<article class="move"><div class="top"><h3>6. Win the AI shelf</h3><span class="conf lo"><span>Evidence: Lower</span></span></div>
+<div class="note">Who should lead: All; urgent for brands that rely on discovery</div>
+<div class="grid"><div><span class="lbl">Why</span><span class="txt">Bain finds 70% of luxury questions put to AI assistants name no brand, and visitors referred by AI spend over 40% more per visit. About half of luxury consumers already use AI somewhere in the purchase journey. BCG finds generative AI’s net trust score about twice that of social media.</span></div><div><span class="lbl">What to do</span><span class="txt">Make product data, availability, materials and provenance clean and readable by AI assistants. Track how often the house is named in answers to unbranded questions (“best first designer bag”, “bracelet that holds its value”). Train client advisers to work alongside AI-led shoppers.</span></div>
+<div><span class="lbl">Proof it works</span><span class="txt">Bain’s 2026 finding that AI-referred visitors spend over 40% more per visit. Brands are starting: LVMH’s <a href="https://www.lvmh.com/en/news-lvmh/ai-for-all-lvmh-accelerates-its-transformation-through-artificial-intelligence" target="_blank" rel="noopener">“AI for ALL” plan</a> focuses on staff and client advisers.</span></div><div><span class="lbl">Size of the prize (illustrative)</span><span class="txt">Not yet measurable from public data. The prize is a share of the 70% of AI questions that don’t name a brand.</span></div>
+<div><span class="lbl">Measure it by</span><span class="txt">Share of unbranded AI answers that name the house; AI-referred sessions and spend per visit.</span></div><div><span class="lbl">Watch out for</span><span class="txt">Platforms change fast, and errors in product data are amplified.</span></div></div></article>
+<article class="move"><div class="top"><h3>7. Deepen the relationships that are still growing</h3><span class="conf hi"><span>Evidence: High</span></span></div>
+<div class="note">Who should lead: Scarcity houses; jewellers; mega-brands’ top-client teams</div>
+<div class="grid"><div><span class="lbl">Why</span><span class="txt">Top customers spend about €780bn, more than half of all luxury spending (Bain, 2026). Older generations account for 45–55% of spending, and Bain estimates longer, healthier lives could add €300–600bn of cumulative value in 2026–2030. Experiences (€533bn) have grown faster than goods every year since 2023.</span></div><div><span class="lbl">What to do</span><span class="txt">Invest in client advisers, private appointments and service for top and long-standing clients across all their categories. Add experiences (hospitality, travel, cultural access) that deepen the relationship rather than one-off events. Design for older clients, not only Gen Z.</span></div>
+<div><span class="lbl">Proof it works</span><span class="txt">Hermès: growth every year through the slowdown (+14.7% in 2024, +8.9% in 2025, +5.5% in Jan–Sep 2026) with a 41% margin, built on a clienteling model.</span></div><div><span class="lbl">Size of the prize (illustrative)</span><span class="txt">Top-client spending is the largest single pool in luxury. Bain’s longevity estimate alone is €300–600bn over five years across the industry.</span></div>
+<div><span class="lbl">Measure it by</span><span class="txt">Top-client retention; share of wallet across categories; spend per adviser.</span></div><div><span class="lbl">Watch out for</span><span class="txt">Over-concentration: the 2026 shocks showed the danger of depending on a few wealthy groups.</span></div></div></article>
+<article class="move"><div class="top"><h3>8. Make every store and every euro earn its place</h3><span class="conf md"><span>Evidence: Medium</span></span></div>
+<div class="note">Who should lead: Mega-brands; creative-cycle brands</div>
+<div class="grid"><div><span class="lbl">Why</span><span class="txt">Bain puts the industry’s operating margin at 15–16% in 2025, back to 2009 levels. LVMH’s store count rose from 6,097 (2023) to 6,283 (2025) while revenue fell, so revenue per store dropped from €14.1m to €12.9m (−9%). Kering’s store count fell from 1,794 (2024) to 1,614 (Sep 2026), and it plans at least 125 closures in 2026.</span></div><div><span class="lbl">What to do</span><span class="txt">Close or resize low-productivity stores, especially in tourist locations that no longer draw shoppers. Shift spending from opening stores to product and clients. Tie marketing spend to new-client growth.</span></div>
+<div><span class="lbl">Proof it works</span><span class="txt">Burberry: adjusted operating margin back from 1.0% (FY to Mar 2025) to 6.6% (FY to Mar 2026) after its reset, with Apr–Sep 2026 sales +6%.</span></div><div><span class="lbl">Size of the prize (illustrative)</span><span class="txt">Each point of operating margin on LVMH’s 2025 revenue is worth about €0.81bn.</span></div>
+<div><span class="lbl">Measure it by</span><span class="txt">Sales per square metre; store four-wall margin; marketing spend per new client.</span></div><div><span class="lbl">Watch out for</span><span class="txt">Cutting too far into the brand experience that justifies the price.</span></div></div></article></div>
+</div>
           </section>
 
           <section id="key-outcomes" aria-labelledby="key-outcomes-h"><h2 id="key-outcomes-h">Key Outcomes</h2><ul class="case-outcomes">
